@@ -3,9 +3,9 @@
 # It is the hub for all interaction.
 class CommandCenterView
   constructor: ->
+    @menu = null
     $('body').append logged_out_view()
     $("ul.login-bar").hide()
-
 
 
   logged_out_view: Handlebars.compile('
@@ -32,8 +32,8 @@ class CommandCenterView
     <div class="controller-view">
       <div class="default-view">
         <figure>
-          <img src={{User.image_url}}/>
-          <h2>{{User.display_name}}</h2>
+          <img src={{image_url}}/>
+          <h2>{{me.display_name}}</h2>
         </figure>
       </div>
     </div>
@@ -56,20 +56,24 @@ class CommandCenterView
         </li>
       </ul>
       <div class="persistent-bar">
-        <a>{{User.display_name}}</a>
+        <a>{{display_name}}</a>
         <span class="fontawesome-reorder"></span>
       </div>
     </div>
     ')
 
   log_in: ->
-    # @app.oauth_logic
+    $(".parley .persistent-bar.logged_out").off()
+     $('.parley section.controller').html(logged_in_view(@app.me))
+     $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
+     $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
+     $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
 
   toggle_command_center: ->
     ## If a user is logged in they get a default profile view
     ## otherwise a login with google appears.
     if logged_out
-      $( ".persistent-bar.logged-out" ).on "click", ->
+      $( ".parley .persistent-bar.logged-out" ).on "click", ->
         $( "#log-click" ).toggle()
         $( "ul.login-bar" ).slideToggle()
     else
@@ -78,9 +82,24 @@ class CommandCenterView
           $('.controller-view').toggle()
 
   toggle_current_users: ->
+    if @menu is not "current_users"
+      $('.parley div.controller-view').html('')
+      for user in @app.current_users
+        view = new @app.CurrentUserView(user)
+        $('.parley div.controller-view').append(view.render())
+    else
+      $('.parley div.controller-view').html(logged_in_view(@app.me))
 
 
-  toggle_persistent_messages: ->
+  toggle_persistent_convos: ->
+    if @menu is not "persistent_convos"
+      $(".parley div.controller-view").html('')
+      for convo in @app.conversations
+        view = new @app.PersistentConversationView(convo)
+        $('.parley div.controller-view').append(view.render())
+    else
+      $('.parley div.controller-view')html(logged_in_view(@app.me))
+
 
   toggle_user_settings: ->
 
