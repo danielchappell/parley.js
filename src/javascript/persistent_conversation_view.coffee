@@ -23,5 +23,5 @@ class PersistentConversationView
       ')
 
     render: ->
-      @persistent_message_template_reg(@convo)
+      @persistent_convo_template_reg(@convo)
 

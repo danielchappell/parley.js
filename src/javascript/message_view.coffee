@@ -2,7 +2,7 @@
 ## and interaction logic for individual message models
 # class MessageView
 
-#   constructor: (@message) ->
+  constructor: (@message) ->
 
 
-#   message_template:
+  message_template:

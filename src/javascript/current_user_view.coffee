@@ -19,5 +19,5 @@ class CurrentUserView
         ')
 
   render: ->
-    @user_template(@current_user)
+    @current_user_template(@current_user)
 

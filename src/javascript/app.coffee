@@ -7,6 +7,7 @@ class ParleyApp
   constructor: ->
     @current_users = []
     @open_conversations = []
+    @conversations = []
     ## runs each init function
     init(this) for init in initializers
 
