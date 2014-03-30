@@ -1,0 +1,35 @@
+{
+  "name": "parley.JS",
+  "version": "0.2.0",
+  "description": "Javascript chat library using socket.io to deliver complete chat experience including file uploads and video chat.",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "redis": "~0.10.1",
+    "socket.io": "~0.9.16",
+    "socket.io-stream": "~0.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/photonerddan/parley.js.git"
+  },
+  "keywords": [
+    "chat",
+    "javascript",
+    "node",
+    "google_oauth",
+    "video"
+  ],
+  "author": "Joseph Chappell, Matthew Van Dusen",
+  "license": "MIT license",
+  "bugs": {
+    "url": "https://github.com/photonerddan/parley.js/issues"
+  },
+  "homepage": "https://github.com/photonerddan/parley.js"
+}
