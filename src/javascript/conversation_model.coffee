@@ -2,7 +2,7 @@
 ## data and logic pertaining to managing a conversation
 ## including a collection of message objects.
 
-class ConversationModel
+class Conversation
 
   constructor: (@convo_partners) ->
     @messages = []
