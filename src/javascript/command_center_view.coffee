@@ -12,7 +12,12 @@ class CommandCenterView
     <div class="parley">
       <section class="controller">
       <div class="controller-view"></div>
-      <ul class="login-bar">
+      <ul class="login-bar g-signin"
+        data-callback="sign_in_callback"
+        data-clientid=
+        data-cookiepolicy="single_host_origin"
+        data-theme="none"
+        data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/devstorage.read_write">
         <li class="btn">
           <a class="entypo-gplus"></a>
         </li>
