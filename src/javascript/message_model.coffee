@@ -33,7 +33,7 @@ class Message
       else
         return "#{f_date.month} #{f_date.day} | #{f_date.hour}:#{f_date.minutes} #{f_date.suffix}"
 
-  date_formatter:() ->
+  date_formatter: ->
     ## formats date for @time_elapsed function
 
     switch @time_stamp.getMonth()
