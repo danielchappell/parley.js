@@ -1,7 +1,7 @@
 
-################################
-    NODE SERVER FOR PARLEY.JS
-################################
+###################################
+###  NODE SERVER FOR PARLEY.JS  ###
+###################################
 
 
 express = require 'express'
@@ -25,9 +25,9 @@ else
 redisClient.on 'error', (err) ->
   console.log "Error #{err}"
 
-############################################################
-      TEMPORARY HTTP SERVER FOR LIBRARY TESTING
-############################################################
+##########################################################
+#####   TEMPORARY HTTP SERVER FOR LIBRARY TESTING    #####
+##########################################################
 
 ## serve assets
 app.use(express.static("#{__dirname}/src"))
@@ -37,9 +37,9 @@ app.get '/', (req, res) ->
   res.sendfile "#{__dirname}/test.html"
 
 
-####################################
-        SOCKET.IO CALLBACKS
-####################################
+################################
+###    SOCKET.IO CALLBACKS   ###
+################################
 
 
 
