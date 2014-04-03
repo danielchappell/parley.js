@@ -91,7 +91,7 @@ disconnect_callback = ->
   if sockets[image_url]['client'].length is 0
     delete sockets[image_url]
 
-join_callback = (display_name, image_url) ->
+join_callback = (client, display_name, image_url) ->
   ## make sure the user isn't already logged in
   loggedIN = false
   for user in loggedON
