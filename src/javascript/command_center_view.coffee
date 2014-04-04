@@ -89,8 +89,8 @@ class CommandCenterView
   toggle_current_users: ->
     if @menu is not "current_users"
       $('.parley div.controller-view').html('')
-      for user in @app.current_users
-        view = new @app.CurrentUserView(user)
+      for user in @app.users.currently_online
+        view = new @app.UserView(user)
         $('.parley div.controller-view').append(view.render())
     else
       $('.parley div.controller-view').html(logged_in_view(@app.me))

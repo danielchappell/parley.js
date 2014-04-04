@@ -8,6 +8,7 @@ class ParleyApp
     @current_users = []
     @open_conversations = []
     @conversations = []
+
     ## insert script for google plus signin
     do ->
       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true

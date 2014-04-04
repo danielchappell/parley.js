@@ -14,6 +14,7 @@ class Oauth
             name = profile.displayName
             image_url = profile.image.url
             @app.me = new User name, image_url
+            @app.users.add(@app.me)
             @app.server.emit('join', name, image_url)
             @app.command_center.log_in()
         @file_upload = (file, rIDs, sID) ->
