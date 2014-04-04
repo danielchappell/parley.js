@@ -8,12 +8,16 @@ class Conversation
     @messages = []
     @message_filter = @generate_message_filter()
     @first_name_list = ""
+    @convo_partners_image_urls = []
     for user in @convo_partners
       first_name = user.display_name.match(/\A.+\s/)[0]
       if i is not @convo_partners.length
         @first_name_list += "#{first_name}, "
+        @convo_partners_image_urls += user.image_url
       else
         @first_name_list += "#{first_name}"
+        @convo_partners_image_urls += user.image_url
+
 
 
 

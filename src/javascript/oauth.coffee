@@ -16,7 +16,7 @@ class Oauth
             @app.me = new User name, image_url
             @app.server.emit('join', name, image_url)
             @app.command_center.log_in()
-        @upload_file = (file, rIDs, sID) ->
+        @file_upload = (file, rIDs, sID) ->
           $.ajax({
             url: "https://www.googleapis.com/upload/storage/v1beta2/b/parley-images/o?uploadType=media&name=#{file.name}"
             type: "POST"

@@ -4,7 +4,15 @@
 
 class ChatRoom
 
-  constructor: (@conversation) ->
+  constructor: (@convo) ->
+    @render()
+    $('body').append(@$element)
+    @app.server.on 'previous_chat', persistent_convo_callback
+    @app.server.emit 'open_chat', @convo.convo_partners_image_urls, @app.me.image_url
+    @app.server.on 'message', message_callback
+    @app.server.on 'user_offline', user_offline_callback
+    @app.server.on 'typing_notification', typing_notification_callback
+
 
 
   chat_room_template: Handlebars.compile('
@@ -35,3 +43,98 @@ class ChatRoom
       </section>
     </div>
     ')
+
+  render: ->
+    @$element = $(@chat_room_template(@convo))
+    @$discussion = @$element.find('.discussion')
+
+  renderDiscussion: ->
+    new_message = @convo.messages.slice(-1)[0]
+    @appendMessage(new_message)
+    @scrollToLastMessage()
+
+  appendMessage: (message)->
+    message_view = new MesssageView(message)
+    message_view.render()
+    @$discussion.append(message_view.$element)
+
+  scrollToLastMessage: ->
+    @$discussion.scrollTop( @$discussion.find('li:last-child').offset().top + @$discussion.scrollTop() )
+
+  loadPersistentMessages: ->
+    for message in @convo.messages
+      @appendMessage(message)
+    if @messages.length > 0
+      @scrollToLastMessage()
+
+  sendOnEnter: (e)->
+    if e.keyCode is 13
+      @sendMessage()
+      @removeNotifications()
+
+  sendMessage: ->
+    send = new Message (@convo_partners, @app.me, @$element.find('.send').val() )
+    @messages.add(send)
+    @renderDiscussion()
+    @app.server.emit 'mesage', send.content, send.convo_partners_image_urls, send.sender
+    @$discussion.find('.send').val('')
+    this.emitTypingNotification()
+
+  toggle_convo: (e) ->
+    e.preventDefault()
+    @$discussion.toggle()
+    if @$discussion.attr('display') is not "none"
+      @scrollToLastMessage
+
+  closeWindow: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @app.server.removeAllListeners()
+    @$element.remove()
+    delete @
+
+  removeNotifications: (e) ->
+    @$element.find('.top-bar').removeClass('new-message')
+    if @app.title_notification.notified
+      @clearTitleNotification()
+
+  emitTypingNotification: (e) ->
+    if @$element.find('.send')val() is not ""
+      @app.server.emit 'user_typing', @convo.convo_partners_image_urls, @app.me, true
+    else
+      @app.server.emit 'user_typing', @convo.convo_partners_image_urls, @app.me, false
+
+  clearTitleNotification: ->
+    @app.clearAlert()
+    $('html title').html( @app.title_notification.page_title )
+    @app.title_notification.notified = false
+
+  titleAlert: ->
+    if not @app.title_notification.notified
+      sender_name = @convo.messages[-1].sender.display_name
+      alert = "Pending ** #{sender_name}"
+
+      setAlert = ->
+        if $('html title').html() is @app.title_notification.page_title
+          $('html title').html(alert)
+        else
+          $('html title').html( @app.title_notification.page_title)
+
+      title_alert = setInterval(setAlert, 2200)
+
+      @app.clear_alert = ->
+        clearInterval(title_alert)
+
+      @app.title_notification.notified = true
+
+  file_upload: ->
+    file = @$discussion.find('.picture_upload').get(0).files[0]
+    @app.oauth.file_upload file, @convo.convo_partners_image_urls, @app.me.image_url
+
+
+
+
+
+
+
+

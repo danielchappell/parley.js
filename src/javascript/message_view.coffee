@@ -1,6 +1,7 @@
 ## constructor for object that contains template data
 ## and interaction logic for individual message models
-# class MessageView
+
+class MessageView
 
   constructor: (@message) ->
 
@@ -21,6 +22,6 @@
   render: ->
     ## renders template differently if user is sending or recieving the message
     if @message.sender.image_url is @app.me.image_url
-      template = $('<li class="self"></li>').append(message_template(@message))
+      @$element = $('<li class="self"></li>').append(message_template(@message))
     else
-      template = $('<li class="other"></li>').append(message_template(@message))
+      @$element = $('<li class="other"></li>').append(message_template(@message))

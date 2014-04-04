@@ -17,6 +17,8 @@ class ParleyApp
     ## runs each init function
     init(this) for init in initializers
 
+  server: io.connect('wss://' + window.location.hostname)
 
-onInit: (func) ->
-  initializers.push(func)
+
+  onInit: (func) ->
+    initializers.push(func)
