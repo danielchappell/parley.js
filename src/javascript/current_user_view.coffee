@@ -19,5 +19,6 @@ class CurrentUserView
         ')
 
   render: ->
-    this.$element = @current_user_template(@current_user)
+    @$element = @current_user_template(@current_user)
+
 

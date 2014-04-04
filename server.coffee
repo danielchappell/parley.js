@@ -10,7 +10,6 @@ app = express()
 io = require('socket.io').listen(app.listen(process.env.PORT || 5000))
 stream = require 'socket.io-stream'
 loggedON = []
-sockets = {}
 
 ## REDISTOGO HEROKU plugin authentication
 if process.env.REDISTOGO_URL
@@ -54,17 +53,30 @@ connection_callback = (client) ->
     if not loggedIN
       sockets[image_url] = { display_name: display_name, client: [client] }
       loggedON.push({ display_name: display_name, image_url: image_url })
+
+    ## let all clients know a new user is logged on and send client info
       client.broadcast.emit 'user_logged_on', display_name, image_url
+
     else
       ## if client is already logged on for instance opening a new window or tab
       sockets[image_url]['client'] = sockets[image_url]['client'].concat(client)
 
-    ## let all clients know a new user is logged on and send client info
+
+    ##regardless send online user list to client
     client.emit 'current_users', loggedON
+
+    ## Query REDIS for all persistent messages belonging to user
+    redisClient.smembers image_url, (err, persist_convos) ->
+      if err
+        console.log "ERROR: #{err}"
+      else
+        for convo_key in persist_convos
+          redisClient.lrange convo_key, 0, -1, (err, messages) ->
+            client.emit 'persistent_convo', convo_key, messages
 
     ## listen for open chat windows
     client.on 'open_chat', (rIDs, sID)->
-      conversation_key = rIDs.concat(sID).sort().join('')
+      conversation_key = rIDs.concat(sID).sort().join()
       redisClient.lrange conversation_key, 0, -1, (err, messages) ->
         if err then console.log "ERROR: #{err}" else client.emit 'previous_chat', messages
 
@@ -82,9 +94,11 @@ connection_callback = (client) ->
     ## listen for messages from clients
     client.on 'message', (msg, rIDs, sID)->
       convo_members = rIDs.concat(sID)
-      convo_key = convo_members.sort().join('')
+      convo_key = convo_members.sort().join()
       value_string = "#{sID}***#{msg}"
       redisClient.multi([
+        ['sadd', sID, convo_key],
+        ['expire', sID, 16070400],
         ['rpush', convo_key, value_string],
         ['ltrim', convo_key, -199, -1],
         ['expire', convo_key, 604800]
