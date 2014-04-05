@@ -1,4 +1,8 @@
-parley.js
-=========
+Parley.js
+===
 
-Version 2.0 of Javascript chat library
+
+License
+===
+
+parley.js is Copyright © 2014 parley. It is free software, and may be redistributed under the terms specified in the LICENSE file.
