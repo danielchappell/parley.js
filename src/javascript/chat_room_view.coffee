@@ -110,7 +110,7 @@ class ChatRoom
     send = new Message (@convo_partners, @app.me, @$element.find('.send').val() )
     @messages.add(send)
     @renderDiscussion()
-    @app.server.emit 'mesage', send.content, send.convo_partners_image_urls, send.sender
+    @app.server.emit 'mesage', send.content, send.convo_partners_image_urls, send.sender.image_url, send.time_stamp
     @$discussion.find('.send').val('')
     this.emitTypingNotification()
 

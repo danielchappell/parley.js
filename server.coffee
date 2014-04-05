@@ -92,7 +92,7 @@ connection_callback = (client) ->
               socket.emit 'incoming_mesage', convo_members, sObj, false
 
     ## listen for messages from clients
-    client.on 'message', (msg, rIDs, sID)->
+    client.on 'message', (msg, rIDs, sID, time_stamp)->
       convo_members = rIDs.concat(sID)
       convo_key = convo_members.sort().join()
       value_string = "#{sID}***#{msg}"
