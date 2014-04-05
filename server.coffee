@@ -74,11 +74,6 @@ connection_callback = (client) ->
           redisClient.lrange convo_key, 0, -1, (err, messages) ->
             client.emit 'persistent_convo', convo_key, messages
 
-    ## listen for open chat windows
-    client.on 'open_chat', (rIDs, sID)->
-      conversation_key = rIDs.concat(sID).sort().join()
-      redisClient.lrange conversation_key, 0, -1, (err, messages) ->
-        if err then console.log "ERROR: #{err}" else client.emit 'previous_chat', messages
 
     ## listen for type_notifications
     client.on 'user_typing', (rIDs, sObj, bool)->

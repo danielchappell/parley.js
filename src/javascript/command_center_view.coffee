@@ -69,7 +69,8 @@ class CommandCenterView
 
   log_in: ->
     $(".parley .persistent-bar.logged_out").off()
-     $('.parley section.controller').html(logged_in_view(@app.me))
+    @$element = logged_in_view(@app.me)
+     $('.parley section.controller').html(@$element)
      $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
      $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
      $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
@@ -110,5 +111,5 @@ class CommandCenterView
 
 
 
-
+Parley_App.onInit
 

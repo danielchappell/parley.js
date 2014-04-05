@@ -1,6 +1,6 @@
 ## this is the contructor for the global object that when initialized
 ## executes all neccesary operations to get this train moving.
-initializers = []
+
 
 class ParleyApp
 
@@ -8,6 +8,11 @@ class ParleyApp
     @current_users = []
     @open_conversations = []
     @conversations = []
+
+
+    ## listen for persistent conversations from the server on load.
+    ## will be sent in one at a time from redis on load.
+    @server.on 'persistent_convo', @load_persistent_convo
 
     ## insert script for google plus signin
     do ->
@@ -18,9 +23,6 @@ class ParleyApp
     ## runs each init function
     init(this) for init in initializers
 
-    ## listen for persistent conversations from the server on load.
-    ## will be sent in one at a time from redis on load.
-    @app.server.on 'persistent_convo', @load_persistent_convo
 
   server: io.connect('wss://' + window.location.hostname)
 

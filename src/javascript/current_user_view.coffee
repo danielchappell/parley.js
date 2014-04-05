@@ -2,7 +2,7 @@
 ## on users displayed in the logged on users list on both
 ## command center and chat window views.
 
-class CurrentUserView
+class UserView
 
   constructor: (@current_user) ->
 

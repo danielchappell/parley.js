@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////
-      GULP.JS FOR BUILDING PRODUCTION FILES
+//      GULP.JS FOR BUILDING PRODUCTION FILES  //
 /////////////////////////////////////////////////
 
 // Install npm install gulp -g to execute gulp <task> in console
@@ -13,6 +13,7 @@ rename = require('gulp-rename');
 var coffee = require('gulp-coffee'),
 concatJS = require('gulp-concat'),
 uglify = require('gulp-uglify'),
+rjs = require('gulp-requirejs')
 
 gulp.task('build', function(){
   gulp.src('./src/javascript/*.coffee')

@@ -34,6 +34,7 @@ class PersistentConversationView
           convo_status = 'open'
 
       if convo_status isnt 'open'
-        chat = new ChatRoom(@convo)
+        chat_window = new ChatRoom(@convo)
+        @app.open_conversations.push(@convo.message_filter)
 
 
