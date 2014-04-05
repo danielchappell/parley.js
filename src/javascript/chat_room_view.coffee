@@ -7,7 +7,6 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
-    # @app.server.on 'previous_chat', @persistent_convo_callback
     @app.server.emit 'open_chat', @convo.convo_partners_image_urls, @app.me.image_url
     @app.server.on 'message', @message_callback
     @app.server.on 'user_offline', @user_offline_callback

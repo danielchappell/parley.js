@@ -23,5 +23,17 @@ class PersistentConversationView
       ')
 
     render: ->
-      @persistent_convo_template_reg(@convo)
+      @$element = @persistent_convo_template_reg(@convo)
+
+
+    load_convo: ->
+      ## if convo isn't open load new chat window with convo
+      convo_status = 'closed'
+      for convo in @app.open_conversations
+        if @convo.message_filter is convo.message_filter
+          convo_status = 'open'
+
+      if convo_status isnt 'open'
+        chat = new ChatRoom(@convo)
+
 
