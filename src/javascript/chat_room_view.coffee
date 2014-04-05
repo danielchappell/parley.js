@@ -7,11 +7,11 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
-    @app.server.on 'previous_chat', persistent_convo_callback
+    # @app.server.on 'previous_chat', @persistent_convo_callback
     @app.server.emit 'open_chat', @convo.convo_partners_image_urls, @app.me.image_url
-    @app.server.on 'message', message_callback
-    @app.server.on 'user_offline', user_offline_callback
-    @app.server.on 'typing_notification', typing_notification_callback
+    @app.server.on 'message', @message_callback
+    @app.server.on 'user_offline', @user_offline_callback
+    @app.server.on 'typing_notification', @typing_notification_callback
 
 
 
@@ -43,6 +43,40 @@ class ChatRoom
       </section>
     </div>
     ')
+
+  message_callback: (data) ->
+    if data.convo_key is @convo.message_filter
+      convo_members = data.convo_key.split(',')
+      for id in convo_members
+        if id isnt data.sender.image_url
+           message_recipients += id
+      for partner in @convo_partners
+        if partner.image_url is data.sender
+          sender = partner
+      message = new Message(message_recipients, sender, data.msg, data.time_stamp)
+      @convo.add_message(message)
+      @renderDiscussion()
+      @$element.find('.top-bar').addClass('new-message')
+      @titleAlert()
+
+  user_offline_callback: ->
+    message = new Message(@app.me, 'images/server_network.png', "This user is no longer online", new Date() )
+    @convo.add_message(message)
+    @renderDiscussion()
+
+  typing_notification_callback: (convo_key, typist, bool) ->
+    if convo_key is @convo.message_filter
+      if bool
+        if @$discussion.find('.incoming').length is 0
+          ##typing_notification = TYPING NOTIFICATION LAYOUT GOES HERE!!
+          @$discussion.append(typing_notification)
+          @scrollToLastMessage()
+      else
+        @$discussion.find('.incoming').remove()
+        @scrollToLastMessage()
+
+
+
 
   render: ->
     @$element = $(@chat_room_template(@convo))
