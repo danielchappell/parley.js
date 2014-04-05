@@ -44,16 +44,7 @@ class ChatRoom
     </div>
     ')
 
-  message_callback: (data) ->
-    if data.convo_key is @convo.message_filter
-      convo_members = data.convo_key.split(',')
-      for id in convo_members
-        if id isnt data.sender.image_url
-           message_recipients += id
-      for partner in @convo_partners
-        if partner.image_url is data.sender
-          sender = partner
-      message = new Message(message_recipients, sender, data.msg, data.time_stamp)
+  message_callback: (message) ->
       @convo.add_message(message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')

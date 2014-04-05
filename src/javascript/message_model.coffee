@@ -7,13 +7,14 @@ class Message
     if not @time_stamp
       @time_stamp = new Date().toUTCString()
     @convo_id = @recipients.concat(@sender).sort().join()
+    @time_created = new Date(@time_stamp)
 
   time_elapsed: ->
-    current_time = new Date()
+    @current_time = new Date()
     ## Convert to minutes
-    minutes = Math.floor(( current_time - @time_created) / 60000 )
+    minutes = Math.floor(( current_time - time_created) / 60000 )
     ## determine if today
-    if current_time.getDate() is @time_created.getDate() and minutes < 1440
+    if current_time.getDate() is time_created.getDate() and minutes < 1440
       today = true
     ## Convert to hours
     hours = Math.floor((minutes / 60 ))
@@ -37,7 +38,7 @@ class Message
   date_formatter: ->
     ## formats date for @time_elapsed function
 
-    switch @time_stamp.getMonth()
+    switch @time_created.getMonth()
       when 0 then new_month = "Jan"
       when 1 then new_month = "Feb"
       when 2 then new_month = "Mar"
@@ -51,7 +52,7 @@ class Message
       when 10 then new_month = "Nov"
       when 11 then new_month = "Dec"
 
-    hours = @time_stamp.getHours()
+    hours = @time_created.getHours()
     if hours > 12
       suffix = "PM"
       new_hour = hours - 12
@@ -59,7 +60,7 @@ class Message
       suffix = "AM"
       new_hour = hours
 
-    minutes = @time_stamp.getMinutes()
+    minutes = @time_created.getMinutes()
     if minutes < 10
       new_minutes = "0#{minutes}"
     else
@@ -67,7 +68,7 @@ class Message
 
     formated =
       month: new_month
-      day: @time_stamp.getDate()
+      day: @time_created.getDate()
       hour: new_hour
       minutes: new_minutes
       suffix: suffix
