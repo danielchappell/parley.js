@@ -107,10 +107,10 @@ class ChatRoom
       @removeNotifications()
 
   sendMessage: ->
-    send = new Message (@convo_partners, @app.me, @$element.find('.send').val() )
+    message = new Message @convo.convo_partners, @app.me, @$element.find('.send').val()
     @messages.add(send)
     @renderDiscussion()
-    @app.server.emit 'mesage', send.content, send.convo_partners_image_urls, send.sender.image_url, send.time_stamp
+    @app.server.emit 'mesage', message
     @$discussion.find('.send').val('')
     this.emitTypingNotification()
 

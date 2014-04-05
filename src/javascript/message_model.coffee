@@ -5,7 +5,8 @@ class Message
 
   constructor: (@recipients, @sender, @content, @time_stamp) ->
     if not @time_stamp
-      @time_stamp = new Date()
+      @time_stamp = new Date().toUTCString()
+    @convo_id = @recipients.concat(@sender).sort().join()
 
   time_elapsed: ->
     current_time = new Date()

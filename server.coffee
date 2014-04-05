@@ -92,22 +92,22 @@ connection_callback = (client) ->
               socket.emit 'incoming_mesage', convo_members, sObj, false
 
     ## listen for messages from clients
-    client.on 'message', (msg, rIDs, sID, time_stamp)->
-      convo_members = rIDs.concat(sID)
-      convo_key = convo_members.sort().join()
-      value_string = "#{sID}***#{msg}"
+    client.on 'message', (message)->
+      ## stringifies message object from sender for storage in redis
+      json_message = JSON.stringify(message)
+      ## create and execute redis task that refreshes the user/conversation set and the conversation list
       redisClient.multi([
-        ['sadd', sID, convo_key],
+        ['sadd', message.sender.image_url, message.convo_id],
         ['expire', sID, 16070400],
-        ['rpush', convo_key, value_string],
-        ['ltrim', convo_key, -199, -1],
-        ['expire', convo_key, 604800]
+        ['rpush', message.convo_id, json_message],
+        ['ltrim', message.convo_id, -199, -1],
+        ['expire', message.convo_id, 604800]
         ]).exec (err, replies) ->
           if err then console.log err else console.log replies
-      for id in rIDs
-        if sockets.hasOwnProperty(id)
-          for socket in socket[id]['client']
-            socket.emit 'message', {msg: msg, sender: sID}
+      for recipent in message.recipients
+        if sockets.hasOwnProperty(recipent.image_url)
+          for socket in socket[recipent.image_url]['client']
+            socket.emit 'message', message
         else
           client.emit 'user_offline'
 

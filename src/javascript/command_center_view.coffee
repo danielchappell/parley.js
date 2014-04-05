@@ -1,4 +1,4 @@
-# Control Panel for Parley.js
+-# Control Panel for Parley.js
 # This is the only view that cannot be removed.
 # It is the hub for all interaction.
 class CommandCenterView
