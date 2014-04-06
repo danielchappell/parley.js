@@ -24,18 +24,15 @@ class Parley.app
 
     ## insert script for google plus signin
     do ->
-      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true
+      po = document.createElement('script'); po.type = 'text/javascript'; po.async = true
       po.src = 'https://apis.google.com/js/client:plusone.js'
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
+      s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
 
     ## runs each init function
-    init(this) for init in Parley.initializers
+    init(this) for init in initializers
 
 
   server: io.connect('wss://' + window.location.hostname)
-
-
-    initializers.push(func)
 
 
   load_persistent_convo: (convo_key, messages) ->

@@ -122,7 +122,7 @@ class ChatRoom
       @clearTitleNotification()
 
   emitTypingNotification: (e) ->
-    if @$element.find('.send')val() is not ""
+    if @$element.find('.send').val() isnt ""
       @app.server.emit 'user_typing', @convo.convo_partners_image_urls, @app.me, true
     else
       @app.server.emit 'user_typing', @convo.convo_partners_image_urls, @app.me, false

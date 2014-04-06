@@ -70,10 +70,10 @@ class CommandCenterView
   log_in: ->
     $(".parley .persistent-bar.logged_out").off()
     @$element = logged_in_view(@app.me)
-     $('.parley section.controller').html(@$element)
-     $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
-     $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
-     $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
+    $('.parley section.controller').html(@$element)
+    $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
+    $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
+    $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
 
   toggle_command_center: ->
     ## If a user is logged in they get a default profile view
@@ -104,7 +104,7 @@ class CommandCenterView
         view = new @app.PersistentConversationView(convo)
         $('.parley div.controller-view').append(view.render())
     else
-      $('.parley div.controller-view')html(logged_in_view(@app.me))
+      $('.parley div.controller-view').html(logged_in_view(@app.me))
 
 
   toggle_user_settings: ->
@@ -114,5 +114,5 @@ class CommandCenterView
 Parley.onInit( (app) ->
   CommandCenterView.prototype.app = app
   app.command_center = new CommandCenterView()
-   )
+  )
 

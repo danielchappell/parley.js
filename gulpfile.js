@@ -12,8 +12,7 @@ rename = require('gulp-rename');
 // Also adds minified version parley.min.js
 var coffee = require('gulp-coffee'),
 concatJS = require('gulp-concat'),
-uglify = require('gulp-uglify'),
-rjs = require('gulp-requirejs')
+uglify = require('gulp-uglify');
 
 gulp.task('build', function(){
   gulp.src('./src/javascript/*.coffee')
