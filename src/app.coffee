@@ -1,13 +1,15 @@
+ChatRoom = require('./src/chat_room_view')
+
+
+
+###############################################
+###   PARLEY.JS CHAT LIBRARY EXTRODINAIRE   ###
+###############################################
+
+
 ## this is the contructor for the global object that when initialized
 ## executes all neccesary operations to get this train moving.
-Parley = (window.Parley ||= {})
-
-Parley.initalizers = []
-
-Parley.onInit = (fn) ->
-  @initalizers.push(fn)
-
-class Parley.app
+class App
 
   constructor: ->
     @current_users = []
