@@ -5,7 +5,7 @@
 class UserView
 
   constructor: (@current_user) ->
-
+    @$element.on 'click' @user_interact_callback
 
   current_user_template: Handlebars.compile('
       <div class="current users">

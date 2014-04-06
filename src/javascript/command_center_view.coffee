@@ -6,6 +6,7 @@ class CommandCenterView
     @menu = null
     $('body').append logged_out_view()
     $("ul.login-bar").hide()
+    $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
 
 
   logged_out_view: Handlebars.compile('
@@ -89,21 +90,23 @@ class CommandCenterView
 
   toggle_current_users: ->
     if @menu is not "current_users"
-      $('.parley div.controller-view').html('')
+      $('.parley div.controller-view').children().remove()
       for user in @app.users.currently_online
         view = new @app.UserView(user)
         $('.parley div.controller-view').append(view.render())
     else
+      $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(logged_in_view(@app.me))
 
 
   toggle_persistent_convos: ->
     if @menu is not "persistent_convos"
-      $(".parley div.controller-view").html('')
+      $(".parley div.controller-view").children().remove()
       for convo in @app.conversations
         view = new @app.PersistentConversationView(convo)
         $('.parley div.controller-view').append(view.render())
     else
+      $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(logged_in_view(@app.me))
 
 

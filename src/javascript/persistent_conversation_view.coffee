@@ -5,7 +5,7 @@
 class PersistentConversationView
 
   constructor: (@convo) ->
-
+    @$element.on 'click', @load_convo
 
     persistent_convo_template_reg: Handlebars.compile('
       <div class="message existing">
