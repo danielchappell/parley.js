@@ -19,6 +19,9 @@ class Parley.app
     ## will be sent in one at a time from redis on load.
     @server.on 'persistent_convo', @load_persistent_convo
 
+    ## listens for current users array from server
+    @server.on 'current_users', @load_current_users
+
     ## insert script for google plus signin
     do ->
       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true
@@ -47,3 +50,10 @@ class Parley.app
     @conversations.push(convo)
 
 
+
+  load_current_users: (logged_on) ->
+    ## recieves current users from server on login
+    @current_users = logged_on
+    for user in @current_users
+      if user.image_url is @me.image_url
+        @current_users.splice(i,1)
