@@ -66,7 +66,8 @@ class ChatRoom
     if convo_key is @convo.message_filter
       if bool
         if @$discussion.find('.incoming').length is 0
-          ##typing_notification = TYPING NOTIFICATION LAYOUT GOES HERE!!
+          typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
+          that.$('.discussion').append(typingNotification);
           @$discussion.append(typing_notification)
           @scrollToLastMessage()
       else
