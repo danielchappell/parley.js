@@ -53,3 +53,7 @@ class UserView
 
 
   add_user: ->
+
+Parley.onInit( (app) ->
+  UserView.prototype.app = app
+  )

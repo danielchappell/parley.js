@@ -111,5 +111,8 @@ class CommandCenterView
 
 
 
-Parley_App.onInit
+Parley.onInit( (app) ->
+  CommandCenterView.prototype.app = app
+  app.command_center = new CommandCenterView()
+   )
 

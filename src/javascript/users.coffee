@@ -27,3 +27,6 @@ class Users
         @online_users.splice( i, 1)
 
 
+Parley.onInit( (app) ->
+  Users.prototype.app = app
+  )

@@ -156,8 +156,9 @@ class ChatRoom
 
 
 
-
-
+Parley.onInit( (app)->
+  ChatRoom.prototype.app = app
+)
 
 
 

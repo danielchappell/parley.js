@@ -1,8 +1,13 @@
 ## this is the contructor for the global object that when initialized
 ## executes all neccesary operations to get this train moving.
+Parley = (window.Parley ||= {})
 
+Parley.initalizers = []
 
-class ParleyApp
+Parley.onInit = (fn) ->
+  @initalizers.push(fn)
+
+class Parley.app
 
   constructor: ->
     @current_users = []
@@ -21,13 +26,12 @@ class ParleyApp
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
 
     ## runs each init function
-    init(this) for init in initializers
+    init(this) for init in Parley.initializers
 
 
   server: io.connect('wss://' + window.location.hostname)
 
 
-  onInit: (func) ->
     initializers.push(func)
 
 

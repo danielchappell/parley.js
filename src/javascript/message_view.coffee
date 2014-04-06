@@ -25,3 +25,7 @@ class MessageView
       @$element = $('<li class="self"></li>').append(message_template(@message))
     else
       @$element = $('<li class="other"></li>').append(message_template(@message))
+
+Parley.onInit( (app) ->
+  MessageView.prototype.app = app
+  )

@@ -6,3 +6,8 @@ class User
   constructor: (@display_name, @image_url) ->
     ## active, idle, away, or DND
     @status: "active"
+
+
+Parley.onInit( (app) ->
+  User.prototype.app = app
+  )

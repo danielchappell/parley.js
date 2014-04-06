@@ -37,4 +37,6 @@ class PersistentConversationView
         chat_window = new ChatRoom(@convo)
         @app.open_conversations.push(@convo.message_filter)
 
-
+Parley.onInit( (app) ->
+  PersistentConversationView.prototype.app = app
+  )

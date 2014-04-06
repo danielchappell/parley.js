@@ -32,4 +32,6 @@ class Conversation
     message_filter.sort().join()
 
 
-
+Parley.onInit( (app) ->
+  Conversation.prototype.app = app
+  )

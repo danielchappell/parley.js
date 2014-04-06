@@ -73,6 +73,8 @@ class Message
       minutes: new_minutes
       suffix: suffix
 
-
+Parley.onInit( (app) ->
+  Message.prototype.app = app
+  )
 
 
