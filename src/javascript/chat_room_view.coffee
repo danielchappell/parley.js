@@ -62,7 +62,7 @@ class ChatRoom
       @titleAlert()
 
   user_offline_callback: ->
-    message = new Message(@app.me, 'images/server_network.png', "This user is no longer online", new Date() )
+    message = new Message(@app.me, 'http://storage.googleapis.com/parley-assets/server_network.png', "This user is no longer online", new Date() )
     @convo.add_message(message)
     @renderDiscussion()
 
