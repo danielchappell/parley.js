@@ -4,7 +4,7 @@
 
 class UserView
 
-  constructor: (@current_user) ->
+  constructor: (@current_user, @chat_room) ->
     @$element.on 'click' @user_interact_callback
 
   current_user_template: Handlebars.compile('
@@ -29,7 +29,7 @@ class UserView
       @open_conversation()
     else
       ## add user to current convo/ make group convo
-      @add_user()
+      @chat_room.add_member(@current_user)
 
   open_conversation: ->
     ## check to make sure convo isn't already open
@@ -52,7 +52,6 @@ class UserView
       @app.open_conversations.push(convo_key)
 
 
-  add_user: ->
 
 Parley.onInit( (app) ->
   UserView.prototype.app = app

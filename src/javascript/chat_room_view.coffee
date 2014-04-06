@@ -79,7 +79,21 @@ class ChatRoom
         @scrollToLastMessage()
 
 
+  add_member: (new_user) ->
+    ## create a conversation consisting of current plus added members
+    new_convo_partners = @convo.convo_partners.concat(new_user)
+    new_convo_group = new Conversation(new_convo_partners)
+    @app.conversations.push(new_convo_group)
 
+    ## remove current convo_key from app.open_conversations
+    for convo in @app.open_conversations
+      if convo is @convo.message_filter
+        @app.open_conversations.splice(i,1)
+
+    ## push new convo to open conversations, change @convo and re-render
+    @app.open_conversations.push(new_convo_group.message_filter)
+    @convo = new_convo_group
+    @render()
 
   render: ->
     @$element = $(@chat_room_template(@convo))
@@ -173,7 +187,6 @@ class ChatRoom
   file_upload: ->
     file = @$discussion.find('.picture_upload').get(0).files[0]
     @app.oauth.file_upload file, @convo.convo_partners_image_urls, @app.me.image_url
-
 
 
 Parley.onInit( (app)->

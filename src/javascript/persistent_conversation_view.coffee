@@ -37,6 +37,12 @@ class PersistentConversationView
         chat_window = new ChatRoom(@convo)
         @app.open_conversations.push(@convo.message_filter)
 
+        ## check and see if action is in command center or chat window
+        if not @$element.parent()[0].hasClass('controller-view')
+          @$element.parents('div.parley').remove()
+
+
+
 Parley.onInit( (app) ->
   PersistentConversationView.prototype.app = app
   )
