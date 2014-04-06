@@ -7,10 +7,19 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
+
+    ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     @app.server.on 'message', @message_callback
     @app.server.on 'user_offline', @user_offline_callback
     @app.server.on 'typing_notification', @typing_notification_callback
 
+    ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
+    @$element.find('.chat-close').on 'click', @closeWindow
+    @$element.find('.send').on 'keypress', @sendOnEnter
+    @$element.find('.send').on 'keyup', @emitTypingNotification
+    @$element.find('.top-bar').on 'click', @toggleChat
+    @$element.on 'click' @removeNotifications
+    @$discussion.find('.parley_file_upload').on'change' @file_upload
 
 
   chat_room_template: Handlebars.compile('
@@ -113,6 +122,12 @@ class ChatRoom
     e.preventDefault()
     e.stopPropagation()
     @app.server.removeAllListeners()
+    @$element.find('.chat-close').off()
+    @$element.find('.send').off()
+    @$element.find('.send').off()
+    @$element.find('.top-bar').off()
+    @$element.off()
+    @$discussion.off()
     @$element.remove()
     delete @
 
