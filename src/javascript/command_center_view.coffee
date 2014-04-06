@@ -2,7 +2,7 @@
 # This is the only view that cannot be removed.
 # It is the hub for all interaction.
 class CommandCenterView
-  constructor: ->
+  constructor: (app)->
     @menu = null
     $('body').append logged_out_view()
     $("ul.login-bar").hide()

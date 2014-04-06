@@ -14,13 +14,14 @@ class Parley.app
     @open_conversations = []
     @conversations = []
 
-
     ## listen for persistent conversations from the server on load.
     ## will be sent in one at a time from redis on load.
     @server.on 'persistent_convo', @load_persistent_convo
 
     ## listens for current users array from server
     @server.on 'current_users', @load_current_users
+    @server.on 'user_logged_on', @user_logged_on
+    @server.on 'user_logged_off', @user_logged_off
 
     ## insert script for google plus signin
     do ->
@@ -54,3 +55,12 @@ class Parley.app
     for user in @current_users
       if user.image_url is @me.image_url
         @current_users.splice(i,1)
+
+  user_logged_on: (display_name, image_url) ->
+    user = new User(display_name, image_url)
+    @current_users.push(user)
+
+  user_logged_off: (display_name, image_url) ->
+    for user in @current_users
+      if image_url is user.image_url
+        @current_users.splice( i, 1)
