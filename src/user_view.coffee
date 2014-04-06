@@ -36,22 +36,22 @@ class UserView
 
   open_conversation: ->
     ## check to make sure convo isn't already open
-    convo_key = [@app.me.image_url, @current_user.image_url].sort().join()
-    for convo in @app.open_conversations
+    convo_key = [app.me.image_url, @current_user.image_url].sort().join()
+    for convo in app.open_conversations
       if convo_key is convo.message_filter
         return
     ## check to see if persistent convo exists with the user
     convo_exists = false
-    for convo in @app.conversations
+    for convo in app.conversations
       if convo.message_filter is convo_key
         convo_exists = true
     if convo_exists
       chat_window = new ChatRoom(convo)
-      @app.open_conversations.push(convo_key)
+      app.open_conversations.push(convo_key)
     else
       conversation = new Conversation([@current_user])
       chat_window = new ChatRoom(conversation)
-      @app.conversations.push(conversation)
-      @app.open_conversations.push(convo_key)
+      app.conversations.push(conversation)
+      app.open_conversations.push(convo_key)
 
 module.exports = UserView

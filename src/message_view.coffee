@@ -23,7 +23,7 @@ class MessageView
 
   render: ->
     ## renders template differently if user is sending or recieving the message
-    if @message.sender.image_url is @app.me.image_url
+    if @message.sender.image_url is app.me.image_url
       @$element = $('<li class="self"></li>').append(message_template(@message))
     else
       @$element = $('<li class="other"></li>').append(message_template(@message))

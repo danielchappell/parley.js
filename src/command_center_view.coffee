@@ -78,7 +78,7 @@ class CommandCenter
 
   log_in: ->
     $(".parley .persistent-bar.logged_out").off()
-    @$element = logged_in_view(@app.me)
+    @$element = logged_in_view(app.me)
     $('.parley section.controller').html(@$element)
     $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
     $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
@@ -104,7 +104,7 @@ class CommandCenter
         $('.parley div.controller-view').append(view.render())
     else
       $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').html(logged_in_view(@app.me))
+      $('.parley div.controller-view').html(logged_in_view(app.me))
 
 
   toggle_persistent_convos: ->
@@ -115,7 +115,7 @@ class CommandCenter
         $('.parley div.controller-view').append(view.render())
     else
       $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').html(logged_in_view(@app.me))
+      $('.parley div.controller-view').html(logged_in_view(app.me))
 
 
   toggle_user_settings: ->

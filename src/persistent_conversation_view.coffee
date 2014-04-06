@@ -31,13 +31,13 @@ class PersistentConversationView
     load_convo: ->
       ## if convo isn't open load new chat window with convo
       convo_status = 'closed'
-      for convo in @app.open_conversations
+      for convo in app.open_conversations
         if @convo.message_filter is convo.message_filter
           convo_status = 'open'
 
       if convo_status isnt 'open'
         chat_window = new ChatRoom(@convo)
-        @app.open_conversations.push(@convo.message_filter)
+        app.open_conversations.push(@convo.message_filter)
 
         ## check and see if action is in command center or chat window
         if not @$element.parent()[0].hasClass('controller-view')

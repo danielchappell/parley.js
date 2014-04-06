@@ -25,7 +25,7 @@ class Conversation
     @messages.push message
 
   generate_message_filter: ->
-    @message_filter = [@app.me.image_url]
+    @message_filter = [app.me.image_url]
     for partner in @convo_partners
       @message_filter.push partner.image_url
     @message_filter.sort().join()

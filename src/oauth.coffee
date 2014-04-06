@@ -15,9 +15,9 @@ class Oauth
         request.execute (profile) =>
           display_name = profile.displayName
           image_url = profile.image.url
-          @app.me = new User display_name, image_url
-          @app.server.emit('join', display_name, image_url)
-          @app.command_center.log_in()
+          app.me = new User display_name, image_url
+          app.server.emit('join', display_name, image_url)
+          app.command_center.log_in()
       @file_upload = (file, rIDs, sID) ->
         $.ajax({
           url: "https://www.googleapis.com/upload/storage/v1beta2/b/parley-images/o?uploadType=media&name=#{file.name}"
@@ -30,7 +30,7 @@ class Oauth
           success: (res) =>
             image_src= "https://storage.cloud.google.com/parley-images/#{res.name}"
             msg = "<img src=#{image_src} />"
-            @app.server.emit('message', msg, rIDs, sID)
+            app.server.emit('message', msg, rIDs, sID)
             message = new Message rIDs, sID, msg
             @convo.messages.add_message(message)
             @render()
