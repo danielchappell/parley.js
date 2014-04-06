@@ -46,11 +46,8 @@ class ChatRoom
           </li>
         </ul>
         <ol class="discussion"></ol>
-        <div class="message-input">
-          <textarea class="field test" placeholder="Enter Message...">
-          </textarea>
-          <button class="item entypo-camera" id="bye"></button>
-        </div>
+        <textarea class="grw" placeholder="Enter Message..."></textarea>
+        <span class="entypo-camera" id="img_upload"></span>
       </section>
     </div>
     ')
