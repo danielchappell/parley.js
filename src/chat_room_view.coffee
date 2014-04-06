@@ -40,18 +40,15 @@ class ChatRoom
             <li class="entypo-cancel"></li>
           </ul>
         </div>
-        <ul class="messsage-bar">
-          <li>
-            <a class="messages" href="#">
-              <span class="fontawesome-facetime-video"></span>
-            </a>
-          </li>
-          <li>
-            <a class="active-users" href="#">
-              <a class="entypo-user-add"></a>
-            </a>
-          </li>
-        </ul>
+        <div class="message-bar">
+          <ul class="additional">
+            <li><a class="entypo-user-add"></a></li>
+            <li><a class="fontawesome-facetime-video"></a></li>
+          </ul>
+          <ul class="existing">
+            <li><a class="entypo-chat"></a></li>
+          </ul>
+        </div>
         <ol class="discussion"></ol>
         <div class="message-input">
           <textarea class="field test" placeholder="Enter Message...">
