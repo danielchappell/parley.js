@@ -1,4 +1,8 @@
 ChatRoom = require('./src/chat_room_view')
+CommandCenter = require('./src/command_center_view')
+Conversation = require('./src/conversation_model')
+User = require('./src/user_model')
+Oauth = require('./src/oauth')
 
 
 
@@ -31,8 +35,9 @@ class App
       po.src = 'https://apis.google.com/js/client:plusone.js'
       s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
 
-    ## runs each init function
-    init(this) for init in initializers
+    ## LOAD COMMANDCENTER AND OAUTH TO START APP
+    @command_center = new CommandCenter()
+    @oauth = new Oauth()
 
 
   server: io.connect('wss://' + window.location.hostname)
@@ -66,3 +71,5 @@ class App
     for user in @current_users
       if image_url is user.image_url
         @current_users.splice( i, 1)
+
+module.exports = new App()

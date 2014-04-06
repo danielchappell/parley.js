@@ -1,7 +1,10 @@
+app = require('./src/app')
+
+
+
 ## constructor for conversations objects that represent all relevant
 ## data and logic pertaining to managing a conversation
 ## including a collection of message objects.
-
 class Conversation
 
   constructor: (@convo_partners, @messages=[]) ->
@@ -28,6 +31,4 @@ class Conversation
     @message_filter.sort().join()
 
 
-Parley.onInit( (app) ->
-  Conversation.prototype.app = app
-  )
+module.exports = Conversation

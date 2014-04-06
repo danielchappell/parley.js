@@ -1,8 +1,16 @@
--# Control Panel for Parley.js
+app = require('./src/app')
+UserView = require('./src/user_view')
+PersistentConversationView = require('.src/persistent_conversation_view')
+
+
+
+
+
+# Control Panel for Parley.js
 # This is the only view that cannot be removed.
 # It is the hub for all interaction.
-class CommandCenterView
-  constructor: (app)->
+class CommandCenter
+  constructor: ->
     @menu = null
     $('body').append logged_out_view()
     $("ul.login-bar").hide()
@@ -91,8 +99,8 @@ class CommandCenterView
   toggle_current_users: ->
     if @menu is not "current_users"
       $('.parley div.controller-view').children().remove()
-      for user in @app.users.currently_online
-        view = new @app.UserView(user)
+      for user in app.current_users
+        view = new UserView(user)
         $('.parley div.controller-view').append(view.render())
     else
       $('.parley div.controller-view').children().remove()
@@ -102,8 +110,8 @@ class CommandCenterView
   toggle_persistent_convos: ->
     if @menu is not "persistent_convos"
       $(".parley div.controller-view").children().remove()
-      for convo in @app.conversations
-        view = new @app.PersistentConversationView(convo)
+      for convo in app.conversations
+        view = new PersistentConversationView(convo)
         $('.parley div.controller-view').append(view.render())
     else
       $('.parley div.controller-view').children().remove()
@@ -114,8 +122,5 @@ class CommandCenterView
 
 
 
-Parley.onInit( (app) ->
-  CommandCenterView.prototype.app = app
-  app.command_center = new CommandCenterView()
-  )
+module.exports = CommandCenter
 

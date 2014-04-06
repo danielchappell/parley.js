@@ -1,6 +1,8 @@
+app = require('./src/app')
+
+
 ## constructor for object that contains template data
 ## and interaction logic for individual message models
-
 class MessageView
 
   constructor: (@message) ->
@@ -26,6 +28,4 @@ class MessageView
     else
       @$element = $('<li class="other"></li>').append(message_template(@message))
 
-Parley.onInit( (app) ->
-  MessageView.prototype.app = app
-  )
+module.exports = MessageView

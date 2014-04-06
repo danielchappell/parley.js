@@ -1,6 +1,8 @@
+app = require('./src/app')
+
+
 ## All logic relating to loging in through Google Plus Oauth
 ## and any logic used for retrieving information requiring an access token.
-
 class Oauth
 
   constructor: ->
@@ -41,7 +43,4 @@ class Oauth
       ##"immediate_failed" - Could not automatically log in the user
       console.log("Sign-in state: #{authResult.error}")
 
-Parley.onInit( (app) ->
-  Oauth.prototype.app = app
-  app.oath = new Oauth()
-  )
+module.exports = Oauth

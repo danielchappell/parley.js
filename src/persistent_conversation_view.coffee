@@ -1,7 +1,9 @@
+app = require('./src/app')
+ChatRoom = require('./src/chat_room_view')
+
 ## This is the constructor for each persistent message in the list view
 ## it contains the template andlogic for rendering the list that appears in
 ## both the chat window and command center views and the corresponding user interaction logic.
-
 class PersistentConversationView
 
   constructor: (@convo) ->
@@ -41,8 +43,4 @@ class PersistentConversationView
         if not @$element.parent()[0].hasClass('controller-view')
           @$element.parents('div.parley').remove()
 
-
-
-Parley.onInit( (app) ->
-  PersistentConversationView.prototype.app = app
-  )
+module.exports = PersistentConversationView

@@ -1,7 +1,14 @@
+app = require('./src/app')
+Message = require('./src/message_model')
+MessageView = require('./src/message_view')
+Conversation = require('./src/conversation_model')
+
+
+
+
 ## constructor for object containing template and user
 ## interaction logic for each open chat window.
 ## watches a conversation model.
-
 class ChatRoom
 
   constructor: (@convo) ->
@@ -189,9 +196,4 @@ class ChatRoom
     @app.oauth.file_upload file, @convo.convo_partners_image_urls, @app.me.image_url
 
 
-Parley.onInit( (app)->
-  ChatRoom.prototype.app = app
-)
-
-
-
+module.exports = ChatRoom

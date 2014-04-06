@@ -1,3 +1,5 @@
+app = require('./src/app')
+
 ## constructor for object that contains all logic and data
 ## associated with individual messages
 
@@ -73,8 +75,6 @@ class Message
       minutes: new_minutes
       suffix: suffix
 
-Parley.onInit( (app) ->
-  Message.prototype.app = app
-  )
+module.exports = Message
 
 

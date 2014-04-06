@@ -1,7 +1,10 @@
+app = require('./src/app')
+ChatRoom = require('./src/chat_room_view')
+Conversation = require('./src/conversation_model')
+
 ## This is the constructor for each list itemcorresponding to logged
 ## on users displayed in the logged on users list on both
 ## command center and chat window views.
-
 class UserView
 
   constructor: (@current_user, @chat_room) ->
@@ -51,8 +54,4 @@ class UserView
       @app.conversations.push(conversation)
       @app.open_conversations.push(convo_key)
 
-
-
-Parley.onInit( (app) ->
-  UserView.prototype.app = app
-  )
+module.exports = UserView

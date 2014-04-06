@@ -1,3 +1,5 @@
+app = require('./src/app')
+
 ##constructor for object that holds all
 ##data and logic related to each user
 
@@ -8,6 +10,4 @@ class User
     @status = "active"
 
 
-Parley.onInit( (app) ->
-  User.prototype.app = app
-  )
+module.exports = User
