@@ -27,7 +27,11 @@ class ChatRoom
       <section class="conversation">
         <div class="top-bar">
           <a>{{first_name}}</a>
-          <span class="fontawesome-reorder"></span>
+          <ul class="message-alt">
+            <li class="entypo-minus"></li>
+            <li class="entypo-resize-full"></li>
+            <li class="entypo-cancel"></li>
+          </ul>
         </div>
         <ul class="messsage-bar">
           <li>
