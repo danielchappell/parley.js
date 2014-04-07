@@ -11,14 +11,14 @@ class UserView
     @$element.on 'click' @user_interact_callback
 
   current_user_template: Handlebars.compile('
-      <div class="current users">
-        <div class="avatar"
+      <li class="user">
+        <div class="avatar">
           <img src={{image_url}} />
         </div>
         <div class="content">
-          <h2>{{display_name}}</h2>
+            <h2>{{display_name}}</h2>
         </div>
-      </div>
+      </li>
         ')
 
   render: ->
