@@ -51,7 +51,7 @@ class ChatRoom
         </div>
         <ol class="discussion"></ol>
         <textarea class="grw" placeholder="Enter Message..."></textarea>
-        <span class="entypo-camera" id="img_upload"></span>
+        <span class="entypo-camera img_upload"></span>
       </section>
     </div>
     ')
