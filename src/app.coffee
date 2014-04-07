@@ -75,4 +75,10 @@ class App
       if image_url is user.image_url
         @current_users.splice( i, 1)
 
-module.exports = new App()
+
+parley = new App()
+module.exports = parley
+
+
+
+

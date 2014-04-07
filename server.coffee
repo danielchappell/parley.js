@@ -29,7 +29,7 @@ redisClient.on 'error', (err) ->
 ##########################################################
 
 ## serve assets
-app.use(express.static("#{__dirname}/src"))
+app.use(express.static("#{__dirname}/"))
 
 ## single route to test html page
 app.get '/', (req, res) ->
