@@ -25,7 +25,7 @@ class ChatRoom
     @$element.find('.chat-close').on 'click', @closeWindow
     @$element.find('.send').on 'keypress', @sendOnEnter
     @$element.find('.send').on 'keyup', @emitTypingNotification
-    @$element.find('.top-bar').on 'click', @toggleChat
+    @$element.find('.top-bar, minify ').on 'click', @toggleChat
     @$element.on 'click', @removeNotifications
     @$discussion.find('.parley_file_upload').on 'change', @file_upload
 
@@ -36,9 +36,9 @@ class ChatRoom
         <div class="top-bar">
           <a>{{first_name}}</a>
           <ul class="message-alt">
-            <li class="entypo-minus"></li>
+            <li class="entypo-minus minify"></li>
             <li class="entypo-resize-full"></li>
-            <li class="entypo-cancel"></li>
+            <li class="entypo-cancel chat-close"></li>
           </ul>
         </div>
         <div class="message-bar">
@@ -52,7 +52,10 @@ class ChatRoom
         </div>
         <ol class="discussion"></ol>
         <textarea class="grw" placeholder="Enter Message..."></textarea>
-        <span class="entypo-camera img_upload"></span>
+        <label class="img_upload entypo-camera">
+          <span>
+            <input class="parley_file_upload" name="img_upload" type="file" /></label>
+          </span>
       </section>
     </div>
     ')
