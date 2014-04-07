@@ -40,7 +40,7 @@ app.get '/', (req, res) ->
 ###    SOCKET.IO CALLBACKS   ###
 ################################
 
-connection_callback = (client) ->
+io.sockets.on 'connection', (client) ->
   client.on 'join', (display_name, image_url) ->
     ## make sure the user isn't already logged in
     loggedIN = false

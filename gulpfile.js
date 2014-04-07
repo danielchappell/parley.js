@@ -12,7 +12,8 @@ hbsfy = require('hbsfy'),
 uglify = require('gulp-uglify'),
 source = require('vinyl-source-stream'),
 streamify = require('gulp-streamify'),
-sass = require('gulp-sass');
+sass = require('gulp-sass'),
+coffee = require('gulp-coffee');
 
 // BUILD TASK CREATES BROWSERIFIED MODULIZED CONCATED JS FILE AND MINIFIED VERSION.
 // ALSO COMPILES SASS FILE.
@@ -32,6 +33,10 @@ gulp.task('build', function(){
 
   gulp.src('./src/*.scss')
       .pipe(sass({errLogToConsole: true}))
+      .pipe(gulp.dest('.'));
+
+  gulp.src('./server.coffee')
+      .pipe(coffee({bare: true}).on('error', gutil.log))
       .pipe(gulp.dest('.'));
 
   gulp.src('./parley.js')
