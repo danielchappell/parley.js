@@ -14,20 +14,10 @@ source = require('vinyl-source-stream'),
 streamify = require('gulp-streamify'),
 sass = require('gulp-sass');
 
-// });
+// BUILD TASK CREATES BROWSERIFIED MODULIZED CONCATED JS FILE AND MINIFIED VERSION.
+// ALSO COMPILES SASS FILE.
 
-// gulp.task('build', function(){
-//   gulp.src('./src/*.coffee', { read: false })
-//   .pipe(browserify({
-//     transform: ['coffeeify', browserHandlebars],
-//     extentions: ['.coffee'],
-
-//   }))
-//   .pipe(rename('parley.js'))
-//   .pipe(gulp.dest('.'))
-// });
-
-gulp.task('browserify', function(){
+gulp.task('build', function(){
   var browserify_stream = browserify('./src/app.coffee')
           .transform('coffeeify')
           .transform(hbsfy)
@@ -40,10 +30,6 @@ gulp.task('browserify', function(){
               .pipe(rename('parley.js'))
               .pipe(gulp.dest('.'));
 
-});
-
-gulp.task('production-build', function(){
-
   gulp.src('./src/*.scss')
       .pipe(sass({errLogToConsole: true}))
       .pipe(gulp.dest('.'));
@@ -53,4 +39,4 @@ gulp.task('production-build', function(){
       .pipe(rename('parley.min.js'))
       .pipe(gulp.dest('.'));
 
-})
+});
