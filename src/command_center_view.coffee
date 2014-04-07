@@ -1,3 +1,4 @@
+$ = require('jquery')
 app = require('./app.coffee')
 UserView = require('./user_view.coffee')
 PersistentConversationView = require('./persistent_conversation_view.coffee')

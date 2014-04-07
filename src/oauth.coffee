@@ -1,3 +1,4 @@
+$ = require('jquery')
 app = require('./app.coffee')
 
 

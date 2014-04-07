@@ -1,3 +1,4 @@
+$ = require('jquery')
 ChatRoom = require('./chat_room_view.coffee')
 CommandCenter = require('./command_center_view.coffee')
 Conversation = require('./conversation_model.coffee')

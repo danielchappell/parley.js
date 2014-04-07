@@ -1,3 +1,4 @@
+$ = require('jquery')
 app = require('./app.coffee')
 Message = require('./message_model.coffee')
 MessageView = require('./message_view.coffee')
