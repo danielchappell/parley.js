@@ -1,6 +1,6 @@
-app = require('./src/app')
-UserView = require('./src/user_view')
-PersistentConversationView = require('.src/persistent_conversation_view')
+app = require('./app.coffee')
+UserView = require('./user_view.coffee')
+PersistentConversationView = require('./persistent_conversation_view.coffee')
 
 
 

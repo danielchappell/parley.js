@@ -1,4 +1,4 @@
-app = require('./src/app')
+app = require('./app.coffee')
 
 
 ## All logic relating to loging in through Google Plus Oauth

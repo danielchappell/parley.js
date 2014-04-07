@@ -1,4 +1,4 @@
-app = require('./src/app')
+app = require('./app.coffee')
 
 ##constructor for object that holds all
 ##data and logic related to each user

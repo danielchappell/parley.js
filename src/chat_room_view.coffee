@@ -1,7 +1,7 @@
-app = require('./src/app')
-Message = require('./src/message_model')
-MessageView = require('./src/message_view')
-Conversation = require('./src/conversation_model')
+app = require('./app.coffee')
+Message = require('./message_model.coffee')
+MessageView = require('./message_view.coffee')
+Conversation = require('./conversation_model.coffee')
 
 
 
@@ -25,8 +25,8 @@ class ChatRoom
     @$element.find('.send').on 'keypress', @sendOnEnter
     @$element.find('.send').on 'keyup', @emitTypingNotification
     @$element.find('.top-bar').on 'click', @toggleChat
-    @$element.on 'click' @removeNotifications
-    @$discussion.find('.parley_file_upload').on'change' @file_upload
+    @$element.on 'click', @removeNotifications
+    @$discussion.find('.parley_file_upload').on 'change', @file_upload
 
 
   chat_room_template: Handlebars.compile('

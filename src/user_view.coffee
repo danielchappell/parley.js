@@ -1,6 +1,6 @@
-app = require('./src/app')
-ChatRoom = require('./src/chat_room_view')
-Conversation = require('./src/conversation_model')
+app = require('./app.coffee')
+ChatRoom = require('./chat_room_view.coffee')
+Conversation = require('./conversation_model.coffee')
 
 ## This is the constructor for each list itemcorresponding to logged
 ## on users displayed in the logged on users list on both
@@ -8,7 +8,7 @@ Conversation = require('./src/conversation_model')
 class UserView
 
   constructor: (@current_user, @chat_room) ->
-    @$element.on 'click' @user_interact_callback
+    @$element.on 'click', @user_interact_callback
 
   current_user_template: Handlebars.compile('
       <div class="current users">

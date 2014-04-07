@@ -1,5 +1,5 @@
-app = require('./src/app')
-ChatRoom = require('./src/chat_room_view')
+app = require('./app.coffee')
+ChatRoom = require('./chat_room_view.coffee')
 
 ## This is the constructor for each persistent message in the list view
 ## it contains the template andlogic for rendering the list that appears in

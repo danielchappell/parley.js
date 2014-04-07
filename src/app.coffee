@@ -1,8 +1,8 @@
-ChatRoom = require('./src/chat_room_view')
-CommandCenter = require('./src/command_center_view')
-Conversation = require('./src/conversation_model')
-User = require('./src/user_model')
-Oauth = require('./src/oauth')
+ChatRoom = require('./chat_room_view.coffee')
+CommandCenter = require('./command_center_view.coffee')
+Conversation = require('./conversation_model.coffee')
+User = require('./user_model.coffee')
+Oauth = require('./oauth.coffee')
 
 
 

@@ -5,21 +5,34 @@
 // Install npm install gulp -g to execute gulp <task> in console
 var gulp = require('gulp'),
 gutil = require('gulp-util'),
-rename = require('gulp-rename');
+rename = require('gulp-rename'),
+browserify = require('browserify'),
+hbsfy = require('hbsfy'),
+uglify = require('gulp-uglify'),
+source = require('vinyl-source-stream'),
+streamify = require('gulp-streamify');
 
+// });
 
-//compiles and concats CoffeesScript to parley.js and in root directory
-// Also adds minified version parley.min.js
-var coffee = require('gulp-coffee'),
-concatJS = require('gulp-concat'),
-uglify = require('gulp-uglify');
+// gulp.task('build', function(){
+//   gulp.src('./src/*.coffee', { read: false })
+//   .pipe(browserify({
+//     transform: ['coffeeify', browserHandlebars],
+//     extentions: ['.coffee'],
+
+//   }))
+//   .pipe(rename('parley.js'))
+//   .pipe(gulp.dest('.'))
+// });
 
 gulp.task('build', function(){
-  gulp.src('./src/javascript/*.coffee')
-    .pipe(coffee({bare:true}).on('error', gutil.log))
-    .pipe(concatJS('parley.js'))
-    .pipe(gulp.dest('.'))
-    .pipe(uglify())
-    .pipe(rename('parley.min.js'))
-    .pipe(gulp.dest('.'));
+  var browserify_stream = browserify('./src/app.coffee').transform('coffeeify').transform(hbsfy).bundle();
+
+  browserify_stream
+              .pipe(source('./src/app.coffee'))
+              .pipe(rename('parley.js'))
+              .pipe(gulp.dest('.'))
+              // .pipe(streamify(uglify())
+              // .pipe(rename('parley.min.js'))
+              // .pipe(gulp.dest('./parley.min.js'))
 });
