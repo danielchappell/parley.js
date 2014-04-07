@@ -1,3 +1,5 @@
+@import 'flex-box';
+
 /* Modular  Start========================== */
   /* Color Variables*/
 $wht:#fbfbfb;
@@ -33,16 +35,16 @@ body {
 
 // chat_room_view
 .conversation{
-  display:flex;
-  flex-direction:column;
+  @include flexbox;
+  @include flex-direction( column )
   max-height:24rem;
   position:relative;
   width:16rem;
 }
 
 .top-bar{min-width:100%;
-  display:flex;
-  justify-content:space-between;
+  @include flexbox;
+  @include justify-content( space-between ) 
   background: $grn;
   padding:.25rem;
   a{
@@ -51,7 +53,7 @@ body {
     color:$wht;
   }
   ul{
-    display:flex;
+    @include flexbox;
     color:$wht;
     cursor: pointer;
     li{
@@ -61,7 +63,7 @@ body {
 } 
 // message alteration list ( minimize / popout / close)
 .message-alt{
-  display:flex;
+  @include flexbox;
   color:$wht;
   cursor: pointer;
 li{
@@ -69,20 +71,20 @@ li{
 }
 }
 .message-bar{
-  display:flex;
-  flex-direction:row;
+  @include flexbox;
+  @include flex-direction( row )
   background: $bg;
   list-style: none;
   padding:0 .25rem;
   ul.existing{
-    display:flex;
+    @include flexbox;
     flex:1;
-    justify-content: flex-end;
+    @include justify-content( flex-end ) 
   }
   li{
     display:inline;
     list-style: none;
-    align-items:center;
+    @include align-items( center ) 
   }
   a{
     font-size:1.25rem;
@@ -104,7 +106,7 @@ ol.discussion{
   background:$bg;
   li{
     padding: 0.25rem;
-    display: flex;
+    @include flexbox;
     &:nth-child(even){
       background:$wht;
     }
@@ -120,9 +122,9 @@ ol.discussion{
 }
 // message layout for base ( other )
 .message{
-  display:flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  @include flexbox;
+  @include flex-direction( column )
+  @include justify-content( flex-start ) 
   text-align: left;
   flex: 1 0 0;
   margin-left: .5rem;
@@ -146,9 +148,10 @@ ol.discussion{
 // message alternate  ( self ) 
 .self {
   .messages {
-    order: 1;}
+    @include order( 1 )
+  }
   .avatar {
-    order: 2;
+    @include order( 2 )
   }
 }
 // message enter should grow with input of text
@@ -234,8 +237,8 @@ li.incoming {
   overflow-y: scroll;
 }
 .user {
-  display: flex;
-  flex-direction: row;
+  @include flexbox;
+  @include flex-direction( row )
   padding: 0.25rem;
   border-bottom: 1px solid $lght;
   position: relative;
@@ -247,16 +250,16 @@ li.incoming {
     background:$bg;
   }
   .avatar {
-    display: flex;
-    order: 2;
+    @include flexbox;
+    @include order( 2 )
   }
   .content {
-    display:flex;
-    flex-direction:row;
+    @include flexbox;
+    @include flex-direction( row )
     margin: 0 !important;
     h2 {
       align-self:center;
-      order: 1;
+      @include order( 1 )
       font-size: 1rem;
       color: $drk;}
     }
@@ -265,12 +268,12 @@ li.incoming {
 .add-user-bar {
   border-top: 1px solid $lght;
   z-index: 999;
-  display: flex;
+  @include flexbox;
   padding: 0.5rem;
-  justify-content: space-between;
+  @include justify-content( space-between ) 
   background: $bg;
   a {
-    align-content: center;
+    @include align-content( center ) 
     width: 7rem;
     transition: all 0.15s ease-out 0;
     background: $wht;
@@ -302,8 +305,8 @@ section.controller{
   .persistent-bar{
     .persistent-bar {
       border: 1px solid $drk;
-      display: flex;
-      justify-content: space-between;
+      @include flexbox;
+      @include justify-content( space-between ) 
       background: $grn;
       width: 100%;
       a {
@@ -320,14 +323,14 @@ section.controller{
   }
 .login-bar {
   cursor: pointer;
-  display: flex;
-  flex-direction: row;
+  @include flexbox;
+  @include flex-direction( row )
   background: $bg;
   border: 1px solid $md;
   .btn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @include flexbox;
+    @include flex-direction( column )
+    @include justify-content( center ) 
     font-size: 1.5rem;
     border-right: 2px solid $md;
     a {
@@ -337,9 +340,9 @@ section.controller{
     }
   }
   .aside {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @include flexbox;
+    @include flex-direction( column )
+    @include justify-content( center ) 
     text-align: center;
     flex: 1;
       a {
@@ -352,14 +355,14 @@ section.controller{
 /* logged in ======================== */
 // settings view
 .default-view {
-  justify-content: center;
+  @include justify-content( center ) 
   min-width: 100%;
   padding:1rem;
   figure {
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
+    @include flexbox;
+    @include flex-direction( column )
+    @include align-content( flex-start ) 
     img {
       align-self: center;
       max-width: 80%;
@@ -386,8 +389,8 @@ section.controller{
 }
 /* existing messages ========================== */
 .message {
-  display: flex;
-  flex-direction: row;
+  @include flexbox;
+  @include flex-direction( row )
   padding: 0.25rem;
   border-bottom: 1px solid $lght;
   position: relative;
@@ -400,9 +403,9 @@ section.controller{
     }
   }
   .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    @include flexbox;
+    @include flex-direction( column )
+    @include justify-content( flex-start ) 
     text-align: left;
     flex: 1 0 0;
     margin-left: 0.5rem;
