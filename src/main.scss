@@ -156,54 +156,47 @@ ol.discussion{
 }
 // message enter should grow with input of text
 textarea.grw, .textareaMirror {
-  border-top: 1px solid $lght;
-  color: $drk;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 0.85rem;
-  max-height: 8rem;
-  min-height: 100%;
-  outline: none;
-  padding: 4%;
+  padding:4%;
+  color:$drk;
+  font-family:'Open Sans', sans-serif;
+  font-size:.85rem;
+  border:1px solid $lght;
   white-space: pre-wrap;
-  width: 100%;
   word-wrap: break-word;
-}
-.img_upload {
-  bottom: 0.35rem;
-  font-size: 1.75rem;
-  position: absolute;
-  right: 0.5rem;
-  &:hover {
-    color: $drk;
-  }
+  max-height:8rem;
+  width: 100%;
+  min-height:100%;
+  box-sizing: border-box;
+  border:none;
+  outline:none;
 }
 // image upload icon
-label {
-  position: absolute;
-  font-size: 1.75rem;
-  right: 0.5rem;
-  bottom: 0.125rem;
-  color: $gry;
-  overflow: hidden;
-  font-size: 1.75rem;
-  &:hover {
-    color: $drk;
+input[type=file]{
+  position:absolute;
+  font-size:1.75rem;
+  right:0.5rem;
+  bottom:0.35rem;
+  opacity:0;
+  outline:none;
   }
-  input[type=file] {
-    position: absolute;
-    font-size: 1.75rem;
-    right: 0.5rem;
-    bottom: 0.35rem;
-    outline: none;
+.hide{display:none}
+
+label{
+  position:absolute;
+  font-size:1.75rem;
+  right:0.5rem;
+  bottom:0.125rem;
+  color:$gry;
+  overflow:hidden;
+  &:hover{
+    color:$drk;
   }
-}
   span input {
-    z-index: 999;
-    opacity: 0;
-    filter: alpha(opacity = 0);
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
+  z-index: 999;
+  opacity: 0;
+  filter: alpha(opacity = 0);
+  margin: 0;
+  padding:0;
   }
 
 // incoming image notifications
