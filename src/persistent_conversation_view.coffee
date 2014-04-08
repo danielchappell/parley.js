@@ -1,6 +1,16 @@
-$ = require('jquery')
 app = require('./app.coffee')
 ChatRoom = require('./chat_room_view.coffee')
+Handlebars = require('handlebars')
+persistent_convo_reg = require('./templates/persistent_convo_reg.hbs')
+Handlebars = require('hbsfy/runtime')
+
+## HANDLEBARS HELPER FUNCTIONS FOR PERSISTENT MESSAGE TEMPLATE
+Handlebars.registerHelper 'retrieve_image', ->
+  this.convo_partners_image_urls[0]
+Handlebars.registerHelper 'retrieve_last_message', ->
+  this.messages[-1].content
+Handlebars.registerHelper 'calculate_last_message_time', ->
+  this.messages[-1].time_elapsed()
 
 ## This is the constructor for each persistent message in the list view
 ## it contains the template andlogic for rendering the list that appears in
@@ -10,23 +20,8 @@ class PersistentConversationView
   constructor: (@convo) ->
     @$element.on 'click', @load_convo
 
-    persistent_convo_template_reg: Handlebars.compile('
-      <div class="message existing">
-        <div class="avatar">
-          <img src={{convo_partners[0].image_url}} />
-        </div>
-        <div class="content status entypo-right-open-big">
-          <h2>{{convo_partner.display_name}}</h2>
-          <p>{{messages[-1].content}}</p>
-          <a class="time">
-            <span class="entypo-clock"> {{messages[-1].time_elapsed()}}</span>
-          </a>
-        </div>
-      </div>
-      ')
-
     render: ->
-      @$element = @persistent_convo_template_reg(@convo)
+      @$element = $(persistent_convo_reg(@convo))
 
 
     load_convo: ->

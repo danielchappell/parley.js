@@ -1,7 +1,4 @@
-$ = require('jquery')
 app = require('./app.coffee')
-
-
 
 ## constructor for conversations objects that represent all relevant
 ## data and logic pertaining to managing a conversation

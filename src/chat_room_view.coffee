@@ -1,9 +1,8 @@
-$ = require('jquery')
 app = require('./app.coffee')
 Message = require('./message_model.coffee')
 MessageView = require('./message_view.coffee')
 Conversation = require('./conversation_model.coffee')
-
+chat_room_template = require('./templates/chat_room.hbs')
 
 
 
@@ -28,37 +27,6 @@ class ChatRoom
     @$element.find('.top-bar, minify ').on 'click', @toggleChat
     @$element.on 'click', @removeNotifications
     @$discussion.find('.parley_file_upload').on 'change', @file_upload
-
-
-  chat_room_template: Handlebars.compile('
-    <div class="parley">
-      <section class="conversation">
-        <div class="top-bar">
-          <a>{{first_name}}</a>
-          <ul class="message-alt">
-            <li class="entypo-minus minify"></li>
-            <li class="entypo-resize-full"></li>
-            <li class="entypo-cancel chat-close"></li>
-          </ul>
-        </div>
-        <div class="message-bar">
-          <ul class="additional">
-            <li><a class="entypo-user-add"></a></li>
-            <li><a class="fontawesome-facetime-video"></a></li>
-          </ul>
-          <ul class="existing">
-            <li><a class="entypo-chat"></a></li>
-          </ul>
-        </div>
-        <ol class="discussion"></ol>
-        <textarea class="grw" placeholder="Enter Message..."></textarea>
-        <label class="img_upload entypo-camera">
-          <span>
-            <input class="parley_file_upload" name="img_upload" type="file" /></label>
-          </span>
-      </section>
-    </div>
-    ')
 
   message_callback: (message) ->
       @convo.add_message(message)
@@ -101,7 +69,7 @@ class ChatRoom
     @render()
 
   render: ->
-    @$element = $(@chat_room_template(@convo))
+    @$element = $(chat_room_template(@convo))
     @$discussion = @$element.find('.discussion')
 
   renderDiscussion: ->

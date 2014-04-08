@@ -1,7 +1,8 @@
-$ = require('jquery')
+# $ = require('jquery')
 app = require('./app.coffee')
 ChatRoom = require('./chat_room_view.coffee')
 Conversation = require('./conversation_model.coffee')
+current_user_template = require('./templates/current_user.hbs')
 
 ## This is the constructor for each list itemcorresponding to logged
 ## on users displayed in the logged on users list on both
@@ -11,21 +12,8 @@ class UserView
   constructor: (@current_user, @chat_room) ->
     @$element.on 'click', @user_interact_callback
 
-  current_user_template: Handlebars.compile('
-      <li class="user">
-        <div class="avatar">
-          <img src={{image_url}} />
-        </div>
-        <div class="content">
-            <h2>{{display_name}}</h2>
-        </div>
-      </li>
-        ')
-
   render: ->
-    @$element = @current_user_template(@current_user)
-
-
+    @$element = $(current_user_template(@current_user))
 
   user_interact_callback: ->
     ## if interaction is in the command center open a new convo

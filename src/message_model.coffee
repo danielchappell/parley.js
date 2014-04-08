@@ -1,4 +1,3 @@
-$ = require('jquery')
 app = require('./app.coffee')
 
 ## constructor for object that contains all logic and data

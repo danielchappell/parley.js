@@ -26,7 +26,7 @@ redisClient.on('error', function(err) {
   return console.log("Error " + err);
 });
 
-app.use(express["static"]("" + __dirname + "/src"));
+app.use(express["static"]("" + __dirname + "/"));
 
 app.get('/', function(req, res) {
   return res.sendfile("" + __dirname + "/test.html");

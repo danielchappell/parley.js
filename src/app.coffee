@@ -1,6 +1,4 @@
-
-$ = require('jquery')
-io = ('socket.io')
+io = require('socket.io-browserify')
 ChatRoom = require('./chat_room_view.coffee')
 CommandCenter = require('./command_center_view.coffee')
 Conversation = require('./conversation_model.coffee')
@@ -34,9 +32,22 @@ class App
 
     ## insert script for google plus signin
     do ->
-      po = document.createElement('script'); po.type = 'text/javascript'; po.async = true
+      po = document.createElement('script')
+      po.type = 'text/javascript'
+      po.async = true
       po.src = 'https://apis.google.com/js/client:plusone.js'
-      s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
+      s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(po, s)
+
+    ## insert script for socket.io connections
+    do ->
+      script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.async = true
+      script.src = "/socket.io/socket.io.js"
+      s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(script, s)
+
 
     ## LOAD COMMANDCENTER AND OAUTH TO START APP
     @command_center = new CommandCenter()
@@ -76,8 +87,7 @@ class App
         @current_users.splice( i, 1)
 
 
-parley = new App()
-module.exports = parley
+module.exports = new App()
 
 
 

@@ -1,6 +1,10 @@
-$ = require('jquery')
+# $ = require('jquery')
 app = require('./app.coffee')
-
+message_template = require('./templates/message.hbs')
+Handlebars = require('hbsfy/runtime')
+## HANDLEBAR HELPER FUNCTION FOR CALCULATING TIME SINCE MESSAGE CREATION
+Handlebars.registerHelper 'calculate_time', ->
+  this.time_elapsed()
 
 ## constructor for object that contains template data
 ## and interaction logic for individual message models
@@ -8,19 +12,6 @@ class MessageView
 
   constructor: (@message) ->
 
-
-  message_template: Handlebars.compile('
-
-      <div class="avatar">
-        <img src="{{sender.image_url}}"/>
-      <div class="message status">
-        <h2>{{sender.display_name}}</h2>
-        <p>{{content}}</p>
-        <a class="time">
-          <span class="entypo-clock">{{time_elapsed()}}</span>
-        </a>
-      </div>
-    ')
 
   render: ->
     ## renders template differently if user is sending or recieving the message
