@@ -1,3 +1,18 @@
+/* temporary icons and base style ========================== */
+@import url(http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,700);
+@import url(http://weloveiconfonts.com/api/?family=entypo|fontawesome|iconicstroke);
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif; }
+
+/* fontawesome */
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif; }
+
+/* iconicstroke */
+[class*="iconicstroke-"]:before {
+  font-family: 'IconicStroke', sans-serif; }
+
 /* @include flexbox; */
 /* Modular  Start========================== */
 /* Color Variables*/
@@ -341,27 +356,32 @@ label {
   overflow-y: scroll; }
 
 /* start of controller view ===========================*/
-.controller .persistent-bar {
-  border: 1px solid #404040;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
-  background: #619e95;
-  width: 100%;
-  color: #fbfbfb; }
-  .controller .persistent-bar a {
-    font-size: 0.8rem;
-    padding: 0.3rem; }
-  .controller .persistent-bar span {
-    padding: 0.3rem;
-    cursor: pointer; }
+.controller {
+  width: 16rem;
+  position: absolute;
+  bottom: 0;
+  right: 2rem; }
+  .controller .persistent-bar {
+    border: 1px solid #404040;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    justify-content: space-between;
+    background: #619e95;
+    width: 100%;
+    color: #fbfbfb; }
+    .controller .persistent-bar a {
+      font-size: 0.8rem;
+      padding: 0.3rem; }
+    .controller .persistent-bar span {
+      padding: 0.3rem;
+      cursor: pointer; }
 
 .login-bar {
   cursor: pointer;
