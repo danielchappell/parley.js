@@ -1,3 +1,4 @@
+@import 'icons';
 @import 'flex-box';
 
 /* Modular  Start========================== */
@@ -291,6 +292,10 @@ label {
 
 // logged out
 .controller{
+  width:16rem;
+  position:absolute;
+  bottom:0;
+  right:2rem;
     .persistent-bar {
       border: 1px solid $drk;
       @include flexbox;

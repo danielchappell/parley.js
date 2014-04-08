@@ -30,7 +30,7 @@ class CommandCenter
     ## If a user is logged in they get a default profile view
     ## otherwise a login with google appears.
     if logged_out
-      $( ".parley .persistent-bar.logged-out" ).on "click", ->
+      $( ".persistent-bar.logged-out" ).on "click", ->
         $( "#log-click" ).toggle()
         $( "ul.login-bar" ).slideToggle()
     else
