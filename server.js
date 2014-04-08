@@ -133,19 +133,19 @@ io.sockets.on('connection', function(client) {
       return _results;
     });
     return client.on('disconnect', function() {
-      var socket, _j, _k, _len1, _len2, _ref;
+      var i, socket, _j, _k, _len1, _len2, _ref;
       if (sockets[image_url]['client'].length < 2) {
         client.broadcast.emit('user.logged_off', display_name, image_url);
-        for (_j = 0, _len1 = logged_on.length; _j < _len1; _j++) {
-          user = logged_on[_j];
+        for (i = _j = 0, _len1 = logged_on.length; _j < _len1; i = ++_j) {
+          user = logged_on[i];
           if (user.image_url === image_url) {
             logged_on.splice(i, 1);
           }
         }
       }
       _ref = sockets[image_url]['client'];
-      for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
-        socket = _ref[_k];
+      for (i = _k = 0, _len2 = _ref.length; _k < _len2; i = ++_k) {
+        socket = _ref[i];
         if (socket === client) {
           sockets[image_url]['client'].splice(i, 1);
         }

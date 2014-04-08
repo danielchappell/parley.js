@@ -18,9 +18,9 @@ class ChatRoom
     $('body').append(@$element)
     console.log("now I'm Here")
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
-    app.server.on 'message', @message_callback
-    app.server.on 'user_offline', @user_offline_callback
-    app.server.on 'typing_notification', @typing_notification_callback
+    app.server.on 'message', @message_callback.bind(this)
+    app.server.on 'user_offline', @user_offline_callback.bind(this)
+    app.server.on 'typing_notification', @typing_notification_callback.bind(this)
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow

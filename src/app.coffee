@@ -38,12 +38,12 @@ class App
 
     ## listen for persistent conversations from the server on load.
     ## will be sent in one at a time from redis on load.
-    @server.on 'persistent_convo', @load_persistent_convo
+    @server.on 'persistent_convo', @load_persistent_convo.bind(this)
 
     ## listens for current users array from server
-    @server.on 'current_users', @load_current_users
-    @server.on 'user_logged_on', @user_logged_on
-    @server.on 'user_logged_off', @user_logged_off
+    @server.on 'current_users', @load_current_users.bind(this)
+    @server.on 'user_logged_on', @user_logged_on.bind(this)
+    @server.on 'user_logged_off', @user_logged_off.bind(this)
 
   server: io.connect('wss://' + window.location.hostname)
 
@@ -64,7 +64,10 @@ class App
   load_current_users: (logged_on) ->
     ## recieves current users from server on login
     @current_users = logged_on
-    for user in @current_users
+    console.log(this)
+    console.log(@me)
+    console.log(@current_users)
+    for user, i in @current_users
       if user.image_url is @me.image_url
         @current_users.splice(i,1)
 

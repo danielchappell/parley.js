@@ -113,10 +113,10 @@ io.sockets.on 'connection', (client) ->
         client.broadcast.emit 'user.logged_off', display_name, image_url
 
         ## remove user from logged on since all windows and tabs are closed
-        for user in logged_on
+        for user, i in logged_on
           if user.image_url is image_url
             logged_on.splice(i,1)
-      for socket in sockets[image_url]['client']
+      for socket, i in sockets[image_url]['client']
         if socket is client
           sockets[image_url]['client'].splice(i,1)
       ## if there are no remaining sockets/tabs/windows open for a user
