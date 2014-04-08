@@ -23,6 +23,7 @@ gulp.task('build', function(){
           .transform('coffeeify')
           .transform(hbsfy)
           .external('jquery')
+          .external('socket.io-browserify')
           .bundle({debug: true})
           .on('error', console.error.bind(console));
 
