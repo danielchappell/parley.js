@@ -1,4 +1,4 @@
-# $ = require('jquery')
+
 app = require('./app.coffee')
 User = require('./user_model.coffee')
 Message = require('./message_model.coffee')

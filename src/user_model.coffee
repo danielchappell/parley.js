@@ -1,4 +1,4 @@
-# $ = require('jquery')
+
 app = require('./app.coffee')
 
 ##constructor for object that holds all

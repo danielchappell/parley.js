@@ -1,4 +1,4 @@
-# $ = require('jquery')
+
 app = require('./app.coffee')
 message_template = require('./templates/message.hbs')
 Handlebars = require('hbsfy/runtime')
