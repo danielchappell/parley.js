@@ -12,9 +12,11 @@ chat_room_template = require('./templates/chat_room.hbs')
 class ChatRoom
 
   constructor: (@convo) ->
+    console.log("i'm here!!")
+    console.log(app)
     @render()
     $('body').append(@$element)
-
+    console.log("now I'm Here")
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback
     app.server.on 'user_offline', @user_offline_callback
@@ -27,7 +29,7 @@ class ChatRoom
     @$element.find('.top-bar, minify ').on 'click', @toggleChat
     @$element.on 'click', @removeNotifications
     @$discussion.find('.parley_file_upload').on 'change', @file_upload
-
+    console.log("way down here")
   message_callback: (message) ->
       @convo.add_message(message)
       @renderDiscussion()

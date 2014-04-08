@@ -13,10 +13,11 @@ logged_in_template = require('./templates/logged_in.hbs')
 class CommandCenter
   constructor: ->
     @menu = null
+    console.log(app)
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
     $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
-
+    console.log("I'm here now!!")
 
   log_in: ->
     $(".parley .persistent-bar.logged_out").off()
@@ -64,5 +65,5 @@ class CommandCenter
 
 
 
-module.exports = CommandCenter
+module.exports = new CommandCenter()
 

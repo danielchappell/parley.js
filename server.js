@@ -1,6 +1,6 @@
 
 /*  NODE SERVER FOR PARLEY.JS */
-var app, express, io, loggedON, redis, redisClient, rtg, stream;
+var app, express, io, logged_on, redis, redisClient, rtg, sockets;
 
 express = require('express');
 
@@ -10,9 +10,9 @@ app = express();
 
 io = require('socket.io').listen(app.listen(process.env.PORT || 5000));
 
-stream = require('socket.io-stream');
+logged_on = [];
 
-loggedON = [];
+sockets = {};
 
 if (process.env.REDISTOGO_URL) {
   rtg = require('url').parse(process.env.REDISTOGO_URL);
@@ -39,8 +39,8 @@ io.sockets.on('connection', function(client) {
   return client.on('join', function(display_name, image_url) {
     var loggedIN, user, _i, _len;
     loggedIN = false;
-    for (_i = 0, _len = loggedON.length; _i < _len; _i++) {
-      user = loggedON[_i];
+    for (_i = 0, _len = logged_on.length; _i < _len; _i++) {
+      user = logged_on[_i];
       if (image_url === user['image_url']) {
         loggedIN = true;
       }
@@ -50,7 +50,7 @@ io.sockets.on('connection', function(client) {
         display_name: display_name,
         client: [client]
       };
-      loggedON.push({
+      logged_on.push({
         display_name: display_name,
         image_url: image_url
       });
@@ -58,7 +58,7 @@ io.sockets.on('connection', function(client) {
     } else {
       sockets[image_url]['client'] = sockets[image_url]['client'].concat(client);
     }
-    client.emit('current_users', loggedON);
+    client.emit('current_users', logged_on);
     redisClient.smembers(image_url, function(err, persist_convos) {
       var convo_key, _j, _len1, _results;
       if (err) {
@@ -136,10 +136,10 @@ io.sockets.on('connection', function(client) {
       var socket, _j, _k, _len1, _len2, _ref;
       if (sockets[image_url]['client'].length < 2) {
         client.broadcast.emit('user.logged_off', display_name, image_url);
-        for (_j = 0, _len1 = loggedON.length; _j < _len1; _j++) {
-          user = loggedON[_j];
+        for (_j = 0, _len1 = logged_on.length; _j < _len1; _j++) {
+          user = logged_on[_j];
           if (user.image_url === image_url) {
-            loggedON.splice(i, 1);
+            logged_on.splice(i, 1);
           }
         }
       }

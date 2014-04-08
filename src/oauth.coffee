@@ -1,5 +1,7 @@
 # $ = require('jquery')
 app = require('./app.coffee')
+User = require('./user_model.coffee')
+Message = require('./message_model.coffee')
 
 
 ## All logic relating to loging in through Google Plus Oauth
@@ -14,6 +16,8 @@ class Oauth
       gapi.client.load 'plus', 'v1', =>
         request = gapi.client.plus.people.get({'userId': 'me'})
         request.execute (profile) =>
+          console.log(app)
+          console.log(profile)
           display_name = profile.displayName
           image_url = profile.image.url
           app.me = new User display_name, image_url
@@ -44,4 +48,4 @@ class Oauth
       ##"immediate_failed" - Could not automatically log in the user
       console.log("Sign-in state: #{authResult.error}")
 
-module.exports = Oauth
+module.exports = new Oauth()

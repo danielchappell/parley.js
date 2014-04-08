@@ -8,8 +8,9 @@ express = require 'express'
 redis = require 'redis'
 app = express()
 io = require('socket.io').listen(app.listen(process.env.PORT || 5000))
-stream = require 'socket.io-stream'
-loggedON = []
+# stream = require 'socket.io-stream'
+logged_on = []
+sockets = {}
 
 ## REDISTOGO HEROKU plugin authentication
 if process.env.REDISTOGO_URL
@@ -44,7 +45,7 @@ io.sockets.on 'connection', (client) ->
   client.on 'join', (display_name, image_url) ->
     ## make sure the user isn't already logged in
     loggedIN = false
-    for user in loggedON
+    for user in logged_on
       if image_url is user['image_url']
         loggedIN = true
 
@@ -52,7 +53,7 @@ io.sockets.on 'connection', (client) ->
     ## and add to sockets object to keep track of client's socket
     if not loggedIN
       sockets[image_url] = { display_name: display_name, client: [client] }
-      loggedON.push({ display_name: display_name, image_url: image_url })
+      logged_on.push({ display_name: display_name, image_url: image_url })
 
     ## let all clients know a new user is logged on and send client info
       client.broadcast.emit 'user_logged_on', display_name, image_url
@@ -63,7 +64,7 @@ io.sockets.on 'connection', (client) ->
 
 
     ##regardless send online user list to client
-    client.emit 'current_users', loggedON
+    client.emit 'current_users', logged_on
 
     ## Query REDIS for all persistent messages belonging to user
     redisClient.smembers image_url, (err, persist_convos) ->
@@ -112,9 +113,9 @@ io.sockets.on 'connection', (client) ->
         client.broadcast.emit 'user.logged_off', display_name, image_url
 
         ## remove user from logged on since all windows and tabs are closed
-        for user in loggedON
+        for user in logged_on
           if user.image_url is image_url
-            loggedON.splice(i,1)
+            logged_on.splice(i,1)
       for socket in sockets[image_url]['client']
         if socket is client
           sockets[image_url]['client'].splice(i,1)

@@ -1,9 +1,7 @@
-ChatRoom = require('./chat_room_view.coffee')
-CommandCenter = require('./command_center_view.coffee')
+object = {}
+module.exports = object
 Conversation = require('./conversation_model.coffee')
 User = require('./user_model.coffee')
-Oauth = require('./oauth.coffee')
-
 
 
 ###############################################
@@ -47,11 +45,6 @@ class App
     @server.on 'user_logged_on', @user_logged_on
     @server.on 'user_logged_off', @user_logged_off
 
-    ## LOAD COMMANDCENTER AND OAUTH TO START APP
-    @command_center = new CommandCenter()
-    @oauth = new Oauth()
-
-
   server: io.connect('wss://' + window.location.hostname)
 
 
@@ -85,7 +78,18 @@ class App
         @current_users.splice( i, 1)
 
 
-module.exports = new App()
+## SATISFIES CIRCULAR DEPENDANCY FOR BROWSERIFY BUNDLING
+parley = new App()
+
+module.exports = parley
+
+## LOAD COMMANDCENTER AND OAUTH TO START APP
+oauth = require('./oauth.coffee')
+command_center = require('./command_center_view.coffee')
+App.prototype.command_center = command_center
+App.prototype.oauth = oauth
+
+console.log(parley)
 
 
 
