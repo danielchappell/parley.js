@@ -1,3 +1,4 @@
+@import 'reset';
 @import 'flex-box';
 
 /* Modular  Start========================== */
@@ -13,16 +14,9 @@ $dgrn:#4d7e77;
 $rd:#d45e60;
 $yllw:#d2aa6d;
 /* Style Guide*/
-*{
-  box-sizing:border-box;
-}
+
 body {
   font-family:'Open Sans', sans-serif;color: $gry;
-}
-* ul, ol , li{
-  padding:0;
-  margin:0;
-  list-style: none;
 }
 
 /* Modular End========================== */
