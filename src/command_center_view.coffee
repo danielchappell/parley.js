@@ -3,7 +3,7 @@ UserView = require('./user_view.coffee')
 PersistentConversationView = require('./persistent_conversation_view.coffee')
 logged_out_template = require('./templates/logged_out.hbs')
 logged_in_template = require('./templates/logged_in.hbs')
-
+profile_template = require('./templates/profile.hbs')
 
 
 
@@ -12,7 +12,7 @@ logged_in_template = require('./templates/logged_in.hbs')
 # It is the hub for all interaction.
 class CommandCenter
   constructor: ->
-    @menu = null
+    @menu = "default"
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
     $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
@@ -46,8 +46,8 @@ class CommandCenter
       @menu = "current_users"
     else
       $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').html(logged_in_template(app.me))
-
+      $('.parley div.controller-view').html(profile_template(app.me))
+      @menu = "default"
 
   toggle_persistent_convos: ->
     if @menu isnt "persistent_convos"
@@ -58,7 +58,8 @@ class CommandCenter
       @menu = "persistent_convos"
     else
       $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').html(logged_in_template(app.me))
+      $('.parley div.controller-view').html(profile_template(app.me))
+      @menu = "default"
 
 
   toggle_user_settings: ->
