@@ -420,7 +420,7 @@ label {
       }  
     }
 /* existing messages ========================== */
-.message {
+li.messages {
   @include flexbox;
   @include flex-direction( row );
   padding: 0.25rem;
