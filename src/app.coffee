@@ -1,7 +1,5 @@
 object = {}
 module.exports = object
-Conversation = require('./conversation_model.coffee')
-User = require('./user_model.coffee')
 
 
 ###############################################
@@ -86,6 +84,8 @@ module.exports = parley
 ## LOAD COMMANDCENTER AND OAUTH TO START APP
 oauth = require('./oauth.coffee')
 command_center = require('./command_center_view.coffee')
+Conversation = require('./conversation_model.coffee')
+User = require('./user_model.coffee')
 App.prototype.command_center = command_center
 App.prototype.oauth = oauth
 

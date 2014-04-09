@@ -22,10 +22,11 @@ class CommandCenter
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
     $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
-    $('.parley div.controller-bar a.active_users').on('click', @toggle_current_users)
+    $('.parley div.controller-bar a.active-users').on('click', @toggle_current_users)
     $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
 
-  toggle_command_center: ->
+  toggle_command_center: (e)->
+    e.preventDefault()
     ## If a user is logged in they get a default profile view
     ## otherwise a login with google appears.
     if logged_out
@@ -37,24 +38,29 @@ class CommandCenter
         $('.persistent-bar').on 'click', ->
           $('.controller-view').toggle()
 
-  toggle_current_users: ->
+  toggle_current_users: (e)->
+    e.preventDefault()
+    console.log('im here!')
     if @menu isnt "current_users"
       $('.parley div.controller-view').children().remove()
       for user in app.current_users
         view = new UserView(user)
-        $('.parley div.controller-view').append(view.render())
+        view.render()
+        $('.parley div.controller-view').append(view.$element)
       @menu = "current_users"
     else
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(profile_template(app.me))
       @menu = "default"
 
-  toggle_persistent_convos: ->
+  toggle_persistent_convos: (e)->
+    e.preventDefault()
     if @menu isnt "persistent_convos"
       $(".parley div.controller-view").children().remove()
       for convo in app.conversations
         view = new PersistentConversationView(convo)
-        $('.parley div.controller-view').append(view.render())
+        view.render()
+        $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
     else
       $('.parley div.controller-view').children().remove()
@@ -63,7 +69,7 @@ class CommandCenter
 
 
   toggle_user_settings: ->
-
+    console.log("USERSETTINGS!!")
 
 
 module.exports = new CommandCenter()

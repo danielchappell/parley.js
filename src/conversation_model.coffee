@@ -10,8 +10,8 @@ class Conversation
     @first_name_list = ""
     @convo_partners_image_urls = []
 
-    for user in @convo_partners
-      first_name = user.display_name.match(/\A.+\s/)[0]
+    for user, i in @convo_partners
+      first_name = user.display_name.match(/^[A-z]+/)
       if i isnt @convo_partners.length
         @first_name_list += "#{first_name}, "
         @convo_partners_image_urls += user.image_url
@@ -23,6 +23,8 @@ class Conversation
     @messages.push message
 
   generate_message_filter: ->
+    console.log(app)
+    console.log(this)
     @message_filter = [app.me.image_url]
     for partner in @convo_partners
       @message_filter.push partner.image_url
