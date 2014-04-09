@@ -16,8 +16,6 @@ class Oauth
       gapi.client.load 'plus', 'v1', =>
         request = gapi.client.plus.people.get({'userId': 'me'})
         request.execute (profile) =>
-          console.log(app)
-          console.log(profile)
           display_name = profile.displayName
           image_url = profile.image.url
           app.me = new User display_name, image_url

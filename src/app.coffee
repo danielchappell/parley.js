@@ -64,9 +64,6 @@ class App
   load_current_users: (logged_on) ->
     ## recieves current users from server on login
     @current_users = logged_on
-    console.log(this)
-    console.log(@me)
-    console.log(@current_users)
     for user, i in @current_users
       if user.image_url is @me.image_url
         @current_users.splice(i,1)
@@ -91,8 +88,6 @@ oauth = require('./oauth.coffee')
 command_center = require('./command_center_view.coffee')
 App.prototype.command_center = command_center
 App.prototype.oauth = oauth
-
-console.log(parley)
 
 
 
