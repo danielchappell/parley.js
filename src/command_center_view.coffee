@@ -21,9 +21,9 @@ class CommandCenter
     $(".parley .persistent-bar.logged_out").off()
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
-    $('.parley div.controller-bar a.messages').on('click', @toggle_persistent_convos)
-    $('.parley div.controller-bar a.active-users').on('click', @toggle_current_users)
-    $('.parley div.controller-bar a.user-settings').on('click', @toggle_user_settings)
+    $('.parley div.controller-bar a.messages').on 'click', @toggle_persistent_convos.bind(this)
+    $('.parley div.controller-bar a.active-users').on 'click', @toggle_current_users.bind(this)
+    $('.parley div.controller-bar a.user-settings').on 'click', @toggle_user_settings.bind(this)
 
   toggle_command_center: (e)->
     e.preventDefault()
@@ -40,7 +40,6 @@ class CommandCenter
 
   toggle_current_users: (e)->
     e.preventDefault()
-    console.log('im here!')
     if @menu isnt "current_users"
       $('.parley div.controller-view').children().remove()
       for user in app.current_users
