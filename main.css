@@ -406,7 +406,8 @@ label {
   width: 16rem;
   position: absolute;
   bottom: 0;
-  right: 2rem; }
+  right: 2rem;
+  border: 1px solid #adadad; }
   .controller .persistent-bar {
     border: 1px solid #404040;
     display: -webkit-box;
@@ -499,7 +500,8 @@ label {
   -moz-justify-content: center;
   justify-content: center;
   min-width: 100%;
-  padding: 1rem; }
+  padding: 1rem;
+  background: #eee; }
   .default-view figure {
     margin: 0;
     display: -webkit-box;
@@ -535,6 +537,32 @@ label {
       .default-view figure a:hover {
         color: #619e95;
         cursor: pointer; }
+
+.horizontal-list {
+  min-width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: row; }
+  .horizontal-list > li {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; }
+    .horizontal-list > li > a {
+      color: #adadad;
+      text-align: center; }
+
+.utility-bar {
+  background: #404040; }
+  .utility-bar li {
+    border-top: 4px solid #999; }
+    .utility-bar li:hover {
+      border-top: 4px solid #d2aa6d; }
+      .utility-bar li:hover > a {
+        color: #d45e60; }
+    .utility-bar li a {
+      line-height: 40px;
+      font-size: 1.5rem; }
 
 /* existing messages ========================== */
 .message {

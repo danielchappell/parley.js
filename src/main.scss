@@ -297,6 +297,7 @@ label {
   position:absolute;
   bottom:0;
   right:2rem;
+  border:1px solid $gry;
     .persistent-bar {
       border: 1px solid $drk;
       @include flexbox;
@@ -351,6 +352,7 @@ label {
   @include justify-content( center );
   min-width: 100%;
   padding:1rem;
+  background: $bg;
   figure {
     margin: 0;
     @include flexbox;
@@ -380,6 +382,38 @@ label {
     }
   }
 }
+.horizontal-list{
+    min-width:100%;
+    list-style:none;
+    display:flex;
+    flex-direction:row;
+    >li{
+      flex:1;
+      display: flex;
+      flex-direction:column;
+      justify-content:center;
+      >a{
+        color: $gry;
+        text-align:center;
+      }
+    }
+  }
+  .utility-bar{
+      background: $drk;
+      li{
+        border-top:4px solid $md;
+        &:hover{
+          border-top:4px solid $yllw;
+          >a{
+            color:$rd;
+          }
+        }
+        a{
+          line-height: 40px;
+          font-size:1.5rem;
+        }
+      }  
+    }
 /* existing messages ========================== */
 .message {
   @include flexbox;
