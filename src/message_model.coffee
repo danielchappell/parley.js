@@ -8,10 +8,15 @@ class Message
   constructor: (@recipients, @sender, @content, @time_stamp) ->
     if not @time_stamp
       @time_stamp = new Date().toUTCString()
-    @convo_id = @recipients.concat(@sender).sort().join()
+    id_array = []
+    for user in @recipients
+      id_array = id_array.concat(user.image_url)
+    id_array = id_array.concat(@sender.image_url)
+    @convo_key = id_array.sort().join()
     @time_created = new Date(@time_stamp)
+    @time_since_created = @calculate_time()
 
-  time_elapsed: ->
+  calculate_time: ->
     current_time = new Date()
     ## Convert to minutes
     minutes = Math.floor((current_time - @time_created) / 60000 )

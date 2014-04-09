@@ -60,15 +60,22 @@ io.sockets.on('connection', function(client) {
     }
     client.emit('current_users', logged_on);
     redisClient.smembers(image_url, function(err, persist_convos) {
-      var convo_key, _j, _len1, _results;
+      var convo_key, group, id_array, member_group, _j, _k, _len1, _len2, _results;
       if (err) {
         return console.log("ERROR: " + err);
       } else {
         _results = [];
         for (_j = 0, _len1 = persist_convos.length; _j < _len1; _j++) {
-          convo_key = persist_convos[_j];
+          member_group = persist_convos[_j];
+          group = JSON.parse(member_group);
+          id_array = [];
+          for (_k = 0, _len2 = member_group.length; _k < _len2; _k++) {
+            user = member_group[_k];
+            id_array.push(user.image_url);
+          }
+          convo_key = id_array.sort().join();
           _results.push(redisClient.lrange(convo_key, 0, -1, function(err, messages) {
-            return client.emit('persistent_convo', convo_key, messages);
+            return client.emit('persistent_convo', group, messages);
           }));
         }
         return _results;
@@ -102,9 +109,10 @@ io.sockets.on('connection', function(client) {
       return _results;
     });
     client.on('message', function(message) {
-      var json_message, recipent, socket, _j, _len1, _ref, _results;
+      var json_message, member_array, recipent, socket, _j, _len1, _ref, _results;
       json_message = JSON.stringify(message);
-      redisClient.multi([['sadd', message.sender.image_url, message.convo_id], ['expire', sID, 16070400], ['rpush', message.convo_id, json_message], ['ltrim', message.convo_id, -199, -1], ['expire', message.convo_id, 604800]]).exec(function(err, replies) {
+      member_array = message.recipients.concat(message.sender);
+      redisClient.multi([['sadd', message.sender.image_url, JSON.stringify(member_array)], ['expire', message.sender.image_url, 16070400], ['rpush', message.convo_id, json_message], ['ltrim', message.convo_id, -199, -1], ['expire', message.convo_id, 604800]]).exec(function(err, replies) {
         if (err) {
           return console.log(err);
         } else {
@@ -118,7 +126,7 @@ io.sockets.on('connection', function(client) {
         if (sockets.hasOwnProperty(recipent.image_url)) {
           _results.push((function() {
             var _k, _len2, _ref1, _results1;
-            _ref1 = socket[recipent.image_url]['client'];
+            _ref1 = sockets[recipent.image_url]['client'];
             _results1 = [];
             for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
               socket = _ref1[_k];

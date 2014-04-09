@@ -7,6 +7,7 @@ class Conversation
 
   constructor: (@convo_partners, @messages=[]) ->
     @generate_message_filter()
+    console.log(@message_filter)
     @first_name_list = ""
     @convo_partners_image_urls = []
 
@@ -26,7 +27,6 @@ class Conversation
     @message_filter = [app.me.image_url]
     for partner in @convo_partners
       @message_filter.push partner.image_url
-    @message_filter.sort().join()
-
+    @message_filter = @message_filter.sort().join()
 
 module.exports = Conversation

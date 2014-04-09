@@ -18,25 +18,26 @@ Handlebars.registerHelper 'calculate_last_message_time', ->
 class PersistentConversationView
 
   constructor: (@convo) ->
-    @$element.on 'click', @load_convo
+    @$element = $('<div class="message existing"></div>')
+    @$element.on 'click', @load_convo.bind(this)
 
-    render: ->
-      @$element = $(persistent_convo_reg(@convo))
+  render: ->
+    @$element.html(persistent_convo_reg(@convo))
 
 
-    load_convo: ->
-      ## if convo isn't open load new chat window with convo
-      convo_status = 'closed'
-      for convo in app.open_conversations
-        if @convo.message_filter is convo.message_filter
-          convo_status = 'open'
+  load_convo: ->
+    ## if convo isn't open load new chat window with convo
+    convo_status = 'closed'
+    for convo in app.open_conversations
+      if @convo.message_filter is convo.message_filter
+        convo_status = 'open'
 
-      if convo_status isnt 'open'
-        chat_window = new ChatRoom(@convo)
-        app.open_conversations.push(@convo.message_filter)
+    if convo_status isnt 'open'
+      chat_window = new ChatRoom(@convo)
+      app.open_conversations.push(@convo.message_filter)
 
-        ## check and see if action is in command center or chat window
-        if not @$element.parent()[0].hasClass('controller-view')
-          @$element.parents('div.parley').remove()
+      ## check and see if action is in command center or chat window
+      if not @$element.parent()[0].hasClass('controller-view')
+        @$element.parents('div.parley').remove()
 
 module.exports = PersistentConversationView

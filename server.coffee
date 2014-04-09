@@ -71,9 +71,14 @@ io.sockets.on 'connection', (client) ->
       if err
         console.log "ERROR: #{err}"
       else
-        for convo_key in persist_convos
+        for member_group in persist_convos
+          group = JSON.parse(member_group)
+          id_array = []
+          for user in member_group
+            id_array.push(user.image_url)
+          convo_key = id_array.sort().join()
           redisClient.lrange convo_key, 0, -1, (err, messages) ->
-            client.emit 'persistent_convo', convo_key, messages
+            client.emit 'persistent_convo', group, messages
 
 
     ## listen for type_notifications
@@ -91,10 +96,11 @@ io.sockets.on 'connection', (client) ->
     client.on 'message', (message)->
       ## stringifies message object from sender for storage in redis
       json_message = JSON.stringify(message)
+      member_array = message.recipients.concat(message.sender)
       ## create and execute redis task that refreshes the user/conversation set and the conversation list
       redisClient.multi([
-        ['sadd', message.sender.image_url, message.convo_id],
-        ['expire', sID, 16070400],
+        ['sadd', message.sender.image_url, JSON.stringify(member_array)],
+        ['expire', message.sender.image_url, 16070400],
         ['rpush', message.convo_id, json_message],
         ['ltrim', message.convo_id, -199, -1],
         ['expire', message.convo_id, 604800]
@@ -102,7 +108,7 @@ io.sockets.on 'connection', (client) ->
           if err then console.log err else console.log replies
       for recipent in message.recipients
         if sockets.hasOwnProperty(recipent.image_url)
-          for socket in socket[recipent.image_url]['client']
+          for socket in sockets[recipent.image_url]['client']
             socket.emit 'message', message
         else
           client.emit 'user_offline'

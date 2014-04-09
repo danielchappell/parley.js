@@ -36,6 +36,11 @@ class ChatRoom
                         notified: false
                         page_title: $('html title').html()
   message_callback: (message) ->
+    console.log("im here!!!")
+    console.log(message)
+    console.log(@convo.message_filter)
+    if @convo.message_filter is message.convo_key
+      console.log('whoop!')
       @convo.add_message(message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')
@@ -81,11 +86,13 @@ class ChatRoom
 
   renderDiscussion: ->
     new_message = @convo.messages.slice(-1)[0]
+    console.log(new_message)
     @appendMessage(new_message)
     @scrollToLastMessage()
 
   appendMessage: (message)->
     message_view = new MessageView(message)
+    console.log(message_view)
     message_view.render()
     @$discussion.append(message_view.$element)
 
@@ -107,8 +114,8 @@ class ChatRoom
     message = new Message @convo.convo_partners, app.me, @$element.find('.send').val()
     @convo.add_message(message)
     @renderDiscussion()
-    app.server.emit 'mesage', message
-    @$discussion.find('.send').val('')
+    app.server.emit 'message', message
+    @$element.find('.send').val('')
     this.emitTypingNotification()
 
   toggleChat: (e) ->
@@ -148,6 +155,7 @@ class ChatRoom
 
   titleAlert: ->
     if not app.title_notification.notified
+      console.log(@convo.messages[-1])
       sender_name = @convo.messages[-1].sender.display_name
       alert = "Pending ** #{sender_name}"
 
