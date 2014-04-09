@@ -35,8 +35,11 @@ body {
   @include flexbox;
   @include flex-direction( column );
   max-height:24rem;
-  position:relative;
+  position:absolute;
+  bottom: 0;
+  right: 20rem;
   width:16rem;
+  border: 1px solid $gry;
 }
 
 .top-bar {
@@ -74,6 +77,7 @@ body {
   background: $bg;
   list-style: none;
   padding:0 .25rem;
+  border: 1px solid $gry;
   ul.existing {
     @include flexbox;
     flex:1;
@@ -98,7 +102,8 @@ body {
 // discussion base presentation
 ol.discussion {
   max-height:16rem;
-  border:1px solid $lght;
+  height: 16rem;
+  border-bottom: 1px solid $gry;
   overflow-x:hidden;
   overflow-y:scroll;
   background:$bg;

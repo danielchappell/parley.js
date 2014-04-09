@@ -89,8 +89,11 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
   max-height: 24rem;
-  position: relative;
-  width: 16rem; }
+  position: absolute;
+  bottom: 0;
+  right: 20rem;
+  width: 16rem;
+  border: 1px solid #adadad; }
 
 .top-bar {
   min-width: 100%;
@@ -146,7 +149,8 @@ body {
   flex-direction: row;
   background: #eee;
   list-style: none;
-  padding: 0 0.25rem; }
+  padding: 0 0.25rem;
+  border: 1px solid #adadad; }
   .message-bar ul.existing {
     display: -webkit-box;
     display: -webkit-flex;
@@ -178,7 +182,8 @@ body {
 
 ol.discussion {
   max-height: 16rem;
-  border: 1px solid #ccc;
+  height: 16rem;
+  border-bottom: 1px solid #adadad;
   overflow-x: hidden;
   overflow-y: scroll;
   background: #eee; }
