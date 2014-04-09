@@ -12,11 +12,11 @@ class Message
     @time_created = new Date(@time_stamp)
 
   time_elapsed: ->
-    @current_time = new Date()
+    current_time = new Date()
     ## Convert to minutes
-    minutes = Math.floor(( current_time - time_created) / 60000 )
+    minutes = Math.floor((current_time - @time_created) / 60000 )
     ## determine if today
-    if current_time.getDate() is time_created.getDate() and minutes < 1440
+    if current_time.getDate() is @time_created.getDate() and minutes < 1440
       today = true
     ## Convert to hours
     hours = Math.floor((minutes / 60 ))

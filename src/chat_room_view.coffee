@@ -3,6 +3,12 @@ Message = require('./message_model.coffee')
 MessageView = require('./message_view.coffee')
 Conversation = require('./conversation_model.coffee')
 chat_room_template = require('./templates/chat_room.hbs')
+Handlebars = require('hbsfy/runtime')
+Handlebars.registerHelper 'title_bar_function', ->
+  if this.convo_partners.length < 2
+    return this.convo_partners[0].display_name
+  else
+    return this.first_name_list
 
 
 
@@ -12,24 +18,23 @@ chat_room_template = require('./templates/chat_room.hbs')
 class ChatRoom
 
   constructor: (@convo) ->
-    console.log("i'm here!!")
-    console.log(app)
     @render()
     $('body').append(@$element)
-    console.log("now I'm Here")
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
     app.server.on 'typing_notification', @typing_notification_callback.bind(this)
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
-    @$element.find('.chat-close').on 'click', @closeWindow
-    @$element.find('.send').on 'keypress', @sendOnEnter
-    @$element.find('.send').on 'keyup', @emitTypingNotification
-    @$element.find('.top-bar, minify ').on 'click', @toggleChat
-    @$element.on 'click', @removeNotifications
-    @$discussion.find('.parley_file_upload').on 'change', @file_upload
-    console.log("way down here")
+    @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
+    @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
+    @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
+    @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
+    @$element.on 'click', @removeNotifications.bind(this)
+    @$discussion.find('.parley_file_upload').on 'change', @file_upload.bind(this)
+    app.title_notification =
+                        notified: false
+                        page_title: $('html title').html()
   message_callback: (message) ->
       @convo.add_message(message)
       @renderDiscussion()
@@ -80,7 +85,7 @@ class ChatRoom
     @scrollToLastMessage()
 
   appendMessage: (message)->
-    message_view = new MesssageView(message)
+    message_view = new MessageView(message)
     message_view.render()
     @$discussion.append(message_view.$element)
 
@@ -100,13 +105,13 @@ class ChatRoom
 
   sendMessage: ->
     message = new Message @convo.convo_partners, app.me, @$element.find('.send').val()
-    @messages.add(send)
+    @convo.add_message(message)
     @renderDiscussion()
     app.server.emit 'mesage', message
     @$discussion.find('.send').val('')
     this.emitTypingNotification()
 
-  toggle_convo: (e) ->
+  toggleChat: (e) ->
     e.preventDefault()
     @$discussion.toggle()
     if @$discussion.attr('display') is not "none"
