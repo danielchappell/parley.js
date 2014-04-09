@@ -570,7 +570,7 @@ label {
       font-size: 1.5rem; }
 
 /* existing messages ========================== */
-.message {
+li.messages {
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;
