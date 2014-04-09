@@ -68,7 +68,6 @@ class CommandCenter
 
 
   toggle_user_settings: ->
-    console.log("USERSETTINGS!!")
 
 
 module.exports = new CommandCenter()

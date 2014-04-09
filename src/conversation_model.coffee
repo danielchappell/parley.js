@@ -23,8 +23,6 @@ class Conversation
     @messages.push message
 
   generate_message_filter: ->
-    console.log(app)
-    console.log(this)
     @message_filter = [app.me.image_url]
     for partner in @convo_partners
       @message_filter.push partner.image_url
