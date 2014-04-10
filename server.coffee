@@ -44,14 +44,14 @@ app.get '/', (req, res) ->
 io.sockets.on 'connection', (client) ->
   client.on 'join', (display_name, image_url) ->
     ## make sure the user isn't already logged in
-    loggedIN = false
+    logged_in = false
     for user in logged_on
       if image_url is user['image_url']
-        loggedIN = true
+        logged_in = true
 
     ## if not previously logged in push to array of online users
     ## and add to sockets object to keep track of client's socket
-    if not loggedIN
+    if not logged_in
       sockets[image_url] = { display_name: display_name, client: [client] }
       logged_on.push({ display_name: display_name, image_url: image_url })
 
@@ -119,9 +119,10 @@ io.sockets.on 'connection', (client) ->
     ## listen for disconnection from socket i.e. close browser or tab
     client.on 'disconnect', ->
       if sockets[image_url]['client'].length < 2
-        client.broadcast.emit 'user.logged_off', display_name, image_url
+        client.broadcast.emit 'user_logged_off', display_name, image_url
 
         ## remove user from logged on since all windows and tabs are closed
+        console.log(logged_on)
         for user, i in logged_on
           if user.image_url is image_url
             logged_on.splice(i,1)
@@ -132,6 +133,7 @@ io.sockets.on 'connection', (client) ->
       ## delete their property object in the sockets object
       if sockets[image_url]['client'].length is 0
         delete sockets[image_url]
+      console.log(logged_on)
 
 
 

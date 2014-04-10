@@ -38,7 +38,6 @@ class ChatRoom
                         page_title: $('html title').html()
   message_callback: (message) ->
     if @convo.message_filter is message.convo_key
-      console.log('whoop!')
       @convo.add_message(message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')

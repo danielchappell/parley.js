@@ -76,9 +76,11 @@ class App
     @current_users.push(user)
 
   user_logged_off: (display_name, image_url) ->
-    for user in @current_users
+    console.log(@current_users)
+    for user, i in @current_users
       if image_url is user.image_url
         @current_users.splice( i, 1)
+    console.log(@current_users)
 
 
 ## SATISFIES CIRCULAR DEPENDANCY FOR BROWSERIFY BUNDLING

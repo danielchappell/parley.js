@@ -37,15 +37,15 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(client) {
   return client.on('join', function(display_name, image_url) {
-    var loggedIN, user, _i, _len;
-    loggedIN = false;
+    var logged_in, user, _i, _len;
+    logged_in = false;
     for (_i = 0, _len = logged_on.length; _i < _len; _i++) {
       user = logged_on[_i];
       if (image_url === user['image_url']) {
-        loggedIN = true;
+        logged_in = true;
       }
     }
-    if (!loggedIN) {
+    if (!logged_in) {
       sockets[image_url] = {
         display_name: display_name,
         client: [client]
@@ -116,7 +116,6 @@ io.sockets.on('connection', function(client) {
       var json_message, member_array, recipent, socket, _j, _len1, _ref, _results;
       json_message = JSON.stringify(message);
       member_array = message.recipients.concat(message.sender);
-      console.log("this is the member_array", member_array);
       redisClient.multi([['sadd', message.sender.image_url, JSON.stringify(member_array)], ['expire', message.sender.image_url, 16070400], ['rpush', message.convo_key, json_message], ['ltrim', message.convo_key, -199, -1], ['expire', message.convo_key, 604800]]).exec(function(err, replies) {
         if (err) {
           return console.log(err);
@@ -148,7 +147,8 @@ io.sockets.on('connection', function(client) {
     return client.on('disconnect', function() {
       var i, socket, _j, _k, _len1, _len2, _ref;
       if (sockets[image_url]['client'].length < 2) {
-        client.broadcast.emit('user.logged_off', display_name, image_url);
+        client.broadcast.emit('user_logged_off', display_name, image_url);
+        console.log(logged_on);
         for (i = _j = 0, _len1 = logged_on.length; _j < _len1; i = ++_j) {
           user = logged_on[i];
           if (user.image_url === image_url) {
@@ -164,8 +164,9 @@ io.sockets.on('connection', function(client) {
         }
       }
       if (sockets[image_url]['client'].length === 0) {
-        return delete sockets[image_url];
+        delete sockets[image_url];
       }
+      return console.log(logged_on);
     });
   });
 });
