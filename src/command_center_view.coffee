@@ -40,35 +40,38 @@ class CommandCenter
 
   toggle_current_users: (e)->
     e.preventDefault()
+    $('.parley div.controller-view').children().remove()
     if @menu isnt "current_users"
-      $('.parley div.controller-view').children().remove()
       for user in app.current_users
         view = new UserView(user)
         view.render()
         $('.parley div.controller-view').append(view.$element)
       @menu = "current_users"
     else
-      $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').html(profile_template(app.me))
-      @menu = "default"
+      @menu = null
 
   toggle_persistent_convos: (e)->
     e.preventDefault()
+    $(".parley div.controller-view").children().remove()
     if @menu isnt "persistent_convos"
-      $(".parley div.controller-view").children().remove()
       for convo in app.conversations
         view = new PersistentConversationView(convo)
         view.render()
         $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
     else
-      $('.parley div.controller-view').children().remove()
+      @menu = null
+
+
+
+  toggle_user_settings: (e)->
+    e.preventDefault
+    $('.parley div.controller-view').children().remove()
+    if @menu isnt "user_settings"
       $('.parley div.controller-view').html(profile_template(app.me))
-      @menu = "default"
-
-
-  toggle_user_settings: ->
-
+      @menu = "user_settings"
+    else
+      @menu = null
 
 module.exports = new CommandCenter()
 
