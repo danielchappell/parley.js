@@ -21,6 +21,7 @@ class ChatRoom
     @render()
     $('body').append(@$element)
     @loadPersistentMessages()
+    console.log(app.open_conversations)
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
