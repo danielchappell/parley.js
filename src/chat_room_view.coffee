@@ -8,7 +8,7 @@ Handlebars.registerHelper 'title_bar_function', ->
   if this.convo_partners.length < 2
     return this.convo_partners[0].display_name
   else
-    return this.first_name_list
+  return this.first_name_list
 
 
 
@@ -90,7 +90,6 @@ class ChatRoom
 
   appendMessage: (message)->
     message_view = new MessageView(message)
-    console.log(message_view)
     message_view.render()
     @$discussion.append(message_view.$element)
 
@@ -125,6 +124,13 @@ class ChatRoom
   closeWindow: (e) ->
     e.preventDefault()
     e.stopPropagation()
+    ## remove from open convos
+    for open_convo, i in app.open_conversations
+      if open_convo is @convo.message_filter
+        app.open_conversations.splice(i,1)
+
+    ## remove all websocket listeners for garbage collection
+    ## remove chat from DOM
     app.server.removeAllListeners()
     @$element.find('.chat-close').off()
     @$element.find('.send').off()

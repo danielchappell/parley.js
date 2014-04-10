@@ -28,11 +28,11 @@ class UserView
       @chat_room.add_member(@current_user)
 
   open_conversation: ->
-    console.log(app.open_conversations)
     ## check to make sure convo isn't already open
-    convo_id = [app.me.image_url, @current_user.image_url].sort().join()
+    convo_key_array = [app.me.image_url].concat(@current_user.image_url)
+    convo_id = convo_key_array.sort().join()
     for convo in app.open_conversations
-      if convo_id is convo.message_filter
+      if convo_id is convo
         return
     ## check to see if persistent convo exists with the user
     convo_exists = false
