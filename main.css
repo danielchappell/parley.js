@@ -409,10 +409,6 @@ label {
   border-bottom: 1px solid #ccc;
   position: relative; }
 
-.persistent {
-  max-height: 18rem;
-  overflow-y: scroll; }
-
 /* start of controller view ===========================*/
 .controller {
   width: 12rem;
@@ -420,8 +416,11 @@ label {
   bottom: 0;
   right: 0rem;
   border: 1px solid #adadad; }
+  .controller .controller-view {
+    min-height: 12rem;
+    background: #fbfbfb; }
   .controller .persistent-bar {
-    border: 1px solid #404040;
+    border: 1px solid #ccc;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-flex;
@@ -432,14 +431,17 @@ label {
     -webkit-justify-content: space-between;
     -moz-justify-content: space-between;
     justify-content: space-between;
-    background: #619e95;
+    background: #eee;
     width: 100%;
-    color: #fbfbfb; }
+    color: #404040;
+    padding: 0.25rem; }
+    .controller .persistent-bar img {
+      border-radius: 50%;
+      width: 1.75rem;
+      height: 1.75rem; }
     .controller .persistent-bar a {
-      font-size: 0.8rem;
-      padding: 0.3rem; }
-    .controller .persistent-bar span {
-      padding: 0.3rem;
+      font-size: 0.75rem;
+      align-self: center;
       cursor: pointer; }
 
 .login-bar {
@@ -478,7 +480,7 @@ label {
     border-right: 2px solid #999; }
     .login-bar .btn a {
       align-self: center;
-      color: #619e95;
+      color: #404040;
       padding: 0.33rem; }
   .login-bar .aside {
     display: -webkit-box;
@@ -554,7 +556,8 @@ label {
   min-width: 100%;
   list-style: none;
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  padding: 0.25rem; }
   .horizontal-list > li {
     flex: 1;
     display: flex;
@@ -566,10 +569,10 @@ label {
       text-align: center; }
 
 .utility-bar {
-  background: #404040; }
+  background: #eee;
+  border-top: 1px solid #adadad; }
   .utility-bar a {
-    line-height: 25px;
-    font-size: 1.25rem; }
+    font-size: 1.125rem; }
 
 /* existing messages ========================== */
 li.messages {
