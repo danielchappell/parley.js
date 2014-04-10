@@ -402,16 +402,23 @@ label {
       background: rgba(97, 158, 149, 0.5);
       color: #fbfbfb; }
 
+.existing {
+  display: flex;
+  flex-direction: row;
+  padding: 0.25rem;
+  border-bottom: 1px solid #ccc;
+  position: relative; }
+
 .persistent {
   max-height: 18rem;
   overflow-y: scroll; }
 
 /* start of controller view ===========================*/
 .controller {
-  width: 16rem;
+  width: 12rem;
   position: absolute;
   bottom: 0;
-  right: 2rem;
+  right: 0rem;
   border: 1px solid #adadad; }
   .controller .persistent-bar {
     border: 1px solid #404040;
@@ -554,20 +561,15 @@ label {
     flex-direction: column;
     justify-content: center; }
     .horizontal-list > li > a {
+      text-decoration: none;
       color: #adadad;
       text-align: center; }
 
 .utility-bar {
   background: #404040; }
-  .utility-bar li {
-    border-top: 4px solid #999; }
-    .utility-bar li:hover {
-      border-top: 4px solid #d2aa6d; }
-      .utility-bar li:hover > a {
-        color: #d45e60; }
-    .utility-bar li a {
-      line-height: 40px;
-      font-size: 1.5rem; }
+  .utility-bar a {
+    line-height: 25px;
+    font-size: 1.25rem; }
 
 /* existing messages ========================== */
 li.messages {
