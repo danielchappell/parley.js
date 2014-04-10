@@ -54,6 +54,7 @@ class App
     console.log(convo_members)
 
     ## create new conversation object from persistent conversation info
+    console.log(messages)
     convo = new Conversation(convo_members, messages)
     @conversations.push(convo)
 

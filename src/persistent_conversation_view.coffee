@@ -8,9 +8,12 @@ Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'retrieve_image', ->
   this.convo_partners_image_urls[0]
 Handlebars.registerHelper 'retrieve_last_message', ->
-  this.messages[-1].content
+  console.log(app.conversations)
+  console.log(@messages)
+  console.log(@messages[@messages.length - 1])
+  this.messages[this.messages.length - 1].content
 Handlebars.registerHelper 'calculate_last_message_time', ->
-  this.messages[-1].time_elapsed()
+  this.messages[this.messages.length - 1].calculate_time()
 
 ## This is the constructor for each persistent message in the list view
 ## it contains the template andlogic for rendering the list that appears in

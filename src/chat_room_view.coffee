@@ -155,8 +155,8 @@ class ChatRoom
 
   titleAlert: ->
     if not app.title_notification.notified
-      console.log(@convo.messages[-1])
-      sender_name = @convo.messages[-1].sender.display_name
+      console.log(@convo.messages[@convo.messages.length - 1])
+      sender_name = @convo.messages[@convo.messages.length - 1].sender.display_name
       alert = "Pending ** #{sender_name}"
 
       setAlert = ->

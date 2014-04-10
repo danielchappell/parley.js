@@ -74,11 +74,19 @@ io.sockets.on 'connection', (client) ->
         for member_group in persist_convos
           group = JSON.parse(member_group)
           id_array = []
-          for user in member_group
+          for user in group
             id_array.push(user.image_url)
           convo_key = id_array.sort().join()
           redisClient.lrange convo_key, 0, -1, (err, messages) ->
-            client.emit 'persistent_convo', group, messages
+            if err
+              console.log "ERROR: #{err}"
+            else
+              console.log(messages)
+              parsed_array = []
+              for message in messages
+                parsed_array.push(JSON.parse(message))
+              console.log(parsed_array)
+              client.emit 'persistent_convo', group, parsed_array
 
 
     ## listen for type_notifications
@@ -97,13 +105,14 @@ io.sockets.on 'connection', (client) ->
       ## stringifies message object from sender for storage in redis
       json_message = JSON.stringify(message)
       member_array = message.recipients.concat(message.sender)
+      console.log("this is the member_array", member_array)
       ## create and execute redis task that refreshes the user/conversation set and the conversation list
       redisClient.multi([
         ['sadd', message.sender.image_url, JSON.stringify(member_array)],
         ['expire', message.sender.image_url, 16070400],
-        ['rpush', message.convo_id, json_message],
-        ['ltrim', message.convo_id, -199, -1],
-        ['expire', message.convo_id, 604800]
+        ['rpush', message.convo_key, json_message],
+        ['ltrim', message.convo_key, -199, -1],
+        ['expire', message.convo_key, 604800]
         ]).exec (err, replies) ->
           if err then console.log err else console.log replies
       for recipent in message.recipients

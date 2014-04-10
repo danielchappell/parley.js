@@ -69,13 +69,25 @@ io.sockets.on('connection', function(client) {
           member_group = persist_convos[_j];
           group = JSON.parse(member_group);
           id_array = [];
-          for (_k = 0, _len2 = member_group.length; _k < _len2; _k++) {
-            user = member_group[_k];
+          for (_k = 0, _len2 = group.length; _k < _len2; _k++) {
+            user = group[_k];
             id_array.push(user.image_url);
           }
           convo_key = id_array.sort().join();
           _results.push(redisClient.lrange(convo_key, 0, -1, function(err, messages) {
-            return client.emit('persistent_convo', group, messages);
+            var message, parsed_array, _l, _len3;
+            if (err) {
+              return console.log("ERROR: " + err);
+            } else {
+              console.log(messages);
+              parsed_array = [];
+              for (_l = 0, _len3 = messages.length; _l < _len3; _l++) {
+                message = messages[_l];
+                parsed_array.push(JSON.parse(message));
+              }
+              console.log(parsed_array);
+              return client.emit('persistent_convo', group, parsed_array);
+            }
           }));
         }
         return _results;
@@ -112,7 +124,8 @@ io.sockets.on('connection', function(client) {
       var json_message, member_array, recipent, socket, _j, _len1, _ref, _results;
       json_message = JSON.stringify(message);
       member_array = message.recipients.concat(message.sender);
-      redisClient.multi([['sadd', message.sender.image_url, JSON.stringify(member_array)], ['expire', message.sender.image_url, 16070400], ['rpush', message.convo_id, json_message], ['ltrim', message.convo_id, -199, -1], ['expire', message.convo_id, 604800]]).exec(function(err, replies) {
+      console.log("this is the member_array", member_array);
+      redisClient.multi([['sadd', message.sender.image_url, JSON.stringify(member_array)], ['expire', message.sender.image_url, 16070400], ['rpush', message.convo_key, json_message], ['ltrim', message.convo_key, -199, -1], ['expire', message.convo_key, 604800]]).exec(function(err, replies) {
         if (err) {
           return console.log(err);
         } else {
