@@ -37,6 +37,8 @@ class App
     ## listen for persistent conversations from the server on load.
     ## will be sent in one at a time from redis on load.
     @server.on 'persistent_convo', @load_persistent_convo.bind(this)
+    ## listens for messages send to closed conversations or new conversations
+    @server.on 'message', @update_persistent_convos.bind(this)
 
     ## listens for current users array from server
     @server.on 'current_users', @load_current_users.bind(this)
@@ -61,6 +63,8 @@ class App
     ## create new conversation object from persistent conversation info
     convo = new Conversation(convo_members, parsed_messages)
     @conversations.push(convo)
+
+  update_persistent_convos: (message) ->
 
 
 
