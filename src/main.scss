@@ -288,6 +288,14 @@ label {
   }
 }
 // existing message view within conversation view
+.existing {
+    display: flex;
+    flex-direction: row;
+    padding:.25rem;
+    border-bottom:1px solid $lght;
+    position:relative;
+    }
+
 .persistent {
   max-height: 18rem;
   overflow-y: scroll;
@@ -298,10 +306,10 @@ label {
 
 // logged out
 .controller{
-  width:16rem;
-  position:absolute;
-  bottom:0;
-  right:2rem;
+  width: 12rem;
+  position: absolute;
+  bottom: 0;
+  right: 0rem;
   border:1px solid $gry;
     .persistent-bar {
       border: 1px solid $drk;
@@ -398,26 +406,18 @@ label {
       flex-direction:column;
       justify-content:center;
       >a{
+        text-decoration: none;
         color: $gry;
         text-align:center;
       }
     }
   }
   .utility-bar{
-      background: $drk;
-      li{
-        border-top:4px solid $md;
-        &:hover{
-          border-top:4px solid $yllw;
-          >a{
-            color:$rd;
-          }
-        }
-        a{
-          line-height: 40px;
-          font-size:1.5rem;
-        }
-      }  
+      background: $wht;
+      a{
+        line-height: 25px;
+        font-size:1.25rem;
+      }
     }
 /* existing messages ========================== */
 li.messages {
