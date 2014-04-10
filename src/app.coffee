@@ -51,11 +51,17 @@ class App
     for member, i in convo_members
       if member.image_url is @me.image_url
         convo_members.splice(i,1)
-    console.log(convo_members)
+    ## create message array that is parsed and reassigned as a message
+    parsed_messages = []
+    for message in messages
+      parsed = JSON.parse(message)
+      console.log(message)
+      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.time_stamp)
+      parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
     console.log(messages)
-    convo = new Conversation(convo_members, messages)
+    convo = new Conversation(convo_members, parsed_messages)
     @conversations.push(convo)
 
 
@@ -87,6 +93,7 @@ oauth = require('./oauth.coffee')
 command_center = require('./command_center_view.coffee')
 Conversation = require('./conversation_model.coffee')
 User = require('./user_model.coffee')
+Message = require('./message_model.coffee')
 App.prototype.command_center = command_center
 App.prototype.oauth = oauth
 

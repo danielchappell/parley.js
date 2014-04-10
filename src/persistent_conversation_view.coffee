@@ -6,11 +6,9 @@ Handlebars = require('hbsfy/runtime')
 
 ## HANDLEBARS HELPER FUNCTIONS FOR PERSISTENT MESSAGE TEMPLATE
 Handlebars.registerHelper 'retrieve_image', ->
-  this.convo_partners_image_urls[0]
+  console.log(@convo_partners_image_urls)
+  @convo_partners_image_urls[0]
 Handlebars.registerHelper 'retrieve_last_message', ->
-  console.log(app.conversations)
-  console.log(@messages)
-  console.log(@messages[@messages.length - 1])
   this.messages[this.messages.length - 1].content
 Handlebars.registerHelper 'calculate_last_message_time', ->
   this.messages[this.messages.length - 1].calculate_time()

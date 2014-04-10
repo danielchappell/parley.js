@@ -75,18 +75,10 @@ io.sockets.on('connection', function(client) {
           }
           convo_key = id_array.sort().join();
           _results.push(redisClient.lrange(convo_key, 0, -1, function(err, messages) {
-            var message, parsed_array, _l, _len3;
             if (err) {
               return console.log("ERROR: " + err);
             } else {
-              console.log(messages);
-              parsed_array = [];
-              for (_l = 0, _len3 = messages.length; _l < _len3; _l++) {
-                message = messages[_l];
-                parsed_array.push(JSON.parse(message));
-              }
-              console.log(parsed_array);
-              return client.emit('persistent_convo', group, parsed_array);
+              return client.emit('persistent_convo', group, messages);
             }
           }));
         }

@@ -13,12 +13,12 @@ class Conversation
 
     for user, i in @convo_partners
       first_name = user.display_name.match(/^[A-z]+/)
-      if i isnt @convo_partners.length
+      if (i + 1) isnt @convo_partners.length
         @first_name_list += "#{first_name}, "
-        @convo_partners_image_urls += user.image_url
+        @convo_partners_image_urls.push(user.image_url)
       else
         @first_name_list += "#{first_name}"
-        @convo_partners_image_urls += user.image_url
+        @convo_partners_image_urls.push(user.image_url)
 
   add_message: (message) ->
     @messages.push message

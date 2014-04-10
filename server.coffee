@@ -81,12 +81,7 @@ io.sockets.on 'connection', (client) ->
             if err
               console.log "ERROR: #{err}"
             else
-              console.log(messages)
-              parsed_array = []
-              for message in messages
-                parsed_array.push(JSON.parse(message))
-              console.log(parsed_array)
-              client.emit 'persistent_convo', group, parsed_array
+              client.emit 'persistent_convo', group, messages
 
 
     ## listen for type_notifications
