@@ -55,12 +55,10 @@ class App
     parsed_messages = []
     for message in messages
       parsed = JSON.parse(message)
-      console.log(message)
       new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.time_stamp)
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
-    console.log(messages)
     convo = new Conversation(convo_members, parsed_messages)
     @conversations.push(convo)
 

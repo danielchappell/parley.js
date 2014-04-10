@@ -6,7 +6,6 @@ Handlebars = require('hbsfy/runtime')
 
 ## HANDLEBARS HELPER FUNCTIONS FOR PERSISTENT MESSAGE TEMPLATE
 Handlebars.registerHelper 'retrieve_image', ->
-  console.log(@convo_partners_image_urls)
   @convo_partners_image_urls[0]
 Handlebars.registerHelper 'retrieve_last_message', ->
   this.messages[this.messages.length - 1].content
@@ -38,7 +37,7 @@ class PersistentConversationView
       app.open_conversations.push(@convo.message_filter)
 
       ## check and see if action is in command center or chat window
-      if not @$element.parent()[0].hasClass('controller-view')
+      if not @$element.parent().hasClass('controller-view')
         @$element.parents('div.parley').remove()
 
 module.exports = PersistentConversationView

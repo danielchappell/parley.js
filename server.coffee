@@ -100,7 +100,6 @@ io.sockets.on 'connection', (client) ->
       ## stringifies message object from sender for storage in redis
       json_message = JSON.stringify(message)
       member_array = message.recipients.concat(message.sender)
-      console.log("this is the member_array", member_array)
       ## create and execute redis task that refreshes the user/conversation set and the conversation list
       redisClient.multi([
         ['sadd', message.sender.image_url, JSON.stringify(member_array)],

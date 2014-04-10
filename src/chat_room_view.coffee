@@ -20,6 +20,7 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
+    @loadPersistentMessages()
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
@@ -36,9 +37,6 @@ class ChatRoom
                         notified: false
                         page_title: $('html title').html()
   message_callback: (message) ->
-    console.log("im here!!!")
-    console.log(message)
-    console.log(@convo.message_filter)
     if @convo.message_filter is message.convo_key
       console.log('whoop!')
       @convo.add_message(message)
@@ -47,7 +45,7 @@ class ChatRoom
       @titleAlert()
 
   user_offline_callback: ->
-    message = new Message( app.me, 'http://storage.googleapis.com/parley-assets/server_network.png', "This user is no longer online", new Date() )
+    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", new Date() )
     @convo.add_message(message)
     @renderDiscussion()
 
@@ -102,7 +100,7 @@ class ChatRoom
   loadPersistentMessages: ->
     for message in @convo.messages
       @appendMessage(message)
-    if @messages.length > 0
+    if @convo.messages.length > 0
       @scrollToLastMessage()
 
   sendOnEnter: (e)->
