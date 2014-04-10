@@ -28,8 +28,8 @@ class PersistentConversationView
   load_convo: ->
     ## if convo isn't open load new chat window with convo
     convo_status = 'closed'
-    for convo in app.open_conversations
-      if @convo.message_filter is convo.message_filter
+    for open_convo in app.open_conversations
+      if @convo.message_filter is open_convo
         convo_status = 'open'
 
     if convo_status isnt 'open'
