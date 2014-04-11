@@ -5,10 +5,10 @@ Conversation = require('./conversation_model.coffee')
 chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
-  if this.convo_partners.length < 2
-    return this.convo_partners[0].display_name
+  if @convo_partners.length < 2
+    return @convo_partners[0].display_name
   else
-  return this.first_name_list
+  return @first_name_list
 
 
 
@@ -32,20 +32,20 @@ class ChatRoom
     @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
-    @$discussion.find('.parley_file_upload').on 'change', @file_upload.bind(this)
+    @$element.find('.parley_file_upload').on 'change', @file_upload.bind(this)
     app.title_notification =
                         notified: false
                         page_title: $('html title').html()
   message_callback: (message) ->
     if @convo.message_filter is message.convo_id
-      new_message = new Message(message.recipients, message.sender, message.content, message.time_stamp)
+      new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
       @convo.add_message(new_message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')
       @titleAlert()
 
   user_offline_callback: ->
-    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", new Date() )
+    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
     @convo.add_message(message)
     @renderDiscussion()
 
@@ -180,8 +180,8 @@ class ChatRoom
       app.title_notification.notified = true
 
   file_upload: ->
-    file = @$discussion.find('.picture_upload').get(0).files[0]
-    app.oauth.file_upload file, @convo.convo_partners_image_urls, app.me.image_url
+    file = @$element.find('.parley_file_upload').get(0).files[0]
+    app.oauth.file_upload file, @convo.convo_partners, @convo.message_filter
 
 
 module.exports = ChatRoom

@@ -58,7 +58,7 @@ class App
     parsed_messages = []
     for message in messages
       parsed = JSON.parse(message)
-      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.time_stamp)
+      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.image parsed.time_stamp)
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
@@ -77,7 +77,7 @@ class App
       if convo.message_filter is message.convo_id
         corres_convo = convo
 
-    new_message = new Message(message.recipients, message.sender, message.content, message.time_stamp)
+    new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
     ## if convo exists
     if corres_convo
       corres_convo.add_message(new_message)
