@@ -21,17 +21,15 @@ class ChatRoom
     @render()
     $('body').append(@$element)
     @loadPersistentMessages()
-    console.log(app.open_conversations)
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
     app.server.on 'typing_notification', @typing_notification_callback.bind(this)
-    console.log(app.server.listeners('message'))
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
     @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
-    # @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
+    @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
     @$discussion.find('.parley_file_upload').on 'change', @file_upload.bind(this)
@@ -52,11 +50,12 @@ class ChatRoom
     @renderDiscussion()
 
   typing_notification_callback: (convo_id, typist, bool) ->
+    console.log('hello')
     if convo_id is @convo.message_filter
+      console.log('passed the filter!')
       if bool
         if @$discussion.find('.incoming').length is 0
           typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
-          that.$('.discussion').append(typingNotification);
           @$discussion.append(typing_notification)
           @scrollToLastMessage()
       else
@@ -86,7 +85,6 @@ class ChatRoom
 
   renderDiscussion: ->
     new_message = @convo.messages.slice(-1)[0]
-    console.log(new_message)
     @appendMessage(new_message)
     @scrollToLastMessage()
 
@@ -115,7 +113,7 @@ class ChatRoom
     @renderDiscussion()
     app.server.emit 'message', message
     @$element.find('.send').val('')
-    # @emitTypingNotification()
+    @emitTypingNotification()
 
   toggleChat: (e) ->
     e.preventDefault()
@@ -151,7 +149,9 @@ class ChatRoom
       @clearTitleNotification()
 
   emitTypingNotification: (e) ->
+    console.log('I hear you typing')
     if @$element.find('.send').val() isnt ""
+      console.log('I know you arnt empty')
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, true
     else
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, false
@@ -163,7 +163,6 @@ class ChatRoom
 
   titleAlert: ->
     if not app.title_notification.notified
-      console.log(@convo.messages[@convo.messages.length - 1])
       sender_name = @convo.messages[@convo.messages.length - 1].sender.display_name
       alert = "Pending ** #{sender_name}"
 

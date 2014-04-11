@@ -93,14 +93,14 @@ io.sockets.on 'connection', (client) ->
 
     ## listen for type_notifications
     client.on 'user_typing', (rIDs, sObj, bool)->
-      convo_members = rIDs.concat(sObj.image_url)
+      convo_id = rIDs.concat(sObj.image_url).sort().join()
       for id in rIDs
         if sockets.hasOwnProperty(id)
           for socket in sockets[id]['client']
             if bool
-              socket.emit 'incoming_mesage', convo_members, sObj, true
+              socket.emit 'typing_notification', convo_id, sObj, true
             else
-              socket.emit 'incoming_mesage', convo_members, sObj, false
+              socket.emit 'typing_notification', convo_id, sObj, false
 
     ## listen for messages from clients
     client.on 'message', (message)->
