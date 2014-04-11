@@ -48,7 +48,7 @@ body {
   @include flexbox;
   @include justify-content( space-between );
   background: $md;
-  background: #619e95;
+  background: #666;
   padding: 0 0.25rem;
   a {
     font-size: 0.9rem;
