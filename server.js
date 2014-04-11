@@ -95,8 +95,8 @@ io.sockets.on('connection', function(client) {
       }
     });
     client.on('user_typing', function(rIDs, sObj, bool) {
-      var convo_members, id, socket, _j, _len1, _results;
-      convo_members = rIDs.concat(sObj.image_url);
+      var convo_id, id, socket, _j, _len1, _results;
+      convo_id = rIDs.concat(sObj.image_url).sort().join();
       _results = [];
       for (_j = 0, _len1 = rIDs.length; _j < _len1; _j++) {
         id = rIDs[_j];
@@ -108,9 +108,9 @@ io.sockets.on('connection', function(client) {
             for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
               socket = _ref[_k];
               if (bool) {
-                _results1.push(socket.emit('incoming_mesage', convo_members, sObj, true));
+                _results1.push(socket.emit('typing_notification', convo_id, sObj, true));
               } else {
-                _results1.push(socket.emit('incoming_mesage', convo_members, sObj, false));
+                _results1.push(socket.emit('typing_notification', convo_id, sObj, false));
               }
             }
             return _results1;
