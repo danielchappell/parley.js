@@ -654,12 +654,9 @@ li.existing:nth-child(even) {
   background: #fbfbfb; }
 
 /*scrollbar styles*/
-::-webkit-scrollbar {
-  width: 0.25rem; }
 
-/* Track */
+::-webkit-scrollbar-track {
+  background-color: transparent; }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #404040;
-  max-height: 2rem !important; }
+  background-color: #404040; }
