@@ -48,18 +48,19 @@ body {
   @include justify-content( space-between );
   background: $md;
   background: #666;
-  padding: 0 0.25rem;
+  padding: 0.5rem;
   a {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: $wht;
     align-self: center;
   }
   ul {
     @include flexbox;
-    color: $wht;
+    color: $gry;
     cursor: pointer;
     li{
-      padding: 0.3rem;
+      font-size: 1.125rem;
+      padding: 0 0 0 0.75rem;
     }
   }
 }
@@ -509,3 +510,17 @@ li.messages {
   li.existing:nth-child(even) {
     background:$wht;
   }
+
+  /*scrollbar styles*/
+::-webkit-scrollbar {
+    // width: 0.125rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: #404040;
+}
+

@@ -8,7 +8,14 @@ Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'retrieve_image', ->
   @convo_partners_image_urls[0]
 Handlebars.registerHelper 'retrieve_last_message', ->
-  this.messages[this.messages.length - 1].content
+  last_message = @messages[@messages.length - 1]
+  if last_message.image
+    file_name = last_message.content.replace(/^(https\:\/\/storage\.cloud\.google\.com\/parley-images\/)(.+)/, "$2")
+    return "IMAGE MESSAGE: #{file_name}"
+  else
+    trunc_message = last_message.content.slice(0, 25)
+    return "#{trunc_message}... "
+
 Handlebars.registerHelper 'calculate_last_message_time', ->
   this.messages[this.messages.length - 1].calculate_time()
 
