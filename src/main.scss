@@ -3,6 +3,7 @@
 @import 'flex-box';
 
 /* Modular  Start========================== */
+
   /* Color Variables*/
 $wht:#fbfbfb;
 $bg:#eee;
@@ -46,12 +47,13 @@ body {
   min-width:100%;
   @include flexbox;
   @include justify-content( space-between );
-  background: $grn;
-  padding:.25rem;
+  background: $md;
+  background: #619e95;
+  padding: 0 0.25rem;
   a {
     font-size: 0.9rem;
-    padding: 0.5rem 0.25rem;
     color: $wht;
+    align-self: center;
   }
   ul {
     @include flexbox;
@@ -77,7 +79,8 @@ body {
   background: $bg;
   list-style: none;
   padding:0 .25rem;
-  border: 1px solid $gry;
+  border-bottom: 1px solid $lght;
+  align-items: center;
   ul.existing {
     @include flexbox;
     flex:1;
@@ -90,9 +93,7 @@ body {
   }
   a{
     font-size:1.25rem;
-    line-height:2rem;
     color:$md;
-    padding: 0 0.25rem;
     cursor: pointer;
       &:hover {
         color:#797979;
@@ -124,32 +125,35 @@ ol.discussion {
   }
 }
 // message layout for base ( other )
-.message{
-  @include flexbox;
-  @include flex-direction( column );
-  @include justify-content( flex-start );
-  text-align: left;
-  flex: 1 0 0;
-  margin-left: .5rem;
-  h2{
-    font-size: 0.75rem;
-    color: $drk;
-    margin: 0 0 .25rem 0;
+  .message{
+    @include flexbox;
+    @include flex-direction( column );
+    @include justify-content( flex-start );
+    text-align: left;
+    flex: 1 0 0;
+    margin-left: .5rem;
+    h2{
+      font-size: 0.75rem;
+      color: $drk;
+      margin: 0 0 .25rem 0;
+    }
+    p{
+      font-size: 0.8rem;
+      color: $md;
+      margin: 0 0 0.25rem 0;
+      padding-right: 0.5rem;
+    }
+    a{
+      font-size: 0.6rem;
+      color: $gry;
+      margin: 0;
+    }
   }
-  p{
-    font-size: 0.8rem;
-    color: $md;
-    margin: 0 0 0.25rem 0;
-    padding-right: 0.5rem;
-  }
-  a{
-    font-size: 0.6rem;
-    color: $gry;
-    margin: 0;
-  }
-}
 // message alternate  ( self )
 .self {
+  padding-right: 0;
+  justify-content: flex-end;
+  align-items: flex-end;
   .messages {
     @include order( 1 );
   }
@@ -225,6 +229,7 @@ input.search {
   border:none;
   border-bottom:1px solid $bg;
   font-size: 1rem;
+  font-weight: 100;
   outline:none;
   color:$drk;
   margin:0;
@@ -295,12 +300,21 @@ input.search {
 }
 // existing message view within conversation view
 .existing {
-    display: flex;
-    flex-direction: row;
-    padding:.25rem;
-    border-bottom:1px solid $lght;
-    position:relative;
+  display: flex;
+  flex-direction: row;
+  padding:.25rem;
+  position:relative;
+  margin: 0;
+  .avatar{
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    img {
+      height: 1.75rem;
+      width: 1.75rem;
     }
+  }
+}
 
 // end of conversation view
 
@@ -474,17 +488,17 @@ li.messages {
     margin: 0.25rem 0;
   }
 }
-.status {
-  h2:after {
-    content: '';
-    border: 0.125rem solid $grn;
-    display: inline-block;
-    height: 0.25rem;
-    width: 0.25rem;
-    border-radius: 50%;
-    margin: 0.25rem 0 0 .25rem;
-  }
-}
+// .status {
+//   h2:after {
+//     content: '';
+//     border: 0.125rem solid $grn;
+//     display: inline-block;
+//     height: 0.25rem;
+//     width: 0.25rem;
+//     border-radius: 50%;
+//     margin: 0.25rem 0 0 .25rem;
+//   }
+// }
   li.existing:hover {
     opacity: 0.75;
     transition: all 0.5s ease;

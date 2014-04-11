@@ -107,12 +107,13 @@ body {
   -webkit-justify-content: space-between;
   -moz-justify-content: space-between;
   justify-content: space-between;
+  background: #999;
   background: #619e95;
-  padding: 0.25rem; }
+  padding: 0 0.25rem; }
   .top-bar a {
     font-size: 0.9rem;
-    padding: 0.5rem 0.25rem;
-    color: #fbfbfb; }
+    color: #fbfbfb;
+    align-self: center; }
   .top-bar ul {
     display: -webkit-box;
     display: -webkit-flex;
@@ -150,7 +151,8 @@ body {
   background: #eee;
   list-style: none;
   padding: 0 0.25rem;
-  border: 1px solid #adadad; }
+  border-bottom: 1px solid #ccc;
+  align-items: center; }
   .message-bar ul.existing {
     display: -webkit-box;
     display: -webkit-flex;
@@ -173,9 +175,7 @@ body {
     align-items: center; }
   .message-bar a {
     font-size: 1.25rem;
-    line-height: 2rem;
     color: #999;
-    padding: 0 0.25rem;
     cursor: pointer; }
     .message-bar a:hover {
       color: #797979; }
@@ -237,18 +237,22 @@ ol.discussion {
     color: #adadad;
     margin: 0; }
 
-.self .messages {
-  -webkit-box-ordinal-group: 2;
-  -webkit-order: 1;
-  -moz-order: 1;
-  -ms-flex-order: 1;
-  order: 1; }
-.self .avatar {
-  -webkit-box-ordinal-group: 3;
-  -webkit-order: 2;
-  -moz-order: 2;
-  -ms-flex-order: 2;
-  order: 2; }
+.self {
+  padding-right: 0;
+  justify-content: flex-end;
+  align-items: flex-end; }
+  .self .messages {
+    -webkit-box-ordinal-group: 2;
+    -webkit-order: 1;
+    -moz-order: 1;
+    -ms-flex-order: 1;
+    order: 1; }
+  .self .avatar {
+    -webkit-box-ordinal-group: 3;
+    -webkit-order: 2;
+    -moz-order: 2;
+    -ms-flex-order: 2;
+    order: 2; }
 
 textarea.grw, .textareaMirror {
   padding: 4%;
@@ -307,6 +311,7 @@ input.search {
   border: none;
   border-bottom: 1px solid #eee;
   font-size: 1rem;
+  font-weight: 100;
   outline: none;
   color: #404040;
   margin: 0; }
@@ -403,8 +408,15 @@ input.search {
   display: flex;
   flex-direction: row;
   padding: 0.25rem;
-  border-bottom: 1px solid #ccc;
-  position: relative; }
+  position: relative;
+  margin: 0; }
+  .existing .avatar {
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    overflow: hidden; }
+    .existing .avatar img {
+      height: 1.75rem;
+      width: 1.75rem; }
 
 /* start of controller view ===========================*/
 .controller {
@@ -631,15 +643,6 @@ li.messages {
     font-size: 0.5rem;
     color: #ccc;
     margin: 0.25rem 0; }
-
-.status h2:after {
-  content: '';
-  border: 0.125rem solid #619e95;
-  display: inline-block;
-  height: 0.25rem;
-  width: 0.25rem;
-  border-radius: 50%;
-  margin: 0.25rem 0 0 0.25rem; }
 
 li.existing:hover {
   opacity: 0.75;
