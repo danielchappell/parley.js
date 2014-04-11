@@ -5,7 +5,7 @@ app = require('./app.coffee')
 
 class Message
 
-  constructor: (@recipients, @sender, @content, @time_stamp) ->
+  constructor: (@recipients, @sender, @content, @image=false, @time_stamp) ->
     if not @time_stamp
       @time_stamp = new Date().toUTCString()
     id_array = []

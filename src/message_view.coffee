@@ -3,8 +3,11 @@ app = require('./app.coffee')
 message_template = require('./templates/message.hbs')
 Handlebars = require('hbsfy/runtime')
 ## HANDLEBAR HELPER FUNCTION FOR CALCULATING TIME SINCE MESSAGE CREATION
-# Handlebars.registerHelper 'calculate_time', ->
-#   this.time_elapsed()
+Handlebars.registerHelper 'generate_message_content', ->
+  if @image
+    new Handlebars.SafeString("<img src='" + @content + "'>")
+  else
+    @content
 
 ## constructor for object that contains template data
 ## and interaction logic for individual message models
