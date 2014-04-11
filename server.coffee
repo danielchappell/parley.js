@@ -57,6 +57,7 @@ io.sockets.on 'connection', (client) ->
 
     ## let all clients know a new user is logged on and send client info
       client.broadcast.emit 'user_logged_on', display_name, image_url
+      redisClient.hmset(image_url, "display_name", display_name, "image_url", image_url)
 
     else
       ## if client is already logged on for instance opening a new window or tab
@@ -67,21 +68,27 @@ io.sockets.on 'connection', (client) ->
     client.emit 'current_users', logged_on
 
     ## Query REDIS for all persistent messages belonging to user
-    redisClient.smembers image_url, (err, persist_convos) ->
+    redisClient.smembers "convo_#{image_url}", (err, persist_convos) ->
       if err
-        console.log "ERROR: #{err}"
+        console.log "ERROR 1: #{err}"
       else
-        for member_group in persist_convos
-          group = JSON.parse(member_group)
-          id_array = []
-          for user in group
-            id_array.push(user.image_url)
-          convo_key = id_array.sort().join()
-          redisClient.lrange convo_key, 0, -1, (err, messages) ->
+        console.log(persist_convos)
+        for convo_id in persist_convos
+          convo_members_ids = convo_id.split(',')
+          convo_partners = []
+          for id in convo_members_ids
+            if id isnt image_url
+              redisClient.hgetall id, (err, user) ->
+                if err
+                  console.log "ERROR 2: #{err}"
+                else
+                  convo_partners.push(user)
+
+          redisClient.lrange convo_id, 0, -1, (err, messages) ->
             if err
-              console.log "ERROR: #{err}"
+              console.log "ERROR 3: #{err}"
             else
-              client.emit 'persistent_convo', group, messages
+              client.emit 'persistent_convo', convo_partners, messages
 
 
     ## listen for type_notifications
@@ -99,16 +106,23 @@ io.sockets.on 'connection', (client) ->
     client.on 'message', (message)->
       ## stringifies message object from sender for storage in redis
       json_message = JSON.stringify(message)
-      member_array = message.recipients.concat(message.sender)
+      member_array = message.convo_id.split(',')
+      console.log(member_array)
       ## create and execute redis task that refreshes the user/conversation set and the conversation list
+      for id in member_array
+        convo_key = "convo_#{id}"
+        redisClient.multi([
+          ['sadd', convo_key, message.convo_id],
+          ['expire', convo_key, 16070400]
+          ]).exec (err, replies) ->
+            if err then console.log "ERROR 8:#{err}" else console.log replies
+
       redisClient.multi([
-        ['sadd', message.sender.image_url, JSON.stringify(member_array)],
-        ['expire', message.sender.image_url, 16070400],
-        ['rpush', message.convo_key, json_message],
-        ['ltrim', message.convo_key, -199, -1],
-        ['expire', message.convo_key, 604800]
+        ['rpush', message.convo_id, json_message],
+        ['ltrim', message.convo_id, -199, -1],
+        ['expire', message.convo_id, 604800]
         ]).exec (err, replies) ->
-          if err then console.log err else console.log replies
+          if err then console.log "ERROR 5:#{err}" else console.log replies
       for recipent in message.recipients
         if sockets.hasOwnProperty(recipent.image_url)
           for socket in sockets[recipent.image_url]['client']

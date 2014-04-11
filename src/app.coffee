@@ -48,11 +48,12 @@ class App
   server: io.connect('wss://' + window.location.hostname)
 
 
-  load_persistent_convo: (convo_members, messages) ->
+  load_persistent_convo: (convo_partners, messages) ->
     ## takes passed in convo members and remove client object from array.
-    for member, i in convo_members
-      if member.image_url is @me.image_url
-        convo_members.splice(i,1)
+    # convo_partners = []
+    # for member, i in convo_members
+    #   if member.image_url isnt @me.image_url
+    #     convo_partners.push(member)
     ## create message array that is parsed and reassigned as a message
     parsed_messages = []
     for message in messages
@@ -61,7 +62,7 @@ class App
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
-    convo = new Conversation(convo_members, parsed_messages)
+    convo = new Conversation(convo_partners, parsed_messages)
     @conversations.push(convo)
 
   update_persistent_convos: (message) ->
