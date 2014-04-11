@@ -44,7 +44,6 @@ body {
 }
 
 .top-bar {
-  min-width:100%;
   @include flexbox;
   @include justify-content( space-between );
   background: $md;
@@ -142,6 +141,11 @@ ol.discussion {
       color: $md;
       margin: 0 0 0.25rem 0;
       padding-right: 0.5rem;
+      img{
+        max-width: 12rem;
+        border-radius: 0.25rem;
+        border: 1px solid #adadad;
+      }
     }
     a{
       font-size: 0.6rem;
@@ -171,7 +175,7 @@ textarea.grw, .textareaMirror {
   white-space: pre-wrap;
   word-wrap: break-word;
   max-height:8rem;
-  width: 100%;
+  resize: none;
   min-height:100%;
   border:none;
   outline:none;
@@ -306,12 +310,11 @@ input.search {
   position:relative;
   margin: 0;
   .avatar{
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    overflow: hidden;
     img {
       height: 1.75rem;
       width: 1.75rem;
+      border-radius: 50%;
+      border: 1px solid #adadad;
     }
   }
 }
