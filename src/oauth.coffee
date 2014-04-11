@@ -31,7 +31,7 @@ class Oauth
           headers:
             Authorization: "Bearer #{authResult.access_token}"
           success: (res) =>
-            content= "https://storage.googleapis.com/parley-images/#{res.name}"
+            content = "https://storage.cloud.google.com/parley-images/#{res.name}"
             new_message = new Message convo_partners, app.me, content, true
             app.server.emit 'message', new_message
             for convo in app.conversations
