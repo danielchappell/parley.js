@@ -56,9 +56,10 @@ class CommandCenter
     $(".parley div.controller-view").children().remove()
     if @menu isnt "persistent_convos"
       for convo in app.conversations
-        view = new PersistentConversationView(convo)
-        view.render()
-        $('.parley div.controller-view').append(view.$element)
+        # if convo.messages > 0
+          view = new PersistentConversationView(convo)
+          view.render()
+          $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
     else
       @menu = null
