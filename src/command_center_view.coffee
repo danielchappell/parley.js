@@ -52,6 +52,7 @@ class CommandCenter
 
   toggle_persistent_convos: (e)->
     e.preventDefault()
+    console.log(app.conversations)
     $(".parley div.controller-view").children().remove()
     if @menu isnt "persistent_convos"
       for convo in app.conversations

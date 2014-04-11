@@ -26,11 +26,12 @@ class ChatRoom
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
     app.server.on 'typing_notification', @typing_notification_callback.bind(this)
+    console.log(app.server.listeners('message'))
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
     @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
-    @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
+    # @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
     @$discussion.find('.parley_file_upload').on 'change', @file_upload.bind(this)
@@ -38,8 +39,9 @@ class ChatRoom
                         notified: false
                         page_title: $('html title').html()
   message_callback: (message) ->
-    if @convo.message_filter is message.convo_key
-      @convo.add_message(message)
+    if @convo.message_filter is message.convo_id
+      new_message = new Message(message.recipients, message.sender, message.content, message.time_stamp)
+      @convo.add_message(new_message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')
       @titleAlert()
@@ -49,8 +51,8 @@ class ChatRoom
     @convo.add_message(message)
     @renderDiscussion()
 
-  typing_notification_callback: (convo_key, typist, bool) ->
-    if convo_key is @convo.message_filter
+  typing_notification_callback: (convo_id, typist, bool) ->
+    if convo_id is @convo.message_filter
       if bool
         if @$discussion.find('.incoming').length is 0
           typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
@@ -69,8 +71,8 @@ class ChatRoom
     app.conversations.push(new_convo_group)
 
     ## remove current convo_key from app.open_conversations
-    for convo in app.open_conversations
-      if convo is @convo.message_filter
+    for open_convo in app.open_conversations
+      if open_convo is @convo.message_filter
         app.open_conversations.splice(i,1)
 
     ## push new convo to open conversations, change @convo and re-render
@@ -113,7 +115,7 @@ class ChatRoom
     @renderDiscussion()
     app.server.emit 'message', message
     @$element.find('.send').val('')
-    this.emitTypingNotification()
+    # @emitTypingNotification()
 
   toggleChat: (e) ->
     e.preventDefault()
@@ -131,7 +133,9 @@ class ChatRoom
 
     ## remove all websocket listeners for garbage collection
     ## remove chat from DOM
-    app.server.removeAllListeners()
+    app.server.removeListener 'message', @message_callback.bind(this)
+    app.server.removeListener 'user_offline', @user_offline_callback.bind(this)
+    app.server.removeListener 'typing_notification', @typing_notification_callback.bind(this)
     @$element.find('.chat-close').off()
     @$element.find('.send').off()
     @$element.find('.send').off()
