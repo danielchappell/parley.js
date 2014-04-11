@@ -108,9 +108,9 @@ body {
   justify-content: space-between;
   background: #999;
   background: #666;
-  padding: 0 0.25rem; }
+  padding: 0.5rem; }
   .top-bar a {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #fbfbfb;
     align-self: center; }
   .top-bar ul {
@@ -119,10 +119,11 @@ body {
     display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
-    color: #fbfbfb;
+    color: #adadad;
     cursor: pointer; }
     .top-bar ul li {
-      padding: 0.3rem; }
+      font-size: 1.125rem;
+      padding: 0 0 0 0.75rem; }
 
 .message-alt {
   display: -webkit-box;
@@ -651,3 +652,14 @@ li.existing:hover {
 
 li.existing:nth-child(even) {
   background: #fbfbfb; }
+
+/*scrollbar styles*/
+::-webkit-scrollbar {
+  width: 0.25rem; }
+
+/* Track */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  max-height: 2rem !important; }
