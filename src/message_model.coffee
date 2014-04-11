@@ -5,14 +5,14 @@ app = require('./app.coffee')
 
 class Message
 
-  constructor: (@recipients, @sender, @content, @time_stamp) ->
+  constructor: (@recipients, @sender, @content, @image=false, @time_stamp) ->
     if not @time_stamp
       @time_stamp = new Date().toUTCString()
     id_array = []
     for user in @recipients
       id_array = id_array.concat(user.image_url)
     id_array = id_array.concat(@sender.image_url)
-    @convo_key = id_array.sort().join()
+    @convo_id = id_array.sort().join()
     @time_created = new Date(@time_stamp)
     @time_since_created = @calculate_time()
 

@@ -5,10 +5,10 @@ Conversation = require('./conversation_model.coffee')
 chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
-  if this.convo_partners.length < 2
-    return this.convo_partners[0].display_name
+  if @convo_partners.length < 2
+    return @convo_partners[0].display_name
   else
-  return this.first_name_list
+  return @first_name_list
 
 
 
@@ -21,7 +21,6 @@ class ChatRoom
     @render()
     $('body').append(@$element)
     @loadPersistentMessages()
-    console.log(app.open_conversations)
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
@@ -33,28 +32,30 @@ class ChatRoom
     @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
-    @$discussion.find('.parley_file_upload').on 'change', @file_upload.bind(this)
+    @$element.find('.parley_file_upload').on 'change', @file_upload.bind(this)
     app.title_notification =
                         notified: false
                         page_title: $('html title').html()
   message_callback: (message) ->
-    if @convo.message_filter is message.convo_key
-      @convo.add_message(message)
+    if @convo.message_filter is message.convo_id
+      new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
+      @convo.add_message(new_message)
       @renderDiscussion()
       @$element.find('.top-bar').addClass('new-message')
       @titleAlert()
 
   user_offline_callback: ->
-    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", new Date() )
+    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
     @convo.add_message(message)
     @renderDiscussion()
 
-  typing_notification_callback: (convo_key, typist, bool) ->
-    if convo_key is @convo.message_filter
+  typing_notification_callback: (convo_id, typist, bool) ->
+    console.log('hello')
+    if convo_id is @convo.message_filter
+      console.log('passed the filter!')
       if bool
         if @$discussion.find('.incoming').length is 0
           typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
-          that.$('.discussion').append(typingNotification);
           @$discussion.append(typing_notification)
           @scrollToLastMessage()
       else
@@ -69,8 +70,8 @@ class ChatRoom
     app.conversations.push(new_convo_group)
 
     ## remove current convo_key from app.open_conversations
-    for convo in app.open_conversations
-      if convo is @convo.message_filter
+    for open_convo in app.open_conversations
+      if open_convo is @convo.message_filter
         app.open_conversations.splice(i,1)
 
     ## push new convo to open conversations, change @convo and re-render
@@ -84,7 +85,6 @@ class ChatRoom
 
   renderDiscussion: ->
     new_message = @convo.messages.slice(-1)[0]
-    console.log(new_message)
     @appendMessage(new_message)
     @scrollToLastMessage()
 
@@ -113,7 +113,7 @@ class ChatRoom
     @renderDiscussion()
     app.server.emit 'message', message
     @$element.find('.send').val('')
-    this.emitTypingNotification()
+    @emitTypingNotification()
 
   toggleChat: (e) ->
     e.preventDefault()
@@ -131,7 +131,9 @@ class ChatRoom
 
     ## remove all websocket listeners for garbage collection
     ## remove chat from DOM
-    app.server.removeAllListeners()
+    app.server.removeListener 'message', @message_callback.bind(this)
+    app.server.removeListener 'user_offline', @user_offline_callback.bind(this)
+    app.server.removeListener 'typing_notification', @typing_notification_callback.bind(this)
     @$element.find('.chat-close').off()
     @$element.find('.send').off()
     @$element.find('.send').off()
@@ -147,7 +149,9 @@ class ChatRoom
       @clearTitleNotification()
 
   emitTypingNotification: (e) ->
+    console.log('I hear you typing')
     if @$element.find('.send').val() isnt ""
+      console.log('I know you arnt empty')
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, true
     else
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, false
@@ -159,7 +163,6 @@ class ChatRoom
 
   titleAlert: ->
     if not app.title_notification.notified
-      console.log(@convo.messages[@convo.messages.length - 1])
       sender_name = @convo.messages[@convo.messages.length - 1].sender.display_name
       alert = "Pending ** #{sender_name}"
 
@@ -177,8 +180,8 @@ class ChatRoom
       app.title_notification.notified = true
 
   file_upload: ->
-    file = @$discussion.find('.picture_upload').get(0).files[0]
-    app.oauth.file_upload file, @convo.convo_partners_image_urls, app.me.image_url
+    file = @$element.find('.parley_file_upload').get(0).files[0]
+    app.oauth.file_upload file, @convo.convo_partners, @convo.message_filter
 
 
 module.exports = ChatRoom

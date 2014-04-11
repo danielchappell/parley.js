@@ -48,25 +48,61 @@ class App
   server: io.connect('wss://' + window.location.hostname)
 
 
-  load_persistent_convo: (convo_members, messages) ->
+  load_persistent_convo: (convo_partners, messages) ->
     ## takes passed in convo members and remove client object from array.
-    for member, i in convo_members
-      if member.image_url is @me.image_url
-        convo_members.splice(i,1)
+    # convo_partners = []
+    # for member, i in convo_members
+    #   if member.image_url isnt @me.image_url
+    #     convo_partners.push(member)
     ## create message array that is parsed and reassigned as a message
     parsed_messages = []
     for message in messages
       parsed = JSON.parse(message)
-      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.time_stamp)
+      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.image parsed.time_stamp)
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
-    convo = new Conversation(convo_members, parsed_messages)
+    convo = new Conversation(convo_partners, parsed_messages)
     @conversations.push(convo)
 
   update_persistent_convos: (message) ->
+    console.log("i hear you click")
+    ## only update if convo doesn't exist or is not currently open
+    for open_convo in @open_conversations
+      if message.convo_id is open_convo
+        return
+    console.log('i know the convo isnt open')
+    ## find if convo exists
+    for convo in @conversations
+      if convo.message_filter is message.convo_id
+        corres_convo = convo
 
+    new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
+    ## if convo exists
+    if corres_convo
+      corres_convo.add_message(new_message)
+      console.log("I think the convo exists")
+    else
+      console.log("I think the convo doesn't exist")
+      ## logic to extract info from message to create new convo
+      convo_members_ids = new_message.convo_id.split(',')
+      ## remove self from array to construct convo partners
+      for user_id, i in convo_members_ids
+        if user_id is @me.image_url
+          convo_members_ids.splice(i,1)
 
+      ## use ids to grab full objects for convo partners
+      convo_partners = []
+      for user_id in convo_members_ids
+        for online_user in @current_users
+          if user_id is online_user.image_url
+            convo_partners.push(online_user)
+
+      ## create new convo and add message
+      new_convo = new Conversation(convo_partners)
+      @conversations.push(new_convo)
+      new_convo.add_message(new_message)
+      console.log(@conversations)
 
   load_current_users: (logged_on) ->
     ## recieves current users from server on login

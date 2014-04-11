@@ -55,30 +55,39 @@ io.sockets.on('connection', function(client) {
         image_url: image_url
       });
       client.broadcast.emit('user_logged_on', display_name, image_url);
+      redisClient.hmset(image_url, "display_name", display_name, "image_url", image_url);
     } else {
       sockets[image_url]['client'] = sockets[image_url]['client'].concat(client);
     }
     client.emit('current_users', logged_on);
-    redisClient.smembers(image_url, function(err, persist_convos) {
-      var convo_key, group, id_array, member_group, _j, _k, _len1, _len2, _results;
+    redisClient.smembers("convo_" + image_url, function(err, persist_convos) {
+      var convo_id, convo_members_ids, convo_partners, id, _j, _k, _len1, _len2, _results;
       if (err) {
-        return console.log("ERROR: " + err);
+        return console.log("ERROR 1: " + err);
       } else {
+        console.log(persist_convos);
         _results = [];
         for (_j = 0, _len1 = persist_convos.length; _j < _len1; _j++) {
-          member_group = persist_convos[_j];
-          group = JSON.parse(member_group);
-          id_array = [];
-          for (_k = 0, _len2 = group.length; _k < _len2; _k++) {
-            user = group[_k];
-            id_array.push(user.image_url);
+          convo_id = persist_convos[_j];
+          convo_members_ids = convo_id.split(',');
+          convo_partners = [];
+          for (_k = 0, _len2 = convo_members_ids.length; _k < _len2; _k++) {
+            id = convo_members_ids[_k];
+            if (id !== image_url) {
+              redisClient.hgetall(id, function(err, user) {
+                if (err) {
+                  return console.log("ERROR 2: " + err);
+                } else {
+                  return convo_partners.push(user);
+                }
+              });
+            }
           }
-          convo_key = id_array.sort().join();
-          _results.push(redisClient.lrange(convo_key, 0, -1, function(err, messages) {
+          _results.push(redisClient.lrange(convo_id, 0, -1, function(err, messages) {
             if (err) {
-              return console.log("ERROR: " + err);
+              return console.log("ERROR 3: " + err);
             } else {
-              return client.emit('persistent_convo', group, messages);
+              return client.emit('persistent_convo', convo_partners, messages);
             }
           }));
         }
@@ -86,8 +95,8 @@ io.sockets.on('connection', function(client) {
       }
     });
     client.on('user_typing', function(rIDs, sObj, bool) {
-      var convo_members, id, socket, _j, _len1, _results;
-      convo_members = rIDs.concat(sObj.image_url);
+      var convo_id, id, socket, _j, _len1, _results;
+      convo_id = rIDs.concat(sObj.image_url).sort().join();
       _results = [];
       for (_j = 0, _len1 = rIDs.length; _j < _len1; _j++) {
         id = rIDs[_j];
@@ -99,9 +108,9 @@ io.sockets.on('connection', function(client) {
             for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
               socket = _ref[_k];
               if (bool) {
-                _results1.push(socket.emit('incoming_mesage', convo_members, sObj, true));
+                _results1.push(socket.emit('typing_notification', convo_id, sObj, true));
               } else {
-                _results1.push(socket.emit('incoming_mesage', convo_members, sObj, false));
+                _results1.push(socket.emit('typing_notification', convo_id, sObj, false));
               }
             }
             return _results1;
@@ -113,27 +122,39 @@ io.sockets.on('connection', function(client) {
       return _results;
     });
     client.on('message', function(message) {
-      var json_message, member_array, recipent, socket, _j, _len1, _ref, _results;
+      var convo_key, id, json_message, member_array, recipent, socket, _j, _k, _len1, _len2, _ref, _results;
       json_message = JSON.stringify(message);
-      member_array = message.recipients.concat(message.sender);
-      redisClient.multi([['sadd', message.sender.image_url, JSON.stringify(member_array)], ['expire', message.sender.image_url, 16070400], ['rpush', message.convo_key, json_message], ['ltrim', message.convo_key, -199, -1], ['expire', message.convo_key, 604800]]).exec(function(err, replies) {
+      member_array = message.convo_id.split(',');
+      console.log(member_array);
+      for (_j = 0, _len1 = member_array.length; _j < _len1; _j++) {
+        id = member_array[_j];
+        convo_key = "convo_" + id;
+        redisClient.multi([['sadd', convo_key, message.convo_id], ['expire', convo_key, 16070400]]).exec(function(err, replies) {
+          if (err) {
+            return console.log("ERROR 8:" + err);
+          } else {
+            return console.log(replies);
+          }
+        });
+      }
+      redisClient.multi([['rpush', message.convo_id, json_message], ['ltrim', message.convo_id, -199, -1], ['expire', message.convo_id, 604800]]).exec(function(err, replies) {
         if (err) {
-          return console.log(err);
+          return console.log("ERROR 5:" + err);
         } else {
           return console.log(replies);
         }
       });
       _ref = message.recipients;
       _results = [];
-      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-        recipent = _ref[_j];
+      for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+        recipent = _ref[_k];
         if (sockets.hasOwnProperty(recipent.image_url)) {
           _results.push((function() {
-            var _k, _len2, _ref1, _results1;
+            var _l, _len3, _ref1, _results1;
             _ref1 = sockets[recipent.image_url]['client'];
             _results1 = [];
-            for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-              socket = _ref1[_k];
+            for (_l = 0, _len3 = _ref1.length; _l < _len3; _l++) {
+              socket = _ref1[_l];
               _results1.push(socket.emit('message', message));
             }
             return _results1;

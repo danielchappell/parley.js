@@ -21,7 +21,7 @@ class Oauth
           app.me = new User display_name, image_url
           app.server.emit('join', display_name, image_url)
           app.command_center.log_in()
-      @file_upload = (file, rIDs, sID) ->
+      Oauth.prototype.file_upload = (file, convo_partners, convo_id) ->
         $.ajax({
           url: "https://www.googleapis.com/upload/storage/v1beta2/b/parley-images/o?uploadType=media&name=#{file.name}"
           type: "POST"
@@ -31,12 +31,12 @@ class Oauth
           headers:
             Authorization: "Bearer #{authResult.access_token}"
           success: (res) =>
-            image_src= "https://storage.cloud.google.com/parley-images/#{res.name}"
-            msg = "<img src=#{image_src} />"
-            app.server.emit('message', msg, rIDs, sID)
-            message = new Message rIDs, sID, msg
-            @convo.messages.add_message(message)
-            @render()
+            content = "https://storage.cloud.google.com/parley-images/#{res.name}"
+            new_message = new Message convo_partners, app.me, content, true
+            app.server.emit 'message', new_message
+            for convo in app.conversations
+              if convo.message_filter is convo_id
+                convo.add_message(new_message)
         })
     else
       ## login unsuccessful log error to the console

@@ -579,8 +579,12 @@ input.search {
       text-align: center; }
 
 .utility-bar {
+<<<<<<< HEAD
   background: #eee;
   border-top: 1px solid #adadad; }
+=======
+  background: #fbfbfb; }
+>>>>>>> master
   .utility-bar a {
     font-size: 1.125rem; }
 
