@@ -25,7 +25,8 @@ class ChatRoom
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
-    # app.server.on 'typing_notification', @typing_notification_callback.bind(this)
+    app.server.on 'typing_notification', @typing_notification_callback.bind(this)
+    console.log(app.server.listeners('message'))
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
@@ -132,7 +133,9 @@ class ChatRoom
 
     ## remove all websocket listeners for garbage collection
     ## remove chat from DOM
-    app.server.removeAllListeners()
+    app.server.removeListener 'message', @message_callback.bind(this)
+    app.server.removeListener 'user_offline', @user_offline_callback.bind(this)
+    app.server.removeListener 'typing_notification', @typing_notification_callback.bind(this)
     @$element.find('.chat-close').off()
     @$element.find('.send').off()
     @$element.find('.send').off()
