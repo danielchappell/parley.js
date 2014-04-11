@@ -18,25 +18,26 @@ class CommandCenter
     $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
 
   log_in: ->
+    @logged_in = true
     $(".parley .persistent-bar.logged_out").off()
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
+    $('.persistent-bar').on 'click', @toggle_command_center.bind(this)
     $('.parley div.controller-bar a.messages').on 'click', @toggle_persistent_convos.bind(this)
     $('.parley div.controller-bar a.active-users').on 'click', @toggle_current_users.bind(this)
     $('.parley div.controller-bar a.user-settings').on 'click', @toggle_user_settings.bind(this)
 
   toggle_command_center: (e)->
     e.preventDefault()
-    ## If a user is logged in they get a default profile view
-    ## otherwise a login with google appears.
-    if logged_out
-      $( ".persistent-bar.logged-out" ).on "click", ->
-        $( "#log-click" ).toggle()
-        $( "ul.login-bar" ).slideToggle()
+    $('.controller-view').toggle()
+    if $('div.persistent-bar span').hasClass('entypo-down-open-mini')
+      $('div.persistent-bar span').removeClass('entypo-down-open-mini')
+      $('div.persistent-bar span').addClass('entypo-up-open-mini')
     else
-      $ ->
-        $('.persistent-bar').on 'click', ->
-          $('.controller-view').toggle()
+      $('div.persistent-bar span').removeClass('entypo-up-open-mini')
+      $('div.persistent-bar span').addClass('entypo-down-open-mini')
+
+
 
   toggle_current_users: (e)->
     e.preventDefault()
@@ -56,9 +57,10 @@ class CommandCenter
     $(".parley div.controller-view").children().remove()
     if @menu isnt "persistent_convos"
       for convo in app.conversations
-        view = new PersistentConversationView(convo)
-        view.render()
-        $('.parley div.controller-view').append(view.$element)
+        if convo.messages.length > 0
+          view = new PersistentConversationView(convo)
+          view.render()
+          $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
     else
       @menu = null

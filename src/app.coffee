@@ -58,7 +58,7 @@ class App
     parsed_messages = []
     for message in messages
       parsed = JSON.parse(message)
-      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.image parsed.time_stamp)
+      new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.image, parsed.time_stamp)
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
