@@ -96,7 +96,6 @@ body {
   border: 1px solid #adadad; }
 
 .top-bar {
-  min-width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;
@@ -232,6 +231,10 @@ ol.discussion {
     color: #999;
     margin: 0 0 0.25rem 0;
     padding-right: 0.5rem; }
+    .message p img {
+      max-width: 12rem;
+      border-radius: 0.25rem;
+      border: 1px solid #adadad; }
   .message a {
     font-size: 0.6rem;
     color: #adadad;
@@ -263,7 +266,7 @@ textarea.grw, .textareaMirror {
   white-space: pre-wrap;
   word-wrap: break-word;
   max-height: 8rem;
-  width: 100%;
+  resize: none;
   min-height: 100%;
   border: none;
   outline: none; }
@@ -410,13 +413,11 @@ input.search {
   padding: 0.25rem;
   position: relative;
   margin: 0; }
-  .existing .avatar {
+  .existing .avatar img {
+    height: 1.75rem;
+    width: 1.75rem;
     border-radius: 50%;
-    border: 1px solid #ccc;
-    overflow: hidden; }
-    .existing .avatar img {
-      height: 1.75rem;
-      width: 1.75rem; }
+    border: 1px solid #adadad; }
 
 /* start of controller view ===========================*/
 .controller {
