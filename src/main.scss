@@ -240,27 +240,32 @@ input.search {
   padding: 0.25rem;
   border-bottom: 1px solid $lght;
   position: relative;
-  &:nth-child(even) {
+  cursor: pointer;
+  &:hover {
     background:$bg;
-  }
-  .existing:hover {
-    opacity: 0.75;
     transition: all 0.5s ease;
   }
   .avatar {
     @include flexbox;
-    @include order( 2 );
+    margin-right: .5rem;
+    border-radius: 50%;
+    border: 1px solid $md;
+    overflow: hidden;
+    img{
+      width: 1.75rem;
+      height: 1.75rem;
+    }
   }
   .content {
     @include flexbox;
     @include flex-direction( row );
     margin: 0 !important;
     h2 {
-      align-self:center;
-      @include order( 1 );
-      font-size: 1rem;
-      color: $drk;}
+      align-self: center;
+      font-size: 0.75rem;
+      color: $md;
     }
+  }
 }
 // confirm or cancel add user to conversation buttons
 .add-user-bar {
@@ -432,12 +437,12 @@ li.messages {
   padding: 0.25rem;
   border-bottom: 1px solid $lght;
   position: relative;
-}
-.avatar{
-  img {
-    width: 2.5rem;
-    border-radius: 100%;
+  .avatar{
+    border-radius: 50%;
     border: 1px solid $drk;
+    img {
+      width: 2.5rem;
+    }
   }
 }
 .content {

@@ -329,11 +329,10 @@ input.search {
   flex-direction: row;
   padding: 0.25rem;
   border-bottom: 1px solid #ccc;
-  position: relative; }
-  .user:nth-child(even) {
-    background: #eee; }
-  .user .existing:hover {
-    opacity: 0.75;
+  position: relative;
+  cursor: pointer; }
+  .user:hover {
+    background: #eee;
     transition: all 0.5s ease; }
   .user .avatar {
     display: -webkit-box;
@@ -341,11 +340,13 @@ input.search {
     display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-ordinal-group: 3;
-    -webkit-order: 2;
-    -moz-order: 2;
-    -ms-flex-order: 2;
-    order: 2; }
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    border: 1px solid #999;
+    overflow: hidden; }
+    .user .avatar img {
+      width: 1.75rem;
+      height: 1.75rem; }
   .user .content {
     display: -webkit-box;
     display: -webkit-flex;
@@ -361,13 +362,8 @@ input.search {
     margin: 0 !important; }
     .user .content h2 {
       align-self: center;
-      -webkit-box-ordinal-group: 2;
-      -webkit-order: 1;
-      -moz-order: 1;
-      -ms-flex-order: 1;
-      order: 1;
-      font-size: 1rem;
-      color: #404040; }
+      font-size: 0.75rem;
+      color: #999; }
 
 .add-user-bar {
   border-top: 1px solid #ccc;
@@ -592,11 +588,11 @@ li.messages {
   padding: 0.25rem;
   border-bottom: 1px solid #ccc;
   position: relative; }
-
-.avatar img {
-  width: 2.5rem;
-  border-radius: 100%;
-  border: 1px solid #404040; }
+  li.messages .avatar {
+    border-radius: 50%;
+    border: 1px solid #404040; }
+    li.messages .avatar img {
+      width: 2.5rem; }
 
 .content {
   display: -webkit-box;
