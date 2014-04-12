@@ -208,7 +208,7 @@ class ChatRoom
     app.title_notification.notified = false
 
   titleAlert: ->
-       if not app.title_notification.notified
+    if not app.title_notification.notified
       sender_name = @convo.messages[@convo.messages.length - 1].sender.display_name
       alert = "Pending ** #{sender_name}"
       setAlert = ->
