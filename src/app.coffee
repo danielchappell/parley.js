@@ -34,6 +34,10 @@ class App
       s = document.getElementsByTagName('script')[0]
       s.parentNode.insertBefore(po, s)
 
+    ## for setting and clearing browser tab alerts
+    @title_notification =
+                      notified: false
+                      page_title: $('html title').html()
     ## listen for persistent conversations from the server on load.
     ## will be sent in one at a time from redis on load.
     @server.on 'persistent_convo', @load_persistent_convo.bind(this)
