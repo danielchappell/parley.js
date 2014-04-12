@@ -258,17 +258,32 @@ ol.discussion {
     -ms-flex-order: 2;
     order: 2; }
 
-textarea.grw, .textareaMirror {
+textarea.send {
   padding: 4%;
   color: #404040;
-  font-family: 'Open Sans', sans-serif;
   font-size: 0.85rem;
-  border: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  word-wrap: break-word;
+  resize: none;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  position: absolute;
+  width: 100%; }
+
+.mirrordiv {
+  max-height: 8rem;
+  opacity: 0;
+  z-index: -50;
+  padding: 4%;
+  color: #404040;
+  font-size: 0.85rem;
+  border-top: 1px solid #ccc;
   white-space: pre-wrap;
   word-wrap: break-word;
-  max-height: 8rem;
   resize: none;
-  min-height: 100%;
+  overflow: hidden;
+  min-height: 2.5rem;
   border: none;
   outline: none; }
 
@@ -306,19 +321,6 @@ label {
   animation-iteration-count: infinite; }
   .incoming img {
     opacity: 0.6; }
-
-input.search {
-  width: 100%;
-  background: #fbfbfb;
-  z-index: 999;
-  padding: 0.25rem 0.5rem;
-  border: none;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  font-weight: 100;
-  outline: none;
-  color: #404040;
-  margin: 0; }
 
 .online-users {
   max-height: 16rem;
