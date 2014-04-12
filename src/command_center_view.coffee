@@ -15,9 +15,9 @@ ChatRoom = require('./chat_room_view.coffee')
 class CommandCenter
   constructor: ->
     @menu = "default"
-    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a>
-        </div>')
-    @new_convo_params = []
+    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
+
+    ## GET THINGS GOING
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
     $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
@@ -56,8 +56,11 @@ class CommandCenter
       $('.parley div.controller-view').append(@$add_user_bar)
       @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
       @menu = "current_users"
+      @new_convo_params = []
     else
       @menu = null
+      @new_convo_params = []
+
 
   toggle_persistent_convos: (e)->
     e.preventDefault()
@@ -74,9 +77,8 @@ class CommandCenter
 
 
 
-
   toggle_user_settings: (e)->
-    e.preventDefault
+    e.preventDefault()
     $('.parley div.controller-view').children().remove()
     if @menu isnt "user_settings"
       $('.parley div.controller-view').html(profile_template(app.me))
@@ -85,6 +87,8 @@ class CommandCenter
       @menu = null
 
   confirm_new_convo_params: (e) ->
+    e.preventDefault()
+    ## builds convo based on new convo params property
     convo_partners_image_urls = []
     for user in @new_convo_params
       convo_partners_image_urls.push(user.image_url)
@@ -102,7 +106,6 @@ class CommandCenter
     if convo_exists
       chat_window = new ChatRoom(convo)
       app.open_conversations.push(convo_id)
-      @new_convo_params = []
       @refresh_convo_creation()
     else
       ## create new conversation with selected group members
@@ -110,14 +113,13 @@ class CommandCenter
       chat_window = new ChatRoom(conversation)
       app.conversations.push(conversation)
       app.open_conversations.push(convo_id)
-      @new_convo_params = []
       @refresh_convo_creation()
 
-  refresh_convo_creation: (e) ->
+  refresh_convo_creation: ->
+    @new_convo_params = []
     $('.parley div.controller-view').children().remove()
     $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
     for user in app.current_users
-      @new_convo_params = []
       view = new UserView(user, this)
       view.render()
       $('.parley div.controller-view').append(view.$element)

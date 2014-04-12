@@ -2,6 +2,7 @@ app = require('./app.coffee')
 Message = require('./message_model.coffee')
 MessageView = require('./message_view.coffee')
 Conversation = require('./conversation_model.coffee')
+UserView = require('./user_view.coffee')
 chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
@@ -20,6 +21,7 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
+    @loadPersistentMessages()
     ## create and append hidden div for message input resizing
     @$mirror_div = $("<div class='mirrordiv'></div>")
     @$element.find('section.conversation').append @$mirror_div
@@ -28,7 +30,9 @@ class ChatRoom
     ## create variable for fileupload to add and remove
     @$file_upload = @$element.find('label.img_upload')
 
-    @loadPersistentMessages()
+    ## for add users view
+    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
+
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
     app.server.on 'user_offline', @user_offline_callback.bind(this)
@@ -36,6 +40,7 @@ class ChatRoom
 
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
+    @$element.find('.entypo-user-add').on 'click', @add_users_to_convo.bind(this)
     @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
     @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.send').on 'keyup', @grow_message_field.bind(this)
@@ -71,21 +76,59 @@ class ChatRoom
         @scrollToLastMessage()
 
 
-  add_member: (new_user) ->
-    ## create a conversation consisting of current plus added members
-    new_convo_partners = @convo.convo_partners.concat(new_user)
-    new_convo_group = new Conversation(new_convo_partners)
-    app.conversations.push(new_convo_group)
+  add_users_to_convo: (e) ->
+    e.preventDefault()
+    console.log(UserView)
+    @new_convo_params = []
+    @$discussion.children().remove()
+    @$discussion.append('<li><h1>Add Users to Conversation</h1></li>')
+    for user in app.current_users
+      view = new UserView(user, this)
+      view.render()
+      @$discussion.append(view.$element)
+    @$element.find('section.conversation').append(@$add_user_bar)
+    @$element.find('.cancel').on 'click', @cancel_add_users.bind(this)
 
-    ## remove current convo_key from app.open_conversations
-    for open_convo in app.open_conversations
-      if open_convo is @convo.message_filter
-        app.open_conversations.splice(i,1)
+  cancel_add_users: (e) ->
+    e.preventDefault()
+    @$dicussion.children().remove()
+    @$element.find('.add-user-bar').remove()
+    @loadPersistentMessages()
 
-    ## push new convo to open conversations, change @convo and re-render
-    app.open_conversations.push(new_convo_group.message_filter)
-    @convo = new_convo_group
+  confirm_new_convo_params: (e) ->
+    e.preventDefault()
+    ## adds existing convo members to new convo params to get new key
+    new_convo_partners = @convo.convo_partners
+    convo_partners_image_urls = @convo.message_filter.split(',')
+    for user in @new_convo_params
+      convo_partners_image_urls.push(user.image_url)
+      new_convo_partners.push(user)
+    convo_id = convo_partners_image_urls.sort().join()
+    ## check to make sure convo is not already open
+    for convo in app.open_conversations
+      if convo_id is convo
+        return
+    ##check to see if persistent convo exists with group if so load from that
+    convo_exists = false
+    for convo in app.conversations
+      if convo.message_filter is convo_id
+        convo_exists = true
+        convo = convo
+    if convo_exists
+      @convo = convo
+      app.open_conversations.push(convo_id)
+    else
+      ## create new conversation consisting of selected users added to existing convo members
+      conversation = new Conversation(new_convo_partners)
+      @convo = conversation
+      app.conversations.push(conversation)
+      app.open_conversations.push(convo_id)
+    @$discussion.children().remove()
+    @$element.find('.add-user-bar').remove()
     @render()
+    @loadPersistentMessages()
+    @new_convo_params = []
+
 
   render: ->
     @$element = $(chat_room_template(@convo))
