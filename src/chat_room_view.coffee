@@ -20,6 +20,14 @@ class ChatRoom
   constructor: (@convo) ->
     @render()
     $('body').append(@$element)
+    ## create and append hidden div for message input resizing
+    @$mirror_div = $("<div class='mirrordiv'></div>")
+    @$element.find('section.conversation').append @$mirror_div
+    @hidden_div_height = @$element.find('.mirrordiv').css('height')
+
+    ## create variable for fileupload to add and remove
+    @$file_upload = @$element.find('label.img_upload')
+
     @loadPersistentMessages()
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
@@ -30,9 +38,11 @@ class ChatRoom
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
     @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
     @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
+    @$element.find('.send').on 'keyup', @grow_message_field.bind(this)
+    @$element.find('.send').on 'keyup', @toggle_file_upload_button.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
-    @$element.find('.parley_file_upload').on 'change', @file_upload.bind(this)
+    @$file_upload.on 'change', @file_upload.bind(this)
     app.title_notification =
                         notified: false
                         page_title: $('html title').html()
@@ -50,9 +60,7 @@ class ChatRoom
     @renderDiscussion()
 
   typing_notification_callback: (convo_id, typist, bool) ->
-    console.log('hello')
     if convo_id is @convo.message_filter
-      console.log('passed the filter!')
       if bool
         if @$discussion.find('.incoming').length is 0
           typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
@@ -149,9 +157,7 @@ class ChatRoom
       @clearTitleNotification()
 
   emitTypingNotification: (e) ->
-    console.log('I hear you typing')
     if @$element.find('.send').val() isnt ""
-      console.log('I know you arnt empty')
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, true
     else
       app.server.emit 'user_typing', @convo.convo_partners_image_urls, app.me, false
@@ -182,6 +188,28 @@ class ChatRoom
   file_upload: ->
     file = @$element.find('.parley_file_upload').get(0).files[0]
     app.oauth.file_upload file, @convo.convo_partners, @convo.message_filter
+
+  grow_message_field: ->
+    $txt = @$element.find('textarea.send')
+    content = $txt.val()
+    adjusted_content = content.replace(/\n/g, "<br>")
+    @$mirror_div.html(adjusted_content)
+    @hidden_div_height = @$mirror_div.css('height')
+    if @hidden_div_height isnt $txt.css('height')
+      $txt.css('height', @hidden_div_height)
+
+
+  toggle_file_upload_button: ->
+    ## remove icon for file upload
+    if @$element.find('textarea.send').val() isnt ""
+      if @$element.find('label.img_upload').length is 1
+        @$element.find('label.img_upload').remove()
+    else
+      if @$element.find('label.img_upload').length is 0
+        @$element.find('section.conversation').append(@$file_upload)
+        @$file_upload.on 'change', @file_upload.bind(this)
+
+
 
 
 module.exports = ChatRoom
