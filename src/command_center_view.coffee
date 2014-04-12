@@ -4,6 +4,8 @@ PersistentConversationView = require('./persistent_conversation_view.coffee')
 logged_out_template = require('./templates/logged_out.hbs')
 logged_in_template = require('./templates/logged_in.hbs')
 profile_template = require('./templates/profile.hbs')
+Conversation = require('./conversation_model.coffee')
+ChatRoom = require('./chat_room_view.coffee')
 
 
 
@@ -13,6 +15,9 @@ profile_template = require('./templates/profile.hbs')
 class CommandCenter
   constructor: ->
     @menu = "default"
+    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a>
+        </div>')
+    @new_convo_params = []
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
     $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
@@ -32,10 +37,10 @@ class CommandCenter
     $('.controller-view').toggle()
     if $('div.persistent-bar span').hasClass('entypo-down-open-mini')
       $('div.persistent-bar span').removeClass('entypo-down-open-mini')
-      $('div.persistent-bar span').addClass('entypo-up-open-mini')
+      .addClass('entypo-up-open-mini')
     else
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
-      $('div.persistent-bar span').addClass('entypo-down-open-mini')
+      .addClass('entypo-down-open-mini')
 
 
 
@@ -43,17 +48,19 @@ class CommandCenter
     e.preventDefault()
     $('.parley div.controller-view').children().remove()
     if @menu isnt "current_users"
+      $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
       for user in app.current_users
-        view = new UserView(user)
+        view = new UserView(user, this)
         view.render()
         $('.parley div.controller-view').append(view.$element)
+      $('.parley div.controller-view').append(@$add_user_bar)
+      @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
       @menu = "current_users"
     else
       @menu = null
 
   toggle_persistent_convos: (e)->
     e.preventDefault()
-    console.log(app.conversations)
     $(".parley div.controller-view").children().remove()
     if @menu isnt "persistent_convos"
       for convo in app.conversations
@@ -67,6 +74,7 @@ class CommandCenter
 
 
 
+
   toggle_user_settings: (e)->
     e.preventDefault
     $('.parley div.controller-view').children().remove()
@@ -75,6 +83,47 @@ class CommandCenter
       @menu = "user_settings"
     else
       @menu = null
+
+  confirm_new_convo_params: (e) ->
+    convo_partners_image_urls = []
+    for user in @new_convo_params
+      convo_partners_image_urls.push(user.image_url)
+    convo_id = convo_partners_image_urls.concat(app.me.image_url).sort().join()
+    ## check to make sure convo isn't already open
+    for convo in app.open_conversations
+      if convo_id is convo
+        return
+    ## check to see if persistent convo exists with the group
+    convo_exists = false
+    for convo in app.conversations
+      if convo.message_filter is convo_id
+        convo_exists = true
+        convo = convo
+    if convo_exists
+      chat_window = new ChatRoom(convo)
+      app.open_conversations.push(convo_id)
+      @new_convo_params = []
+      @refresh_convo_creation()
+    else
+      ## create new conversation with selected group members
+      conversation = new Conversation(@new_convo_params)
+      chat_window = new ChatRoom(conversation)
+      app.conversations.push(conversation)
+      app.open_conversations.push(convo_id)
+      @new_convo_params = []
+      @refresh_convo_creation()
+
+  refresh_convo_creation: (e) ->
+    $('.parley div.controller-view').children().remove()
+    $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
+    for user in app.current_users
+      @new_convo_params = []
+      view = new UserView(user, this)
+      view.render()
+      $('.parley div.controller-view').append(view.$element)
+    $('.parley div.controller-view').append(@$add_user_bar)
+    @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
+
 
 module.exports = new CommandCenter()
 
