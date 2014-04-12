@@ -76,7 +76,6 @@ class ChatRoom
 
   add_users_to_convo: (e) ->
     e.preventDefault()
-    console.log(UserView)
     @new_convo_params = []
     @$discussion.children().remove()
     @$discussion.append('<li><h1>Add Users to Conversation</h1></li>')
@@ -209,15 +208,11 @@ class ChatRoom
     app.title_notification.notified = false
 
   titleAlert: ->
-    console.log('im getting called')
-    if not app.title_notification.notified
+       if not app.title_notification.notified
       sender_name = @convo.messages[@convo.messages.length - 1].sender.display_name
       alert = "Pending ** #{sender_name}"
-      console.log('I know I need to be notified')
-      console.log(alert)
       setAlert = ->
         if app.title_notification.page_title is $('html title').html()
-          console.log('alert is called!!')
           $('html title').html(alert)
         else
           $('html title').html( app.title_notification.page_title)

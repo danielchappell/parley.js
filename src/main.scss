@@ -200,6 +200,8 @@ textarea.send {
 // image upload icon
 input[type=file] {
   position:absolute;
+  z-index: 999;
+  width: 2rem;
   font-size:1.75rem;
   right:0.5rem;
   bottom:0.35rem;
