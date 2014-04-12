@@ -20,10 +20,12 @@ class CommandCenter
     ## GET THINGS GOING
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
-    $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
+    $(".parley .persistent-bar.logged-out").hide()
+    # $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
 
   log_in: ->
     @logged_in = true
+    $(".parley .controller-bar ").hide()
     $(".parley .persistent-bar.logged_out").off()
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
@@ -35,6 +37,7 @@ class CommandCenter
   toggle_command_center: (e)->
     e.preventDefault()
     $('.controller-view').toggle()
+    $('.controller-bar').toggle()
     if $('div.persistent-bar span').hasClass('entypo-down-open-mini')
       $('div.persistent-bar span').removeClass('entypo-down-open-mini')
       .addClass('entypo-up-open-mini')

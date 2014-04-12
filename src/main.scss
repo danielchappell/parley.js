@@ -12,6 +12,7 @@ $gry:#adadad;
 $md:#999;
 $drk:#404040;
 $grn:#619e95;
+$bl: #3B5998;
 $dgrn:#4d7e77;
 $rd:#d45e60;
 $yllw:#d2aa6d;
@@ -347,11 +348,16 @@ label {
   width: 12rem;
   position: absolute;
   bottom: 0;
-  right: 0rem;
-  border:1px solid $lght;
-    .controller-view{
-      min-height: 12rem;
-      background: $wht;
+  right: 0.5rem;
+  max-height: 18rem;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  .controller-view{
+    min-height: 100%;
+    overflow-x: hidden;
+    background: #fbfbfb;
+    overflow-y: scroll;
     }
     .persistent-bar {
       @include flexbox;
@@ -379,24 +385,22 @@ label {
   @include flexbox;
   @include flex-direction( row );
   background: $bg;
-  border: 1px solid $md;
   .btn {
     @include flexbox;
     @include flex-direction( column );
     @include justify-content( center );
-    font-size: 1.25rem;
-    border-right: 2px solid $md;
+    font-size: 1.125rem;
+    border-right: 1px solid $md;
     a {
       align-self: center;
       color: $drk;
-      padding: 0.33rem;
+      padding: 0.25rem;
     }
   }
   .aside {
     @include flexbox;
     @include flex-direction( column );
     @include justify-content( center );
-    text-align: center;
     flex: 1;
       a {
         font: 700 1rem 'Quattrocento Sans', sans-serif;
