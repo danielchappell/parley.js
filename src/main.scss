@@ -274,6 +274,14 @@ label {
     background:$bg;
     transition: all 0.5s ease;
   }
+  .selected{ 
+background: $gry;
+  }
+  .disabled{
+    opacity: 5;
+    background: $lght;
+    box-shadow: inset 1 1 1 $md;
+  }
   .avatar {
     @include flexbox;
     margin-right: .5rem;
@@ -297,15 +305,15 @@ label {
   }
 }
 // confirm or cancel add user to conversation buttons
-.add-user-bar {
-  border-top: 1px solid $lght;
-  z-index: 999;
-  @include flexbox;
-  padding: 0.5rem;
-  @include justify-content( space-between );
-  background: $bg;
-  a {
-    @include align-content( center );
+.add-user-bar{
+  border-top:1px solid $lght;
+  z-index:999;
+  display:flex;
+  padding:.5rem;
+  justify-content:space-between;
+  background:$bg;
+  a{
+    align-content:center;
     width: 7rem;
     transition: all 0.15s ease-out 0;
     background: $wht;
@@ -314,13 +322,16 @@ label {
     font-size: 0.75rem;
     letter-spacing: 1px;
     padding: .5rem;
-    text-align: center;
-    border: 1px solid $gry;
-    .confirm {
-      background: rgba( 97  ,158, 149,.5);
-      color: $wht;
-    }
+    text-align:center;
+    border:1px solid $md;
   }
+  .confirm{
+    color:$wht; 
+    background: $grn; 
+    .disabled{
+      background:rgba(  97  ,158, 149,.5);
+    }  
+  } 
 }
 // existing message view within conversation view
 .existing {
@@ -336,6 +347,14 @@ label {
       border-radius: 50%;
       border: 1px solid #adadad;
     }
+  }
+  .selected{ 
+    background: $gry;
+  }
+  .disabled{
+    opacity: 5;
+    background: $lght;
+    box-shadow: inset 1 1 1 $md;
   }
 }
 
