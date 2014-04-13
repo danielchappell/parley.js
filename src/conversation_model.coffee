@@ -6,6 +6,7 @@ app = require('./app.coffee')
 class Conversation
 
   constructor: (@convo_partners, @messages=[]) ->
+    console.log(@convo_partners)
     @generate_message_filter()
     console.log(@message_filter)
     @first_name_list = ""

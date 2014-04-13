@@ -7,9 +7,14 @@ chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
   if @convo_partners.length < 2
-    return @convo_partners[0].display_name
+    console.log(@convo_partners)
+    console.log(this)
+    display_name = @convo_partners[0].display_name
+    return display_name
   else
-  return @first_name_list
+    console.log(this)
+    console.log('poop!')
+    return @first_name_list
 
 
 
@@ -110,9 +115,9 @@ class ChatRoom
     for convo in app.conversations
       if convo.message_filter is convo_id
         convo_exists = true
-        convo = convo
+        persistent_convo = convo
     if convo_exists
-      @convo = convo
+      @convo = persistent_convo
       app.open_conversations.push(convo_id)
     else
       ## create new conversation consisting of selected users added to existing convo members
