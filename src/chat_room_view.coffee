@@ -95,7 +95,7 @@ class ChatRoom
 
   cancel_add_users: (e) ->
     e.preventDefault()
-    @$dicussion.children().remove()
+    @$discussion.children().remove()
     @$element.find('.add-user-bar').remove()
     @loadPersistentMessages()
 
