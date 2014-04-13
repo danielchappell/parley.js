@@ -27,7 +27,7 @@ class ChatRoom
 
 
     ## for add users view
-    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
+    @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
 
     ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
     app.server.on 'message', @message_callback.bind(this)
@@ -90,7 +90,7 @@ class ChatRoom
       view = new UserView(user, this)
       view.render()
       @$discussion.append(view.$element)
-    @$discussion.append(@$add_user_bar)
+    @$discussion.append(@add_user_bar)
     @$element.find('.cancel').on 'click', @cancel_add_users.bind(this)
 
   cancel_add_users: (e) ->
@@ -199,9 +199,11 @@ class ChatRoom
     e.preventDefault()
     e.stopPropagation()
     ## remove from open convos
-    for open_convo, i in app.open_conversations
-      if open_convo is @convo.message_filter
-        app.open_conversations.splice(i,1)
+    new_open_convos = []
+    for open_convo in app.open_conversations
+      if open_convo isnt @convo.message_filter
+        new_open_convos.push(open_convo)
+    app.open_conversations = new_open_convos
 
     ## remove all websocket listeners for garbage collection
     ## remove chat from DOM

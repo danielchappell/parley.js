@@ -53,12 +53,6 @@ class App
 
 
   load_persistent_convo: (convo_partners, messages) ->
-    ## takes passed in convo members and remove client object from array.
-    # convo_partners = []
-    # for member, i in convo_members
-    #   if member.image_url isnt @me.image_url
-    #     convo_partners.push(member)
-    ## create message array that is parsed and reassigned as a message
     parsed_messages = []
     parsed_convo_partners = []
     for partner in convo_partners
@@ -94,14 +88,15 @@ class App
       console.log("I think the convo doesn't exist")
       ## logic to extract info from message to create new convo
       convo_members_ids = new_message.convo_id.split(',')
+      convo_partner_ids = []
       ## remove self from array to construct convo partners
-      for user_id, i in convo_members_ids
-        if user_id is @me.image_url
-          convo_members_ids.splice(i,1)
+      for user_id in convo_members_ids
+        if user_id isnt @me.image_url
+          convo_partner_ids.push(user_id)
 
       ## use ids to grab full objects for convo partners
       convo_partners = []
-      for user_id in convo_members_ids
+      for user_id in convo_partner_ids
         for online_user in @current_users
           if user_id is online_user.image_url
             convo_partners.push(online_user)
@@ -117,20 +112,22 @@ class App
     for user in logged_on
       new_user = new User(user.display_name, user.image_url)
       @current_users.push(new_user)
-    for user, i in @current_users
-      if user.image_url is @me.image_url
-        @current_users.splice(i,1)
+    users_sans_me = []
+    for user in @current_users
+      if user.image_url isnt @me.image_url
+        users_sans_me.push(user)
+    @current_users = users_sans_me
 
   user_logged_on: (display_name, image_url) ->
     user = new User(display_name, image_url)
     @current_users.push(user)
 
   user_logged_off: (display_name, image_url) ->
-    console.log(@current_users)
-    for user, i in @current_users
-      if image_url is user.image_url
-        @current_users.splice( i, 1)
-    console.log(@current_users)
+    new_online_users = []
+    for user in @current_users
+      if image_url isnt user.image_url
+        new_online_users.push(user)
+    @current_users = new_online_users
 
 
 ## SATISFIES CIRCULAR DEPENDANCY FOR BROWSERIFY BUNDLING
