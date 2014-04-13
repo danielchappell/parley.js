@@ -139,7 +139,7 @@ class ChatRoom
 
     ## create and append hidden div for message input resizing
     @$mirror_div = $("<div class='mirrordiv'></div>")
-    @$element.find('section.conversation').append @$mirror_div
+    @$element.find('section.conversation .message-area').append @$mirror_div
     @hidden_div_height = @$element.find('.mirrordiv').css('height')
 
     ## create variable for fileupload to add and remove
@@ -191,7 +191,7 @@ class ChatRoom
 
   toggleChat: (e) ->
     e.preventDefault()
-    @$discussion.toggle()
+    @$element.find('.message-area').toggle()
     if @$discussion.attr('display') is not "none"
       @scrollToLastMessage
 
