@@ -1,5 +1,4 @@
 app = require('./app.coffee')
-ChatRoom = require('./chat_room_view.coffee')
 Handlebars = require('handlebars')
 persistent_convo_reg = require('./templates/persistent_convo_reg.hbs')
 Handlebars = require('hbsfy/runtime')
@@ -24,7 +23,7 @@ Handlebars.registerHelper 'calculate_last_message_time', ->
 ## both the chat window and command center views and the corresponding user interaction logic.
 class PersistentConversationView
 
-  constructor: (@convo) ->
+  constructor: (@convo, @current_view) ->
     @$element = $('<div class="message existing"></div>')
     @$element.on 'click', @load_convo.bind(this)
 
@@ -39,12 +38,27 @@ class PersistentConversationView
       if @convo.message_filter is open_convo
         convo_status = 'open'
 
-    if convo_status isnt 'open'
-      chat_window = new ChatRoom(@convo)
-      app.open_conversations.push(@convo.message_filter)
+    if convo_status isnt 'open' or @convo.message_filter is @current_view.convo.message_filter
 
-      ## check and see if action is in command center or chat window
-      if not @$element.parent().hasClass('controller-view')
-        @$element.parents('div.parley').remove()
+      if @current_view instanceof ChatRoom
+
+        ## remove current conversation from open conversation
+        new_open_convos = []
+        for open_convo in app.open_conversations
+          if open_convo isnt @current_view.convo.message_filter
+            new_open_convos.push(convo)
+        app.open_conversations = new_open_convos
+
+        @current_view.convo = @convo
+        app.open_conversations.push(@convo.message_filter)
+        @current_view.render()
+        @current_view.loadPersistentMessages()
+        @current_view.switchmode = false
+      else
+        # if convo_status isnt 'open'
+          chat_window = new ChatRoom(@convo)
+          app.open_conversations.push(@convo.message_filter)
 
 module.exports = PersistentConversationView
+
+ChatRoom = require('./chat_room_view.coffee')
