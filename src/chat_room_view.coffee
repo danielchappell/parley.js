@@ -83,12 +83,12 @@ class ChatRoom
     e.preventDefault()
     @new_convo_params = []
     @$discussion.children().remove()
-    @$discussion.append('<li><h1>Add Users to Conversation</h1></li>')
+    @$discussion.append('<input class="search" placeholder="Add People">')
     for user in app.current_users
       view = new UserView(user, this)
       view.render()
       @$discussion.append(view.$element)
-    @$element.find('section.conversation').append(@$add_user_bar)
+    @$element.find('section.conversation ol.discussion').append(@$add_user_bar)
     @$element.find('.cancel').on 'click', @cancel_add_users.bind(this)
 
   cancel_add_users: (e) ->
