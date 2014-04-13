@@ -146,6 +146,7 @@ ol.discussion {
       color: $md;
       margin: 0 0 0.25rem 0;
       padding-right: 0.5rem;
+      word-wrap: break-word;
       img{
         max-width: 12rem;
         border-radius: 0.25rem;
