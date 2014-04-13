@@ -143,6 +143,7 @@ class CommandCenter
       view.render()
       $('.parley div.controller-view').append(view.$element)
     $('.parley div.controller-view').append(@$add_user_bar)
+    @$add_user_bar.addClass('disabled')
     @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
 
 

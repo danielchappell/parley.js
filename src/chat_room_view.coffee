@@ -199,9 +199,11 @@ class ChatRoom
     e.preventDefault()
     e.stopPropagation()
     ## remove from open convos
-    for open_convo, i in app.open_conversations
-      if open_convo is @convo.message_filter
-        app.open_conversations.splice(i,1)
+    new_open_convos = []
+    for open_convo in app.open_conversations
+      if open_convo isnt @convo.message_filter
+        new_open_convos.push(open_convo)
+    app.open_conversations = new_open_convos
 
     ## remove all websocket listeners for garbage collection
     ## remove chat from DOM
