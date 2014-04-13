@@ -274,10 +274,10 @@ label {
     background:$bg;
     transition: all 0.5s ease;
   }
-  .selected{ 
+  &.selected{ 
 background: $gry;
   }
-  .disabled{
+  &.disabled{
     opacity: 5;
     background: $lght;
     box-shadow: inset 1 1 1 $md;
@@ -328,7 +328,7 @@ background: $gry;
   .confirm{
     color:$wht; 
     background: $grn; 
-    .disabled{
+    &.disabled{
       background:rgba(  97  ,158, 149,.5);
     }  
   } 
