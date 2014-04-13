@@ -27,16 +27,16 @@ class UserView
 
   user_interact_callback: ->
     ## add/remove user in new convo build params located in both cmd center and chat windows.
-      if @$element.hasClass('user-selected')
+      if @$element.hasClass('selected')
         new_params = []
         for user in @current_view.new_convo_params
           if user.image_url isnt @current_user.image_url
             new_params.push(user)
         @current_view.new_convo_params = new_params
-        @$element.removeClass('user-selected')
+        @$element.removeClass('selected')
       else
         @current_view.new_convo_params.push(@current_user)
-        @$element.addClass('user-selected')
+        @$element.addClass('selected')
       ## handle confirm button DOM class stying and adding/removing listener
 
       if @current_view.new_convo_params.length > 0
