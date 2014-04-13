@@ -49,7 +49,7 @@ class CommandCenter
     e.stopPropagation()
     if @menu isnt "current_users"
       $('.parley div.controller-view').children().remove()
-      $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
+      $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
       for user in app.current_users
         view = new UserView(user, this)
         view.render()
@@ -137,7 +137,7 @@ class CommandCenter
       e.stopPropagation()
     @new_convo_params = []
     $('.parley div.controller-view').children().remove()
-    $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
+    $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
     for user in app.current_users
       view = new UserView(user, this)
       view.render()
