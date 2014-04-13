@@ -177,7 +177,8 @@ class ChatRoom
       @scrollToLastMessage()
 
   sendOnEnter: (e)->
-    if e.keyCode is 13
+    if e.which is 13
+      e.preventDefault()
       @sendMessage()
       @removeNotifications()
 
