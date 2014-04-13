@@ -18,7 +18,7 @@ class CommandCenter
     ## GET THINGS GOING
     $('body').append logged_out_template()
     @menu = "default"
-    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
+    @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
 
 
   log_in: ->
@@ -54,7 +54,7 @@ class CommandCenter
         view = new UserView(user, this)
         view.render()
         $('.parley div.controller-view').append(view.$element)
-      $('.parley div.controller-view').append(@$add_user_bar)
+      $('.parley div.controller-view').append(@add_user_bar)
       @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
       @menu = "current_users"
       @new_convo_params = []
@@ -142,8 +142,7 @@ class CommandCenter
       view = new UserView(user, this)
       view.render()
       $('.parley div.controller-view').append(view.$element)
-    $('.parley div.controller-view').append(@$add_user_bar)
-    @$add_user_bar.addClass('disabled')
+    $('.parley div.controller-view').append(@add_user_bar)
     @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
 
 
