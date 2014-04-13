@@ -342,6 +342,37 @@ background: $gry;
     } 
   }
 }
+.add-user-bar{
+    border-top:1px solid $lght;
+    z-index: 500;
+    display:flex;
+    padding:.5rem;
+    justify-content:space-between;
+    background: $wht;
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    a{
+      align-content:center;
+      width: 7rem;
+      transition: all 0.15s ease-out 0;
+      background: $wht;
+      border-radius: 0.25rem;
+      color: $drk;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: .5rem;
+      text-align:center;
+      border:1px solid $md;
+    }
+    .confirm{
+      color:$wht; 
+      background: $grn; 
+      &.disabled{
+        background:rgba(  97  ,158, 149,.5);
+      }  
+    } 
+  }
 // existing message view within conversation view
 .existing {
   display: flex;
