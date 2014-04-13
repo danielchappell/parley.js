@@ -137,12 +137,17 @@ io.sockets.on 'connection', (client) ->
 
         ## remove user from logged on since all windows and tabs are closed
         console.log(logged_on)
-        for user, i in logged_on
-          if user.image_url is image_url
-            logged_on.splice(i,1)
-      for socket, i in sockets[image_url]['client']
-        if socket is client
-          sockets[image_url]['client'].splice(i,1)
+        new_logged_on = []
+        for user in logged_on
+          if user.image_url isnt image_url
+            new_logged_on.push(user)
+        logged_on = new_logged_on
+      new_client_socket_list = []
+      for socket in sockets[image_url]['client']
+        if socket isnt client
+          new_client_socket_list.push(socket)
+      sockets[image_url]['client'] = new_client_socket_list
+
       ## if there are no remaining sockets/tabs/windows open for a user
       ## delete their property object in the sockets object
       if sockets[image_url]['client'].length is 0

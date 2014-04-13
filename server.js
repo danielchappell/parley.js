@@ -166,24 +166,28 @@ io.sockets.on('connection', function(client) {
       return _results;
     });
     return client.on('disconnect', function() {
-      var i, socket, _j, _k, _len1, _len2, _ref;
+      var new_client_socket_list, new_logged_on, socket, _j, _k, _len1, _len2, _ref;
       if (sockets[image_url]['client'].length < 2) {
         client.broadcast.emit('user_logged_off', display_name, image_url);
         console.log(logged_on);
-        for (i = _j = 0, _len1 = logged_on.length; _j < _len1; i = ++_j) {
-          user = logged_on[i];
-          if (user.image_url === image_url) {
-            logged_on.splice(i, 1);
+        new_logged_on = [];
+        for (_j = 0, _len1 = logged_on.length; _j < _len1; _j++) {
+          user = logged_on[_j];
+          if (user.image_url !== image_url) {
+            new_logged_on.push(user);
           }
         }
+        logged_on = new_logged_on;
       }
+      new_client_socket_list = [];
       _ref = sockets[image_url]['client'];
-      for (i = _k = 0, _len2 = _ref.length; _k < _len2; i = ++_k) {
-        socket = _ref[i];
-        if (socket === client) {
-          sockets[image_url]['client'].splice(i, 1);
+      for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+        socket = _ref[_k];
+        if (socket !== client) {
+          new_client_socket_list.push(socket);
         }
       }
+      sockets[image_url]['client'] = new_client_socket_list;
       if (sockets[image_url]['client'].length === 0) {
         delete sockets[image_url];
       }
