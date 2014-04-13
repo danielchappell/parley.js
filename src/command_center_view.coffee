@@ -14,19 +14,17 @@ ChatRoom = require('./chat_room_view.coffee')
 # It is the hub for all interaction.
 class CommandCenter
   constructor: ->
-    @menu = "default"
-    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
 
     ## GET THINGS GOING
     $('body').append logged_out_template()
-    $("ul.login-bar").hide()
+    @menu = "default"
+    @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
 
 
   log_in: ->
-    @logged_in = true
-    $(".parley .persistent-bar.logged_out").off()
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
+    $('.controller-view').hide()
     $('.persistent-bar').on 'click', @toggle_command_center.bind(this)
     $('.parley div.controller-bar a.messages').on 'click', @toggle_persistent_convos.bind(this)
     $('.parley div.controller-bar a.active-users').on 'click', @toggle_current_users.bind(this)
@@ -34,20 +32,23 @@ class CommandCenter
 
   toggle_command_center: (e)->
     e.preventDefault()
-    $('.controller-view').toggle()
-    if $('div.persistent-bar span').hasClass('entypo-down-open-mini')
-      $('div.persistent-bar span').removeClass('entypo-down-open-mini')
-      .addClass('entypo-up-open-mini')
-    else
+    e.stopPropagation()
+    if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
+      @refresh_convo_creation()
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
       .addClass('entypo-down-open-mini')
+    else
+      $('div.persistent-bar span').removeClass('entypo-down-open-mini')
+      .addClass('entypo-up-open-mini')
+    $('.controller-view').toggle()
 
 
 
   toggle_current_users: (e)->
     e.preventDefault()
-    $('.parley div.controller-view').children().remove()
+    e.stopPropagation()
     if @menu isnt "current_users"
+      $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
       for user in app.current_users
         view = new UserView(user, this)
@@ -60,12 +61,17 @@ class CommandCenter
     else
       @menu = null
       @new_convo_params = []
+    $('.controller-view').show()
+    if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
+      $('div.persistent-bar span').removeClass('entypo-up-open-mini')
+      .addClass('entypo-down-open-mini')
 
 
   toggle_persistent_convos: (e)->
     e.preventDefault()
-    $(".parley div.controller-view").children().remove()
+    e.stopPropagation()
     if @menu isnt "persistent_convos"
+      $(".parley div.controller-view").children().remove()
       for convo in app.conversations
         if convo.messages.length > 0
           view = new PersistentConversationView(convo)
@@ -74,20 +80,31 @@ class CommandCenter
       @menu = "persistent_convos"
     else
       @menu = null
+    $('.controller-view').show()
+    if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
+      $('div.persistent-bar span').removeClass('entypo-up-open-mini')
+      .addClass('entypo-down-open-mini')
+
 
 
 
   toggle_user_settings: (e)->
     e.preventDefault()
-    $('.parley div.controller-view').children().remove()
+    e.stopPropagation()
     if @menu isnt "user_settings"
+      $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(profile_template(app.me))
       @menu = "user_settings"
     else
       @menu = null
+    $('.controller-view').show()
+    if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
+      $('div.persistent-bar span').removeClass('entypo-up-open-mini')
+      .addClass('entypo-down-open-mini')
 
   confirm_new_convo_params: (e) ->
     e.preventDefault()
+    e.stopPropagation
     ## builds convo based on new convo params property
     convo_partners_image_urls = []
     for user in @new_convo_params
@@ -115,7 +132,9 @@ class CommandCenter
       app.open_conversations.push(convo_id)
       @refresh_convo_creation()
 
-  refresh_convo_creation: ->
+  refresh_convo_creation: (e) ->
+    if e
+      e.stopPropagation()
     @new_convo_params = []
     $('.parley div.controller-view').children().remove()
     $('.parley div.controller-view').append('<li><h1>Start Conversation</h1></li>')
