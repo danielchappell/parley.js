@@ -36,10 +36,10 @@ body {
 .conversation {
   @include flexbox;
   @include flex-direction( column );
-  max-height:24rem;
+  max-height: 25.88rem;
   position:absolute;
   bottom: 0;
-  right: 20rem;
+  right: 16rem;
   width:16rem;
   border: 1px solid $gry;
 }
@@ -106,9 +106,7 @@ body {
 }
 // discussion base presentation
 ol.discussion {
-  max-height:16rem;
-  height: 16rem;
-  border-bottom: 1px solid $gry;
+  height: 19rem; 
   overflow-x:hidden;
   overflow-y:scroll;
   background:$bg;
@@ -127,6 +125,10 @@ ol.discussion {
       }
     }
   }
+}
+.message-area{
+  height: 24rem;
+  width:100%;
 }
 // message layout for base ( other )
   .message{
@@ -183,7 +185,10 @@ textarea.send {
   border:none;
   outline:none;
   position: absolute;
+  bottom: 0;
   width: 100%;
+  height: 2.5rem;
+  border-top: 1px solid $lght;
 }
 
 .mirrordiv{
@@ -201,6 +206,9 @@ textarea.send {
   min-height: 2.5rem;
   border:none;
   outline:none;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 // image upload icon
 input[type=file] {
