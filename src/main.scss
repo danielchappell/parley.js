@@ -118,7 +118,6 @@ ol.discussion {
     &:nth-child(even) {
       background:$wht;
     }
-  }
   .avatar {
     width: 2.5rem;
     img {
@@ -292,8 +291,8 @@ background: $gry;
     border: 1px solid $md;
     overflow: hidden;
     img{
-      width: 1.75rem;
-      height: 1.75rem;
+      width: 2.125rem;
+      height: 2.125rem;
     }
   }
   .content {
@@ -314,7 +313,10 @@ background: $gry;
   display:flex;
   padding:.5rem;
   justify-content:space-between;
-  background:$bg;
+  background: $wht;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   a{
     align-content:center;
     width: 6rem;
@@ -343,13 +345,19 @@ background: $gry;
   padding:.25rem;
   position:relative;
   margin: 0;
+  cursor: pointer;
   .avatar{
     img {
-      height: 1.75rem;
-      width: 1.75rem;
+      height: 2.125rem;
+      width: 2.125rem;
       border-radius: 50%;
       border: 1px solid #adadad;
     }
+  }
+  h2{
+    font-size: 1;
+    color: #666;
+    font-weight: 400;
   }
   .selected{ 
     background: $gry;
@@ -376,7 +384,8 @@ background: $gry;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   .controller-view{
-    min-height: 100%;
+    min-height: 12rem;
+    max-height: 100%;
     overflow-x: hidden;
     background: #fff;
     overflow-y: scroll;
@@ -386,19 +395,23 @@ background: $gry;
       @include justify-content( space-between);
       background: $bg;
       width: 100%;
-      color: $drk;
+      color: #666;
       padding: .25rem;
       img{
         border-radius: 50%;
-        width: 1.75rem;
-        height: 1.75rem;
+        width: 2.125rem;
+        height: 2.125rem;
+        border: 1px solid $gry;
       }
       a {
-        font-size: 0.75rem;
+        font-size: .75rem;
         align-self: center;
         cursor: pointer;
         flex: 1;
-        text-align: center;
+        padding-left: .5rem;
+        span{
+          margin-left:.25rem;
+        }
       }
     }
   }
@@ -482,6 +495,7 @@ background: $gry;
         text-decoration: none;
         color: $gry;
         text-align:center;
+        cursor: pointer;
       }
     }
   }
@@ -547,6 +561,19 @@ li.messages {
 //     margin: 0.25rem 0 0 .25rem;
 //   }
 // }
+input.search{
+  width:100%;
+  background:$wht;
+  z-index:999;
+  padding:.5rem;
+  border:none;
+  border-bottom:1px solid $gry;
+  font-size:1rem;
+  outline:none;
+  color:$drk;
+}
+
+
   li.existing:hover {
     opacity: 0.75;
     transition: all 0.5s ease;
