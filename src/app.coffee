@@ -60,13 +60,17 @@ class App
     #     convo_partners.push(member)
     ## create message array that is parsed and reassigned as a message
     parsed_messages = []
+    parsed_convo_partners = []
+    for partner in convo_partners
+      new_partner = new User(partner.display_name, partner.image_url)
+      parsed_convo_partners.push(new_partner)
     for message in messages
       parsed = JSON.parse(message)
       new_message = new Message(parsed.recipients, parsed.sender, parsed.content, parsed.image, parsed.time_stamp)
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
-    convo = new Conversation(convo_partners, parsed_messages)
+    convo = new Conversation(parsed_convo_partners, parsed_messages)
     @conversations.push(convo)
 
   update_persistent_convos: (message) ->
@@ -110,7 +114,9 @@ class App
 
   load_current_users: (logged_on) ->
     ## recieves current users from server on login
-    @current_users = logged_on
+    for user in logged_on
+      new_user = new User(user.display_name, user.image_url)
+      @current_users.push(new_user)
     for user, i in @current_users
       if user.image_url is @me.image_url
         @current_users.splice(i,1)
