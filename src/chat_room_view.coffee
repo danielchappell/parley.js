@@ -3,6 +3,7 @@ Message = require('./message_model.coffee')
 MessageView = require('./message_view.coffee')
 Conversation = require('./conversation_model.coffee')
 UserView = require('./user_view.coffee')
+PersistentConversationView = require('./persistent_conversation_view.coffee')
 chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
@@ -59,6 +60,26 @@ class ChatRoom
         @$discussion.find('.incoming').remove()
         @scrollToLastMessage()
 
+  switch_to_persistent_convo: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    if not @switchmode
+      @$discussion.children().remove()
+      @$element.find('textarea.send').remove()
+      @$element.find('.mirrordiv').remove()
+      @$element.find('.parley_file_upload').remove()
+      @$element.find('label.img_upload').remove()
+      for convo in app.conversations
+        if convo.messages.length > 0
+          view = new PersistentConversationView(convo, this)
+          view.render()
+          @$discussion.append(view.$element)
+      @switchmode = true
+    else
+      @render()
+      @loadPersistentMessages()
+      @switchmode = false
+
 
   add_users_to_convo: (e) ->
     e.preventDefault()
@@ -106,14 +127,13 @@ class ChatRoom
       @convo = conversation
       app.conversations.push(conversation)
       app.open_conversations.push(convo_id)
-    @$discussion.children().remove()
     @$element.find('.add-user-bar').remove()
     @render()
     @loadPersistentMessages()
     @new_convo_params = []
 
-
   render: ->
+    @$element.children().remove()
     @$element.html(chat_room_template(@convo))
     @$discussion = @$element.find('.discussion')
 
@@ -128,6 +148,7 @@ class ChatRoom
     ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
     @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
     @$element.find('.entypo-user-add').on 'click', @add_users_to_convo.bind(this)
+    @$element.find('.entypo-chat').on 'click', @switch_to_persistent_convo.bind(this)
     @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
     @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
     @$element.find('.send').on 'keyup', @grow_message_field.bind(this)
