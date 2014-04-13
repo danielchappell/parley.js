@@ -7,14 +7,9 @@ chat_room_template = require('./templates/chat_room.hbs')
 Handlebars = require('hbsfy/runtime')
 Handlebars.registerHelper 'title_bar_function', ->
   if @convo_partners.length < 2
-    console.log(@convo_partners)
-    console.log(this)
-    display_name = @convo_partners[0].display_name
-    return display_name
+    @convo_partners[0].display_name
   else
-    console.log(this)
-    console.log('poop!')
-    return @first_name_list
+    @first_name_list
 
 
 
@@ -24,16 +19,11 @@ Handlebars.registerHelper 'title_bar_function', ->
 class ChatRoom
 
   constructor: (@convo) ->
+    @$element = $('<div class="parley"></div>')
     @render()
     $('body').append(@$element)
     @loadPersistentMessages()
-    ## create and append hidden div for message input resizing
-    @$mirror_div = $("<div class='mirrordiv'></div>")
-    @$element.find('section.conversation').append @$mirror_div
-    @hidden_div_height = @$element.find('.mirrordiv').css('height')
 
-    ## create variable for fileupload to add and remove
-    @$file_upload = @$element.find('label.img_upload')
 
     ## for add users view
     @$add_user_bar = $('<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>')
@@ -43,16 +33,7 @@ class ChatRoom
     app.server.on 'user_offline', @user_offline_callback.bind(this)
     app.server.on 'typing_notification', @typing_notification_callback.bind(this)
 
-    ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
-    @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
-    @$element.find('.entypo-user-add').on 'click', @add_users_to_convo.bind(this)
-    @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
-    @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
-    @$element.find('.send').on 'keyup', @grow_message_field.bind(this)
-    @$element.find('.send').on 'keyup', @toggle_file_upload_button.bind(this)
-    @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
-    @$element.on 'click', @removeNotifications.bind(this)
-    @$file_upload.on 'change', @file_upload.bind(this)
+
 
   message_callback: (message) ->
     if @convo.message_filter is message.convo_id
@@ -88,7 +69,7 @@ class ChatRoom
       view = new UserView(user, this)
       view.render()
       @$discussion.append(view.$element)
-    @$element.find('section.conversation ol.discussion').append(@$add_user_bar)
+    @$discussion.append(@$add_user_bar)
     @$element.find('.cancel').on 'click', @cancel_add_users.bind(this)
 
   cancel_add_users: (e) ->
@@ -133,8 +114,27 @@ class ChatRoom
 
 
   render: ->
-    @$element = $(chat_room_template(@convo))
+    @$element.html(chat_room_template(@convo))
     @$discussion = @$element.find('.discussion')
+
+    ## create and append hidden div for message input resizing
+    @$mirror_div = $("<div class='mirrordiv'></div>")
+    @$element.find('section.conversation').append @$mirror_div
+    @hidden_div_height = @$element.find('.mirrordiv').css('height')
+
+    ## create variable for fileupload to add and remove
+    @$file_upload = @$element.find('label.img_upload')
+
+    ## LISTENERS FOR USER INTERACTION WITH CHAT WINDOW
+    @$element.find('.chat-close').on 'click', @closeWindow.bind(this)
+    @$element.find('.entypo-user-add').on 'click', @add_users_to_convo.bind(this)
+    @$element.find('.send').on 'keypress', @sendOnEnter.bind(this)
+    @$element.find('.send').on 'keyup', @emitTypingNotification.bind(this)
+    @$element.find('.send').on 'keyup', @grow_message_field.bind(this)
+    @$element.find('.send').on 'keyup', @toggle_file_upload_button.bind(this)
+    @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
+    @$element.on 'click', @removeNotifications.bind(this)
+    @$file_upload.on 'change', @file_upload.bind(this)
 
   renderDiscussion: ->
     new_message = @convo.messages.slice(-1)[0]
