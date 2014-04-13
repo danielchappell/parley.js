@@ -64,6 +64,9 @@ body {
       padding: 0 0 0 0.75rem;
     }
   }
+  &.new-message {
+    background: $grn ;
+  }
 }
 // message alteration list ( minimize / popout / close)
 .message-alt{
@@ -314,7 +317,7 @@ background: $gry;
   background:$bg;
   a{
     align-content:center;
-    width: 7rem;
+    width: 6rem;
     transition: all 0.15s ease-out 0;
     background: $wht;
     border-radius: 0.25rem;
@@ -364,7 +367,7 @@ background: $gry;
 
 // logged out
 .controller{
-  width: 12rem;
+  width: 14rem;
   position: absolute;
   bottom: 0;
   right: 0.5rem;
@@ -375,7 +378,7 @@ background: $gry;
   .controller-view{
     min-height: 100%;
     overflow-x: hidden;
-    background: #fbfbfb;
+    background: #fff;
     overflow-y: scroll;
     }
     .persistent-bar {
