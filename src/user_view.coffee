@@ -13,8 +13,6 @@ class UserView
     @$element.on 'click', @user_interact_callback.bind(this)
     ## checks if user is already in current conversation so that user cannot be added twice.
     if @current_view.constructor.name is "ChatRoom"
-      console.log(@current_view)
-      console.log(@current_view.convo.convo_partners)
       for member in @current_view.convo.convo_partners
         if member.image_url is @current_user.image_url
           @$element.addClass('disabled')
@@ -40,7 +38,8 @@ class UserView
       ## handle confirm button DOM class stying and adding/removing listener
 
       if @current_view.new_convo_params.length > 0
-        @current_view.$element.find('.confirm').removeClass('disabled')
+
+        @current_view.$element.find('.confirm').removeClass('disabled').off()
         .on 'click', @current_view.confirm_new_convo_params.bind(@current_view)
       else
         @current_view.$element.find('.confirm').addClass('disabled').off()

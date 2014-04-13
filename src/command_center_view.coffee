@@ -104,7 +104,7 @@ class CommandCenter
 
   confirm_new_convo_params: (e) ->
     e.preventDefault()
-    e.stopPropagation
+    e.stopPropagation()
     ## builds convo based on new convo params property
     convo_partners_image_urls = []
     for user in @new_convo_params
@@ -119,9 +119,9 @@ class CommandCenter
     for convo in app.conversations
       if convo.message_filter is convo_id
         convo_exists = true
-        convo = convo
+        persistent_convo = convo
     if convo_exists
-      chat_window = new ChatRoom(convo)
+      chat_window = new ChatRoom(persistent_convo)
       app.open_conversations.push(convo_id)
       @refresh_convo_creation()
     else
