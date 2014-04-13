@@ -20,8 +20,7 @@ class CommandCenter
     ## GET THINGS GOING
     $('body').append logged_out_template()
     $("ul.login-bar").hide()
-    $(".parley .persistent-bar.logged-out").hide()
-    # $('.parley .persistent-bar.logged-out').on 'click', (e) -> $('ul.login-bar').toggle()
+
 
   log_in: ->
     @logged_in = true
