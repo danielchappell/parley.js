@@ -12,6 +12,9 @@ class Conversation
     @first_name_list = ""
     @convo_partners_image_urls = []
 
+    ## dummy object for pub/sub
+    @pub_sub = $({})
+
     for user, i in @convo_partners
       first_name = user.display_name.match(/^[A-z]+/)
       if (i + 1) isnt @convo_partners.length
@@ -23,6 +26,7 @@ class Conversation
 
   add_message: (message) ->
     @messages.push message
+    @pub_sub.trigger('convo_new_message', this)
 
   generate_message_filter: ->
     @message_filter = [app.me.image_url]

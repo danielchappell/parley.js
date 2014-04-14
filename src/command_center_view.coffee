@@ -20,7 +20,9 @@ class CommandCenter
     @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
 
     ## pub_sub for command center sync
-    # app.pub_sub.on ''
+    app.pub_sub.on 'user_logged_on', @sync_user_logged_on.bind(this)
+    app.pub_sub.on 'user_logged_off', @sync_user_logged_off.bind(this)
+    app.pub_sub.on 'new_convo', @sync_new_convo.bind(this)
 
 
   log_in: ->
@@ -52,6 +54,7 @@ class CommandCenter
     if @menu isnt "current_users"
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
+
       for user in app.current_users
         view = new UserView(user, this)
         view.render()
@@ -140,6 +143,28 @@ class CommandCenter
       $('.parley div.controller-view').append(view.$element)
     $('.parley div.controller-view').append(@add_user_bar)
     @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
+
+  sync_user_logged_on: (e, user, index, location) ->
+    console.log('i hear logged in')
+    console.log(arguments)
+    if @menu is "current_users"
+      view = new UserView(user, this)
+      view.render()
+      if location is "first" or location is "last"
+        console.log('first or last')
+        $('.parley div.controller-view').children().eq(-1).before(view.$element)
+      else
+        console.log("middle!!!!!")
+        $('.parley div.controller-view').find('li.user').eq(index).before(view.$element)
+
+  sync_user_logged_off: (e, user, index) ->
+    if @menu is "current_users"
+      $('.parley div.controller-view').find('li.user').eq(index).remove()
+      return
+
+
+  sync_new_convo: (e, convo) ->
+
 
 
 module.exports = new CommandCenter()
