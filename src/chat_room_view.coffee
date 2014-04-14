@@ -45,25 +45,28 @@ class ChatRoom
     if @convo.message_filter is message.convo_id
       new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
       @convo.add_message(new_message)
-      @renderDiscussion()
-      @$element.find('.top-bar').addClass('new-message')
-      @titleAlert()
+      if @menu is "chat"
+        @renderDiscussion()
+        @$element.find('.top-bar').addClass('new-message')
+        @titleAlert()
 
   user_offline_callback: ->
-    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
-    @convo.add_message(message)
-    @renderDiscussion()
+    if @menu is "chat"
+      message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
+      @convo.add_message(message)
+      @renderDiscussion()
 
   typing_notification_callback: (convo_id, typist, bool) ->
-    if convo_id is @convo.message_filter
-      if bool
-        if @$discussion.find('.incoming').length is 0
-          typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
-          @$discussion.append(typing_notification)
+    if @menu is "chat"
+      if convo_id is @convo.message_filter
+        if bool
+          if @$discussion.find('.incoming').length is 0
+            typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
+            @$discussion.append(typing_notification)
+            @scrollToLastMessage()
+        else
+          @$discussion.find('.incoming').remove()
           @scrollToLastMessage()
-      else
-        @$discussion.find('.incoming').remove()
-        @scrollToLastMessage()
 
   switch_to_persistent_convo: (e) ->
     e.preventDefault()
