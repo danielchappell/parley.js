@@ -16,6 +16,9 @@ class App
     @open_conversations = []
     @conversations = []
 
+    ## dummy object used for pub/sub
+    @pub_sub = $({})
+
     ## insert script for socket.io connections
     do ->
       script = document.createElement('script')
@@ -83,9 +86,7 @@ class App
     ## if convo exists
     if corres_convo
       corres_convo.add_message(new_message)
-      console.log("I think the convo exists")
     else
-      console.log("I think the convo doesn't exist")
       ## logic to extract info from message to create new convo
       convo_members_ids = new_message.convo_id.split(',')
       convo_partner_ids = []
@@ -105,7 +106,7 @@ class App
       new_convo = new Conversation(convo_partners)
       @conversations.push(new_convo)
       new_convo.add_message(new_message)
-      console.log(@conversations)
+      @pub_sub.trigger('new_convo', new_convo)
 
   load_current_users: (logged_on) ->
     ## recieves current users from server on login
@@ -121,12 +122,14 @@ class App
   user_logged_on: (display_name, image_url) ->
     user = new User(display_name, image_url)
     @current_users.push(user)
-
+    @pub_sub.trigger('user_logged_on', user)
   user_logged_off: (display_name, image_url) ->
     new_online_users = []
     for user in @current_users
       if image_url isnt user.image_url
         new_online_users.push(user)
+      else
+        @pub_sub.trigger('user_logged_off', user)
     @current_users = new_online_users
 
 

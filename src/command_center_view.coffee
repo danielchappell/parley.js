@@ -17,8 +17,10 @@ class CommandCenter
 
     ## GET THINGS GOING
     $('body').append logged_out_template()
-    @menu = "default"
     @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
+
+    ## pub_sub for command center sync
+    # app.pub_sub.on ''
 
 
   log_in: ->
@@ -58,9 +60,6 @@ class CommandCenter
       @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
       @menu = "current_users"
       @new_convo_params = []
-    else
-      @menu = null
-      @new_convo_params = []
     $('.controller-view').show()
     if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
@@ -78,8 +77,6 @@ class CommandCenter
           view.render()
           $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
-    else
-      @menu = null
     $('.controller-view').show()
     if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
@@ -95,8 +92,6 @@ class CommandCenter
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(profile_template(app.me))
       @menu = "user_settings"
-    else
-      @menu = null
     $('.controller-view').show()
     if $('div.persistent-bar span').hasClass('entypo-up-open-mini')
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
@@ -135,6 +130,7 @@ class CommandCenter
   refresh_convo_creation: (e) ->
     if e
       e.stopPropagation()
+    @menu = "current_users"
     @new_convo_params = []
     $('.parley div.controller-view').children().remove()
     $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
