@@ -11,6 +11,7 @@ class UserView
   constructor: (@current_user, @current_view) ->
     @$element = $("<li class='user'></li>")
     @$element.on 'click', @user_interact_callback.bind(this)
+
     ## checks if user is already in current conversation so that user cannot be added twice.
     if @current_view.constructor.name is "ChatRoom"
       for member in @current_view.convo.convo_partners

@@ -25,6 +25,11 @@ class ChatRoom
     $('body').append(@$element)
     @loadPersistentMessages()
 
+    ## pub/sub for convo creation and convo switch
+    app.pub_sub.on 'user_logged_on', @sync_user_logged_on.bind(this)
+    app.pub_sub.on 'user_logged_off', @sync_user_logged_off.bind(this)
+    app.pub_sub.on 'new_convo', @sync_new_convo.bind(this)
+
 
     ## for add users view
     @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
@@ -40,30 +45,33 @@ class ChatRoom
     if @convo.message_filter is message.convo_id
       new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
       @convo.add_message(new_message)
-      @renderDiscussion()
-      @$element.find('.top-bar').addClass('new-message')
-      @titleAlert()
+      if @menu is "chat"
+        @renderDiscussion()
+        @$element.find('.top-bar').addClass('new-message')
+        @titleAlert()
 
   user_offline_callback: ->
-    message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
-    @convo.add_message(message)
-    @renderDiscussion()
+    if @menu is "chat"
+      message = new Message( app.me, {image_url:'http://storage.googleapis.com/parley-assets/server_network.png'}, "This user is no longer online", false, new Date() )
+      @convo.add_message(message)
+      @renderDiscussion()
 
   typing_notification_callback: (convo_id, typist, bool) ->
-    if convo_id is @convo.message_filter
-      if bool
-        if @$discussion.find('.incoming').length is 0
-          typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
-          @$discussion.append(typing_notification)
+    if @menu is "chat"
+      if convo_id is @convo.message_filter
+        if bool
+          if @$discussion.find('.incoming').length is 0
+            typing_notification = "<li class='incoming'><div class='avatar'><img src='#{typist.image_url}'/></div><div class='messages'><p>#{typist.display_name} is typing...</p></div></li>"
+            @$discussion.append(typing_notification)
+            @scrollToLastMessage()
+        else
+          @$discussion.find('.incoming').remove()
           @scrollToLastMessage()
-      else
-        @$discussion.find('.incoming').remove()
-        @scrollToLastMessage()
 
   switch_to_persistent_convo: (e) ->
     e.preventDefault()
     e.stopPropagation()
-    if not @switchmode
+    if @menu isnt "convo_switch"
       @$discussion.children().remove()
       @$element.find('textarea.send').remove()
       @$element.find('.mirrordiv').remove()
@@ -74,15 +82,15 @@ class ChatRoom
           view = new PersistentConversationView(convo, this)
           view.render()
           @$discussion.append(view.$element)
-      @switchmode = true
+      @menu = "convo_switch"
     else
       @render()
       @loadPersistentMessages()
-      @switchmode = false
 
 
   add_users_to_convo: (e) ->
     e.preventDefault()
+    @menu = "add_users"
     @new_convo_params = []
     @$discussion.children().remove()
     @$discussion.append('<input class="search" placeholder="Add People">')
@@ -95,9 +103,9 @@ class ChatRoom
 
   cancel_add_users: (e) ->
     e.preventDefault()
-    @$discussion.children().remove()
-    @$element.find('.add-user-bar').remove()
+    @render()
     @loadPersistentMessages()
+    @new_convo_params = []
 
   confirm_new_convo_params: (e) ->
     e.preventDefault()
@@ -133,6 +141,7 @@ class ChatRoom
     @new_convo_params = []
 
   render: ->
+    @menu = "chat"
     @$element.children().remove()
     @$element.html(chat_room_template(@convo))
     @$discussion = @$element.find('.discussion')
@@ -276,6 +285,27 @@ class ChatRoom
       if @$element.find('label.img_upload').length is 0
         @$element.find('section.conversation').append(@$file_upload)
         @$file_upload.on 'change', @file_upload.bind(this)
+
+  sync_user_logged_on: (e, user, index, location) ->
+    console.log('i hear logged in')
+    console.log(arguments)
+    if @menu is "add_users"
+      view = new UserView(user, this)
+      view.render()
+      if location is "first" or location is "last"
+        console.log('first or last')
+        @$discussion.children().eq(-1).before(view.$element)
+      else
+        console.log("middle!!!!!")
+        @$discussion.find('li.user').eq(index).before(view.$element)
+
+  sync_user_logged_off: (e, user, index) ->
+    if @menu is "add_users"
+      @$discussion.find('li.user').eq(index).remove()
+      return
+
+
+  sync_new_convo: (e, convo) ->
 
 
 

@@ -16,6 +16,9 @@ class App
     @open_conversations = []
     @conversations = []
 
+    ## dummy object used for pub/sub
+    @pub_sub = $({})
+
     ## insert script for socket.io connections
     do ->
       script = document.createElement('script')
@@ -83,9 +86,7 @@ class App
     ## if convo exists
     if corres_convo
       corres_convo.add_message(new_message)
-      console.log("I think the convo exists")
     else
-      console.log("I think the convo doesn't exist")
       ## logic to extract info from message to create new convo
       convo_members_ids = new_message.convo_id.split(',')
       convo_partner_ids = []
@@ -105,9 +106,14 @@ class App
       new_convo = new Conversation(convo_partners)
       @conversations.push(new_convo)
       new_convo.add_message(new_message)
-      console.log(@conversations)
+      @pub_sub.trigger('new_convo', new_convo)
 
   load_current_users: (logged_on) ->
+    ## sort in alphatbetical order by display name before rendering.
+    logged_on = logged_on.sort (a,b) ->
+      if a.display_name > b.display_name then return 1
+      if a.display_name < b.display_name then return -1
+      return 0
     ## recieves current users from server on login
     for user in logged_on
       new_user = new User(user.display_name, user.image_url)
@@ -119,14 +125,28 @@ class App
     @current_users = users_sans_me
 
   user_logged_on: (display_name, image_url) ->
-    user = new User(display_name, image_url)
-    @current_users.push(user)
-
+    console.log('hello logg on')
+    new_user = new User(display_name, image_url)
+    if @current_users.length is 0
+      @current_users.push(new_user)
+      @pub_sub.trigger('user_logged_on',[new_user, 0, "first"])
+      return
+    for user, i in @current_users
+      if user.display_name > new_user.display_name
+        @current_users.splice(i, 0, new_user)
+        @pub_sub.trigger('user_logged_on', [new_user, i])
+        return
+      if i is @current_users.length - 1
+        @current_users.push(new_user)
+        @pub_sub.trigger('user_logged_on',[new_user, i + 1, "last"])
   user_logged_off: (display_name, image_url) ->
+    console.log('hello log off')
     new_online_users = []
-    for user in @current_users
+    for user, i in @current_users
       if image_url isnt user.image_url
         new_online_users.push(user)
+      else
+        @pub_sub.trigger('user_logged_off', [user, i])
     @current_users = new_online_users
 
 
