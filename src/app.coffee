@@ -67,24 +67,36 @@ class App
       parsed_messages.push(new_message)
 
     ## create new conversation object from persistent conversation info
-    convo = new Conversation(parsed_convo_partners, parsed_messages)
-    @conversations.push(convo)
+    new_convo = new Conversation(parsed_convo_partners, parsed_messages)
+    @sort_incoming_convo(new_convo)
+
+  sort_incoming_convo: (new_convo) ->
+    ## sort convos as they come in by time of last message
+    if @conversations.length is 0
+      @conversations.push(new_convo)
+      return
+    for convo, i in @conversations
+      if convo.messages[convo.messages.length - 1].time_stamp < new_convo.messages[new_convo.messages.length - 1].time_stamp
+        @conversations.splice(i, 0, new_convo)
+        return
+      if i is @conversations.length - 1
+        @conversations.push(new_convo)
+        return
+
 
   update_persistent_convos: (message) ->
-    console.log("i hear you click")
-    ## only update if convo doesn't exist or is not currently open
-    for open_convo in @open_conversations
-      if message.convo_id is open_convo
-        return
-    console.log('i know the convo isnt open')
+
     ## find if convo exists
-    for convo in @conversations
+    for convo, i in @conversations
       if convo.message_filter is message.convo_id
         corres_convo = convo
+        index = i
 
     new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
     ## if convo exists
     if corres_convo
+      @conversations.splice(index,1)
+      @conversations.unshift(corres_convo)
       corres_convo.add_message(new_message)
     else
       ## logic to extract info from message to create new convo
@@ -103,10 +115,11 @@ class App
             convo_partners.push(online_user)
 
       ## create new convo and add message
-      new_convo = new Conversation(convo_partners)
-      @conversations.push(new_convo)
-      new_convo.add_message(new_message)
+      new_convo = new Conversation(convo_partners, [], true)
+      new_convo.add_message(new_message, true)
+      @conversations.unshift(new_convo)
       @pub_sub.trigger('new_convo', new_convo)
+
 
   load_current_users: (logged_on) ->
     ## sort in alphatbetical order by display name before rendering.
@@ -125,7 +138,6 @@ class App
     @current_users = users_sans_me
 
   user_logged_on: (display_name, image_url) ->
-    console.log('hello logg on')
     new_user = new User(display_name, image_url)
     if @current_users.length is 0
       @current_users.push(new_user)
@@ -140,7 +152,6 @@ class App
         @current_users.push(new_user)
         @pub_sub.trigger('user_logged_on',[new_user, i + 1, "last"])
   user_logged_off: (display_name, image_url) ->
-    console.log('hello log off')
     new_online_users = []
     for user, i in @current_users
       if image_url isnt user.image_url

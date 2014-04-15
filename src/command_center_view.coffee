@@ -24,7 +24,8 @@ class CommandCenter
     app.pub_sub.on 'user_logged_off', @sync_user_logged_off.bind(this)
     app.pub_sub.on 'new_convo', @sync_new_convo.bind(this)
 
-
+    ## variables for keeping track of views to remove listeners
+    @persist_view_array = []
   log_in: ->
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
@@ -42,6 +43,8 @@ class CommandCenter
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
       .addClass('entypo-down-open-mini')
     else
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('div.persistent-bar span').removeClass('entypo-down-open-mini')
       .addClass('entypo-up-open-mini')
     $('.controller-view').toggle()
@@ -52,6 +55,8 @@ class CommandCenter
     e.preventDefault()
     e.stopPropagation()
     if @menu isnt "current_users"
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
 
@@ -77,6 +82,7 @@ class CommandCenter
       for convo in app.conversations
         if convo.messages.length > 0
           view = new PersistentConversationView(convo)
+          @persist_view_array.push(view)
           view.render()
           $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
@@ -92,6 +98,8 @@ class CommandCenter
     e.preventDefault()
     e.stopPropagation()
     if @menu isnt "user_settings"
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(profile_template(app.me))
       @menu = "user_settings"
@@ -133,6 +141,8 @@ class CommandCenter
   refresh_convo_creation: (e) ->
     if e
       e.stopPropagation()
+    if @menu = "persistent_convos"
+      @remove_persist_convo_views()
     @menu = "current_users"
     @new_convo_params = []
     $('.parley div.controller-view').children().remove()
@@ -145,16 +155,12 @@ class CommandCenter
     @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
 
   sync_user_logged_on: (e, user, index, location) ->
-    console.log('i hear logged in')
-    console.log(arguments)
     if @menu is "current_users"
       view = new UserView(user, this)
       view.render()
       if location is "first" or location is "last"
-        console.log('first or last')
         $('.parley div.controller-view').children().eq(-1).before(view.$element)
       else
-        console.log("middle!!!!!")
         $('.parley div.controller-view').find('li.user').eq(index).before(view.$element)
 
   sync_user_logged_off: (e, user, index) ->
@@ -162,8 +168,19 @@ class CommandCenter
       $('.parley div.controller-view').find('li.user').eq(index).remove()
       return
 
+  sync_new_convo: (e, new_convo, index, location) ->
+    console.log('sync new convo')
+    $('.parley div.controller-bar a.messages').addClass('notify')
+    if @menu is "persistent_convos"
+      view = new PersistentConversationView(new_convo, this)
+      view.render()
+      $('.parley div.controller-view').prepend(view.$element)
 
-  sync_new_convo: (e, convo) ->
+  remove_persist_convo_views: ->
+    for view in @persist_view_array
+      view.remove()
+    @persist_view_array.length = 0
+
 
 
 

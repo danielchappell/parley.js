@@ -25,10 +25,20 @@ class PersistentConversationView
 
   constructor: (@convo, @current_view) ->
     @$element = $('<div class="message existing"></div>')
-    @$element.on 'click', @load_convo.bind(this)
+    if @convo.notify
+      console.log('notified!!')
+      @$element.addClass('notify')
+
+    ##pub/sub bindings for dynamic DOM updating
+    @convo.pub_sub.on "convo_new_message", @sync_convo_new_message.bind(this)
+
 
   render: ->
     @$element.html(persistent_convo_reg(@convo))
+    @$element.on 'click', @load_convo.bind(this)
+
+  remove: ->
+    @convo.pub_sub.off()
 
 
   load_convo: ->
@@ -38,11 +48,14 @@ class PersistentConversationView
       if @convo.message_filter is open_convo
         convo_status = 'open'
 
-    if convo_status isnt 'open' or @convo.message_filter is @current_view.convo.message_filter
+    if @current_view instanceof ChatRoom
 
-      if @current_view instanceof ChatRoom
+      if convo_status isnt 'open' or @convo.message_filter is @current_view.convo.message_filter
 
         ## remove current conversation from open conversation
+        if @convo.notify
+          @convo.notify = false
+          @$element.removeClass('notify')
         new_open_convos = []
         for open_convo in app.open_conversations
           if open_convo isnt @current_view.convo.message_filter
@@ -54,10 +67,22 @@ class PersistentConversationView
         @current_view.render()
         @current_view.loadPersistentMessages()
         @current_view.switchmode = false
-      else
+
+    else
+      if convo_status isnt 'open'
         # if convo_status isnt 'open'
-          chat_window = new ChatRoom(@convo)
-          app.open_conversations.push(@convo.message_filter)
+        chat_window = new ChatRoom(@convo)
+        app.open_conversations.push(@convo.message_filter)
+
+  sync_convo_new_message: ->
+    console.log("sync new message")
+
+    @$element.remove()
+    @render()
+    if @current_view instanceof ChatRoom
+      @current_view.$discussion.prepend(@$element)
+    else
+      $('.parley div.controller-view').prepend(@$element)
 
 module.exports = PersistentConversationView
 

@@ -25,26 +25,32 @@ class ChatRoom
     $('body').append(@$element)
     @loadPersistentMessages()
 
-    ## pub/sub for convo creation and convo switch
-    app.pub_sub.on 'user_logged_on', @sync_user_logged_on.bind(this)
-    app.pub_sub.on 'user_logged_off', @sync_user_logged_off.bind(this)
-    app.pub_sub.on 'new_convo', @sync_new_convo.bind(this)
+    @pubsub_listeners =
+                    'user_logged_on': @sync_user_logged_on.bind(this)
+                    'user_logged_off': @sync_user_logged_off.bind(this)
+                    'new_convo': @sync_new_convo.bind(this)
 
+    @socket_listeners =
+                    'message': @message_callback.bind(this)
+                    'user_offline': @user_offline_callback.bind(this)
+                    'typing_notification': @typing_notification_callback.bind(this)
+
+    for prop, value of @pubsub_listeners
+      app.pub_sub.on(prop,value)
+
+    for prop, value of @socket_listeners
+      app.server.on(prop, value)
 
     ## for add users view
     @add_user_bar = '<div class="add-user-bar"><a class="cancel">Cancel</a><a class="confirm disabled">Add People</a></div>'
-
-    ## WEBSOCKET LISTENERS FOR MESSAGE AND TYPING NOTIFICATIONS
-    app.server.on 'message', @message_callback.bind(this)
-    app.server.on 'user_offline', @user_offline_callback.bind(this)
-    app.server.on 'typing_notification', @typing_notification_callback.bind(this)
 
 
 
   message_callback: (message) ->
     if @convo.message_filter is message.convo_id
       new_message = new Message(message.recipients, message.sender, message.content, message.image, message.time_stamp)
-      @convo.add_message(new_message)
+
+      @convo.add_message(new_message, true)
       if @menu is "chat"
         @renderDiscussion()
         @$element.find('.top-bar').addClass('new-message')
@@ -215,19 +221,11 @@ class ChatRoom
         new_open_convos.push(open_convo)
     app.open_conversations = new_open_convos
 
-    ## remove all websocket listeners for garbage collection
-    ## remove chat from DOM
-    app.server.removeListener 'message', @message_callback.bind(this)
-    app.server.removeListener 'user_offline', @user_offline_callback.bind(this)
-    app.server.removeListener 'typing_notification', @typing_notification_callback.bind(this)
-    @$element.find('.chat-close').off()
-    @$element.find('.send').off()
-    @$element.find('.send').off()
-    @$element.find('.top-bar').off()
-    @$element.off()
-    @$discussion.off()
+    ## remove all listeners for garbage collection
+    for prop, value of @socket_listeners
+      app.server.removeListener(prop,value)
+    app.pub_sub.off()
     @$element.remove()
-    delete this
 
   removeNotifications: (e) ->
     @$element.find('.top-bar').removeClass('new-message')
@@ -287,16 +285,16 @@ class ChatRoom
         @$file_upload.on 'change', @file_upload.bind(this)
 
   sync_user_logged_on: (e, user, index, location) ->
-    console.log('i hear logged in')
-    console.log(arguments)
+
+
     if @menu is "add_users"
       view = new UserView(user, this)
       view.render()
       if location is "first" or location is "last"
-        console.log('first or last')
+
         @$discussion.children().eq(-1).before(view.$element)
       else
-        console.log("middle!!!!!")
+
         @$discussion.find('li.user').eq(index).before(view.$element)
 
   sync_user_logged_off: (e, user, index) ->
@@ -304,10 +302,11 @@ class ChatRoom
       @$discussion.find('li.user').eq(index).remove()
       return
 
-
-  sync_new_convo: (e, convo) ->
-
-
+  sync_new_convo: (e, new_convo) ->
+    if @menu is "convo_switch"
+      view = new PersistentConversationView(new_convo, this)
+      view.render()
+      $('.parley div.controller-view').prepend(view.$element)
 
 
 module.exports = ChatRoom
