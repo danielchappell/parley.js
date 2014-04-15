@@ -152,7 +152,6 @@ class App
         @current_users.push(new_user)
         @pub_sub.trigger('user_logged_on',[new_user, i + 1, "last"])
   user_logged_off: (display_name, image_url) ->
-    console.log('hello log off')
     new_online_users = []
     for user, i in @current_users
       if image_url isnt user.image_url

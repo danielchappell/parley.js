@@ -37,6 +37,9 @@ class PersistentConversationView
     @$element.html(persistent_convo_reg(@convo))
     @$element.on 'click', @load_convo.bind(this)
 
+  remove: ->
+    @convo.pub_sub.off()
+
 
   load_convo: ->
     ## if convo isn't open load new chat window with convo

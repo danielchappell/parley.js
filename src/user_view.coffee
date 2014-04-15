@@ -24,6 +24,7 @@ class UserView
     @$element.html(current_user_template(@current_user))
 
 
+
   user_interact_callback: ->
     ## add/remove user in new convo build params located in both cmd center and chat windows.
       if @$element.hasClass('selected')

@@ -24,7 +24,8 @@ class CommandCenter
     app.pub_sub.on 'user_logged_off', @sync_user_logged_off.bind(this)
     app.pub_sub.on 'new_convo', @sync_new_convo.bind(this)
 
-
+    ## variables for keeping track of views to remove listeners
+    @persist_view_array = []
   log_in: ->
     @$element = $(logged_in_template(app.me))
     $('.parley section.controller').html(@$element)
@@ -42,6 +43,8 @@ class CommandCenter
       $('div.persistent-bar span').removeClass('entypo-up-open-mini')
       .addClass('entypo-down-open-mini')
     else
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('div.persistent-bar span').removeClass('entypo-down-open-mini')
       .addClass('entypo-up-open-mini')
     $('.controller-view').toggle()
@@ -52,6 +55,8 @@ class CommandCenter
     e.preventDefault()
     e.stopPropagation()
     if @menu isnt "current_users"
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').append('<input class="search" placeholder="Start  Chat">')
 
@@ -77,6 +82,7 @@ class CommandCenter
       for convo in app.conversations
         if convo.messages.length > 0
           view = new PersistentConversationView(convo)
+          @persist_view_array.push(view)
           view.render()
           $('.parley div.controller-view').append(view.$element)
       @menu = "persistent_convos"
@@ -92,6 +98,8 @@ class CommandCenter
     e.preventDefault()
     e.stopPropagation()
     if @menu isnt "user_settings"
+      if @menu is "persistent_convos"
+        @remove_persist_convo_views()
       $('.parley div.controller-view').children().remove()
       $('.parley div.controller-view').html(profile_template(app.me))
       @menu = "user_settings"
@@ -133,6 +141,8 @@ class CommandCenter
   refresh_convo_creation: (e) ->
     if e
       e.stopPropagation()
+    if @menu = "persistent_convos"
+      @remove_persist_convo_views()
     @menu = "current_users"
     @new_convo_params = []
     $('.parley div.controller-view').children().remove()
@@ -165,6 +175,11 @@ class CommandCenter
       view = new PersistentConversationView(new_convo, this)
       view.render()
       $('.parley div.controller-view').prepend(view.$element)
+
+  remove_persist_convo_views: ->
+    for view in @persist_view_array
+      view.remove()
+    @persist_view_array.length = 0
 
 
 
