@@ -29,6 +29,7 @@ class ChatRoom
                     'user_logged_on': @sync_user_logged_on.bind(this)
                     'user_logged_off': @sync_user_logged_off.bind(this)
                     'new_convo': @sync_new_convo.bind(this)
+                    'picture_message': @renderDiscussion.bind(this)
 
     @socket_listeners =
                     'message': @message_callback.bind(this)

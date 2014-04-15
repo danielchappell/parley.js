@@ -37,6 +37,9 @@ class Oauth
             for convo in app.conversations
               if convo.message_filter is convo_id
                 convo.add_message(new_message)
+            for open_convo in app.open_conversations
+              if open_convo is convo_id
+                app.pub_sub.trigger('picture_message')
         })
     else
       ## login unsuccessful log error to the console
