@@ -170,7 +170,7 @@ class ChatRoom
     @$element.find('.send').on 'keyup', @toggle_file_upload_button.bind(this)
     @$element.find('.top-bar, minify ').on 'click', @toggleChat.bind(this)
     @$element.on 'click', @removeNotifications.bind(this)
-    @$file_upload.on 'change', @file_upload.bind(this)
+    @$element.find('input.parley_file_upload').on 'change', @file_upload.bind(this)
 
   renderDiscussion: ->
     new_message = @convo.messages.slice(-1)[0]
@@ -261,6 +261,7 @@ class ChatRoom
       app.title_notification.notified = true
 
   file_upload: ->
+    console.log('hear click')
     file = @$element.find('.parley_file_upload').get(0).files[0]
     app.oauth.file_upload file, @convo.convo_partners, @convo.message_filter
 
@@ -282,7 +283,7 @@ class ChatRoom
     else
       if @$element.find('label.img_upload').length is 0
         @$element.find('section.conversation').append(@$file_upload)
-        @$file_upload.on 'change', @file_upload.bind(this)
+        @$element.find('input.parley_file_upload').on 'change', @file_upload.bind(this)
 
   sync_user_logged_on: (e, user, index, location) ->
 

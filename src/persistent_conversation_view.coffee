@@ -1,11 +1,14 @@
 app = require('./app.coffee')
 Handlebars = require('handlebars')
-persistent_convo_reg = require('./templates/persistent_convo_reg.hbs')
+persistent_convo_template = require('./templates/persistent_convo_reg.hbs')
 Handlebars = require('hbsfy/runtime')
 
 ## HANDLEBARS HELPER FUNCTIONS FOR PERSISTENT MESSAGE TEMPLATE
-Handlebars.registerHelper 'retrieve_image', ->
-  @convo_partners_image_urls[0]
+Handlebars.registerHelper 'format_image', ->
+  if @convo_partners.length < 2
+    @convo_partners_image_urls[0]
+  else
+
 Handlebars.registerHelper 'retrieve_last_message', ->
   last_message = @messages[@messages.length - 1]
   if last_message.image
@@ -34,7 +37,7 @@ class PersistentConversationView
 
 
   render: ->
-    @$element.html(persistent_convo_reg(@convo))
+    @$element.html(persistent_convo_template(@convo))
     @$element.on 'click', @load_convo.bind(this)
 
   remove: ->
