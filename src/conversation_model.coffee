@@ -5,10 +5,8 @@ app = require('./app.coffee')
 ## including a collection of message objects.
 class Conversation
 
-  constructor: (@convo_partners, @messages=[]) ->
-    console.log(@convo_partners)
+  constructor: (@convo_partners, @messages=[], @notify=false) ->
     @generate_message_filter()
-    console.log(@message_filter)
     @first_name_list = ""
     @convo_partners_image_urls = []
 
@@ -24,9 +22,14 @@ class Conversation
         @first_name_list += "#{first_name}"
         @convo_partners_image_urls.push(user.image_url)
 
-  add_message: (message) ->
+  add_message: (message, silent) ->
+    console.log('triggered!!')
     @messages.push message
-    @pub_sub.trigger('convo_new_message', this)
+    if not silent
+      $('.parley div.controller-bar a.messages').addClass('notify')
+      @notify = true
+      @pub_sub.trigger('convo_new_message')
+
 
   generate_message_filter: ->
     @message_filter = [app.me.image_url]

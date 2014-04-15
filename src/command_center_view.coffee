@@ -145,16 +145,12 @@ class CommandCenter
     @$element.find('.cancel').on 'click', @refresh_convo_creation.bind(this)
 
   sync_user_logged_on: (e, user, index, location) ->
-    console.log('i hear logged in')
-    console.log(arguments)
     if @menu is "current_users"
       view = new UserView(user, this)
       view.render()
       if location is "first" or location is "last"
-        console.log('first or last')
         $('.parley div.controller-view').children().eq(-1).before(view.$element)
       else
-        console.log("middle!!!!!")
         $('.parley div.controller-view').find('li.user').eq(index).before(view.$element)
 
   sync_user_logged_off: (e, user, index) ->
@@ -162,8 +158,14 @@ class CommandCenter
       $('.parley div.controller-view').find('li.user').eq(index).remove()
       return
 
+  sync_new_convo: (e, new_convo, index, location) ->
+    console.log('sync new convo')
+    $('.parley div.controller-bar a.messages').addClass('notify')
+    if @menu is "persistent_convos"
+      view = new PersistentConversationView(new_convo, this)
+      view.render()
+      $('.parley div.controller-view').prepend(view.$element)
 
-  sync_new_convo: (e, convo) ->
 
 
 

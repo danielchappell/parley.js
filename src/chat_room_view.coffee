@@ -304,10 +304,11 @@ class ChatRoom
       @$discussion.find('li.user').eq(index).remove()
       return
 
-
-  sync_new_convo: (e, convo) ->
-
-
+  sync_new_convo: (e, new_convo) ->
+    if @menu is "convo_switch"
+      view = new PersistentConversationView(new_convo, this)
+      view.render()
+      $('.parley div.controller-view').prepend(view.$element)
 
 
 module.exports = ChatRoom
