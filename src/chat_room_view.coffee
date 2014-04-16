@@ -204,6 +204,7 @@ class ChatRoom
     @renderDiscussion()
     app.server.emit 'message', message
     @$element.find('.send').val('')
+    @$element.find('.mirrordiv').val('')
     @emitTypingNotification()
 
   toggleChat: (e) ->
