@@ -106,7 +106,7 @@ body {
 }
 // discussion base presentation
 ol.discussion {
-  height: 19rem;
+  height: 21rem;
   overflow-x:hidden;
   overflow-y:scroll;
   background:$pr;
@@ -708,4 +708,38 @@ ol.discussion {
   ol.discussion li.incoming p{
   font-size: .65rem;
   padding: 0.65rem 0;
+}
+
+
+.parley > .controller {
+ position: absolute;
+ right: 1rem;
+ bottom: 0;
+}
+
+.parley:nth-of-type(1) {
+  position:absolute;
+  right:0rem;
+  bottom:0;
+}
+.parley:nth-of-type(2) {
+  position:absolute;
+  bottom:0;
+  right:1rem;
+}
+.parley:nth-of-type(3) {
+  position:absolute;
+  bottom:0;
+  right:18rem
+}
+.parley:nth-of-type(4) {
+  position:absolute;
+  bottom:0;
+  right:35rem
+}
+
+.parley:nth-of-type(5) {
+  position:absolute;
+  bottom:0;
+  right:52rem
 }
