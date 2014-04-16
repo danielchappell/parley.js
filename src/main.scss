@@ -5,17 +5,18 @@
 /* Modular  Start========================== */
 
   /* Color Variables*/
-$wht:#fbfbfb;
-$bg:#eee;
-$lght:#ccc;
-$gry:#adadad;
-$md:#999;
-$drk:#404040;
-$grn:#619e95;
+$pr: #fff;
+$wht: #fbfbfb;
+$bg: #eee;
+$lght: #ccc;
+$gry: #adadad;
+$md: #999;
+$drk: #404040;
+$grn: #619e95;
 $bl: #3B5998;
-$dgrn:#4d7e77;
-$rd:#d45e60;
-$yllw:#d2aa6d;
+$dgrn: #4d7e77;
+$rd: #d45e60;
+$yllw: #d2aa6d;
 /* Style Guide*/
 *{
   box-sizing:border-box;
@@ -50,6 +51,7 @@ body {
   background: $md;
   background: #666;
   padding: 0.5rem;
+  z-index: 999;
   a {
     font-size: 1rem;
     color: $wht;
@@ -65,7 +67,8 @@ body {
     }
   }
   &.new-message {
-    background: $grn ;
+    background: #3b82b3;
+    border-bottom: 0.125rem solid #326e99;
   }
 }
 // message alteration list ( minimize / popout / close)
@@ -82,8 +85,7 @@ body {
   @include flex-direction( row );
   background: $bg;
   list-style: none;
-  padding:0 .25rem;
-  border-bottom: 1px solid $lght;
+  padding:0 0.5rem;
   align-items: center;
   ul.existing {
     @include flexbox;
@@ -100,22 +102,25 @@ body {
     color:$md;
     cursor: pointer;
       &:hover {
-        color:#797979;
       }
     }
 }
 // discussion base presentation
 ol.discussion {
-  height: 19rem; 
+  height: 21rem;
   overflow-x:hidden;
   overflow-y:scroll;
-  background:$bg;
+  background:$pr;
   li{
-    padding: 0.25rem;
+    padding: 0.5rem;
     @include flexbox;
-    &:nth-child(even) {
-      background:$wht;
+    &:last-child{
+      padding-bottom: 1rem;
+
     }
+    &:nth-child(even) {
+    background:$bg;
+  }
     .avatar {
       width: 2.5rem;
       img {
@@ -189,6 +194,7 @@ textarea.send {
   width: 100%;
   height: 2.5rem;
   border-top: 1px solid $lght;
+  margin: 0;
 }
 
 .mirrordiv{
@@ -241,17 +247,27 @@ label {
   filter: alpha(opacity = 0);
   margin: 0;
   padding:0;
+  &:hover {
+    color:$drk;
+  }
   }
 }
 
 // incoming image notifications
-.incoming {
-  color: rgba(55, 55, 55, .6);
-  animation-name: 'pulse_animation';
-  animation-duration: 2650ms;
-  animation-iteration-count: infinite;
-  img {
-    opacity: 0.6;
+ol.discussion{
+  li.incoming {
+    opacity: .75;
+    .avatar {
+      img {
+      opacity: 0.6;
+      width: 2rem;
+      }
+    }
+    p{
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 1rem 0 1rem 1rem;
+    }
   }
 }
 
@@ -278,25 +294,27 @@ label {
 .user {
   @include flexbox;
   @include flex-direction( row );
-  padding: 0.25rem;
-  border-bottom: 1px solid $lght;
+  padding: 0.5rem;
   position: relative;
   cursor: pointer;
   &:hover {
     background:$bg;
     transition: all 0.5s ease;
   }
-  &.selected{ 
-background: $gry;
+  &.selected{
+    margin: 0;
+    background: #eee;
+    border-left-style: inset;
+    border-left: .25rem solid #3b82b3;
+    border-bottom: 1px solid $lght;
+    padding-left: 0.25rem;
   }
   &.disabled{
-    opacity: 5;
-    background: $lght;
-    box-shadow: inset 1 1 1 $md;
+    opacity: .5;
   }
   .avatar {
     @include flexbox;
-    margin-right: .5rem;
+    margin: 0;
     border-radius: 50%;
     border: 1px solid $md;
     overflow: hidden;
@@ -313,6 +331,9 @@ background: $gry;
       align-self: center;
       font-size: 0.75rem;
       color: $md;
+      color: #404040;
+      margin: 0 .5rem;
+      font-weight: 500;
     }
   }
 }
@@ -322,65 +343,36 @@ background: $gry;
     border-top:1px solid $lght;
     z-index: 500;
     display:flex;
-    padding:.5rem;
-    justify-content:space-between;
     background: $wht;
     position: absolute;
     bottom: 2rem;
     width: 100%;
+    justify-content: space-around;
+    padding: 0.5rem 0;
     a{
       align-content:center;
       width: 6rem;
       transition: all 0.15s ease-out 0;
-      background: $wht;
+      background: #bac2c9;
       border-radius: 0.25rem;
-      color: $drk;
+      color: $wht;
       font-size: 0.75rem;
       letter-spacing: 1px;
       padding: .5rem;
       text-align:center;
-      border:1px solid $md;
+      border-bottom: 0.125rem solid #acb5be;
+      cursor: pointer;
     }
     .confirm{
-      color:$wht; 
-      background: $grn; 
+      color: #fbfbfb;
+      background: #3b82b3;
+      border-bottom: 0.125rem solid #326e99;
       &.disabled{
-        background:rgba(  97  ,158, 149,.5);
-      }  
-    } 
+        opacity: .75;
+      }
+    }
   }
 }
-.add-user-bar{
-    border-top:1px solid $lght;
-    z-index: 500;
-    display:flex;
-    padding:.5rem;
-    justify-content:space-between;
-    background: $wht;
-    position: absolute;
-    bottom: 0rem;
-    width: 100%;
-    a{
-      align-content:center;
-      width: 7rem;
-      transition: all 0.15s ease-out 0;
-      background: $wht;
-      border-radius: 0.25rem;
-      color: $drk;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      padding: .5rem;
-      text-align:center;
-      border:1px solid $md;
-    }
-    .confirm{
-      color:$wht; 
-      background: $grn; 
-      &.disabled{
-        background:rgba(  97  ,158, 149,.5);
-      }  
-    } 
-  }
 // existing message view within conversation view
 .existing {
   display: flex;
@@ -402,8 +394,10 @@ background: $gry;
     color: #666;
     font-weight: 400;
   }
-  .selected{ 
-    background: $gry;
+  .selected{
+    background: $bg;
+    border-left-style: inset;
+    border-left: .25rem solid #3b82b3;
   }
   .disabled{
     opacity: 5;
@@ -421,7 +415,7 @@ background: $gry;
   width: 14rem;
   position: absolute;
   bottom: 0;
-  right: 0.5rem;
+  right: 1rem;
   max-height: 24rem;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
@@ -436,10 +430,10 @@ background: $gry;
     .persistent-bar {
       @include flexbox;
       @include justify-content( space-between);
-      background: $bg;
+      background: $pr;
       width: 100%;
       color: #666;
-      padding: .25rem;
+      padding: .5rem;
       z-index:600;
       img{
         border-radius: 50%;
@@ -544,9 +538,10 @@ background: $gry;
     }
   }
   .utility-bar{
-      background: #eee;
-      border-top: 1px solid #adadad;
+    background: #fff;
+    border-top: 1px solid #eee;
       a{
+        color:#404040;
         font-size:1.125rem;
       }
     }
@@ -606,24 +601,20 @@ li.messages {
 //   }
 // }
 input.search{
-  width:100%;
-  background:$wht;
-  z-index:999;
+  width: 12.9rem;
+  background:$pr;
   padding:.5rem;
-  border:none;
-  border-bottom:1px solid $gry;
+  border:1px solid $gry;
   font-size:1rem;
   outline:none;
   color:$drk;
+  margin: 0 0.5rem 0.65rem 0.5rem;
 }
 
 
   li.existing:hover {
     opacity: 0.75;
     transition: all 0.5s ease;
-  }
-  li.existing:nth-child(even) {
-    background:$wht;
   }
 
   /*scrollbar styles*/
@@ -639,3 +630,142 @@ input.search{
   background-color: #404040;
 }
 
+
+/* new mesage animation*/
+/* add user search*/
+
+.discussion input.search {
+width: 14.9rem;
+margin-top: .5rem;
+
+}
+
+/*add user controlls*/
+
+.discussion{
+  .add-user-bar {
+    border-top: 1px solid #ccc;
+    z-index: 500;
+    display: flex;
+    background: #fbfbfb;
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    a {
+      align-content: center;
+      width: 6rem;
+      transition: all 0.15s ease-out 0;
+      background: #bac2c9;
+      border-radius: 0.25rem;
+      color: #fbfbfb;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: 0.5rem;
+      text-align: center;
+      border-bottom: 0.125rem solid #acb5be;
+      cursor: pointer;
+      &.confirm {
+        color: #fbfbfb;
+        background: #3b82b3;
+        border-bottom: 0.125rem solid #326e99;
+      }
+      &.disabled {
+          opacity: 0.75;
+      }
+    }
+  }
+}
+.existing{
+  &.notify{
+    border-left-style: inset;
+    border-left: .25rem solid #ed5a5a;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+}
+.messages{
+  &.notify{
+    color: red
+  }
+}
+
+ol.discussion li.incoming {
+  opacity: 0.6;
+  position: absolute;
+  bottom: 2rem;
+  padding: 0.5rem;
+  width: 100%;
+  background: transparent;
+}
+
+ol.discussion li.incoming .avatar img {
+  opacity: 0.6; }
+
+ol.discussion {
+  padding-bottom: 4.5rem; }
+
+  ol.discussion li.incoming p{
+  font-size: .65rem;
+  padding: 0.65rem 0;
+}
+
+
+.parley > .controller {
+ position: absolute;
+ right: 1rem;
+ bottom: 0;
+}
+
+.parley:nth-of-type(1) {
+  position:absolute;
+  right:0rem;
+  bottom:0;
+}
+.parley:nth-of-type(2) {
+  position:absolute;
+  bottom:0;
+  right:1rem;
+}
+.parley:nth-of-type(3) {
+  position:absolute;
+  bottom:0;
+  right:18rem
+}
+.parley:nth-of-type(4) {
+  position:absolute;
+  bottom:0;
+  right:35rem
+}
+
+.parley:nth-of-type(5) {
+  position:absolute;
+  bottom:0;
+  right:52rem
+}
+
+
+
+/* one img */
+.existing .avatar .img::only-child {
+  width: 2.125rem; }
+
+/* two imgs */
+.existing .avatar img:nth-child(1):nth-last-child(2), .existing .avatar img:nth-child(2):nth-last-child(1) {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  margin: 0 .125rem 0 0;
+}
+
+/* three imgs */
+.existing .avatar img:nth-child(1):nth-last-child(3), .existing .avatar img:nth-child(2):nth-last-child(2), .existing .avatar img:nth-child(3):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .25rem 0 0; }
+
+/* four imgs */
+.existing .avatar img:nth-child(1):nth-last-child(4), .existing .avatar img:nth-child(2):nth-last-child(3), .existing .avatar img:nth-child(3):nth-last-child(2), .existing .avatar img:nth-child(4):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .125rem 0 0; }

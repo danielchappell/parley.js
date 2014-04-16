@@ -28,7 +28,7 @@ class Conversation
     if not silent
       $('.parley div.controller-bar a.messages').addClass('notify')
       @notify = true
-      @pub_sub.trigger('convo_new_message')
+      @pub_sub.trigger('convo_new_message', message)
 
 
   generate_message_filter: ->

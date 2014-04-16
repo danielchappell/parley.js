@@ -66,13 +66,14 @@ class PersistentConversationView
       if convo_status isnt 'open' or @convo.message_filter is @current_view.convo.message_filter
 
         ## remove current conversation from open conversation
+
         if @convo.notify
           @convo.notify = false
           @$element.removeClass('notify')
         new_open_convos = []
         for open_convo in app.open_conversations
           if open_convo isnt @current_view.convo.message_filter
-            new_open_convos.push(convo)
+            new_open_convos.push(open_convo)
         app.open_conversations = new_open_convos
 
         @current_view.convo = @convo
@@ -83,15 +84,23 @@ class PersistentConversationView
 
     else
       if convo_status isnt 'open'
+        if @convo.notify
+          @convo.notify = false
+          @$element.removeClass('notify')
         # if convo_status isnt 'open'
         chat_window = new ChatRoom(@convo)
         app.open_conversations.push(@convo.message_filter)
 
-  sync_convo_new_message: ->
+  sync_convo_new_message: (e, message)->
     console.log("sync new message")
+    console.log(arguments)
 
     @$element.remove()
     @render()
+    if message.sender.image_url isnt app.me.image_url
+      @$element.addClass('notify')
+    else
+      @$element.removeClass('notify')
     if @current_view instanceof ChatRoom
       @current_view.$discussion.prepend(@$element)
     else
