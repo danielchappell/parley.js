@@ -743,3 +743,28 @@ ol.discussion {
   bottom:0;
   right:52rem
 }
+
+
+
+/* one img */
+.existing .avatar .img::only-child {
+  width: 2.125rem; }
+
+/* two imgs */
+.existing .avatar img:nth-child(1):nth-last-child(2), .existing .avatar img:nth-child(2):nth-last-child(1) {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  margin: 0 .125rem 0 0;
+}
+
+/* three imgs */
+.existing .avatar img:nth-child(1):nth-last-child(3), .existing .avatar img:nth-child(2):nth-last-child(2), .existing .avatar img:nth-child(3):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .25rem 0 0; }
+
+/* four imgs */
+.existing .avatar img:nth-child(1):nth-last-child(4), .existing .avatar img:nth-child(2):nth-last-child(3), .existing .avatar img:nth-child(3):nth-last-child(2), .existing .avatar img:nth-child(4):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .125rem 0 0; }
