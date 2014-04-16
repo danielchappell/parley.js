@@ -101,7 +101,6 @@ body {
     color:$md;
     cursor: pointer;
       &:hover {
-        color:#797979;
       }
     }
 }
@@ -114,6 +113,13 @@ ol.discussion {
   li{
     padding: 0.5rem;
     @include flexbox;
+    &:last-child{
+      padding-bottom: 1rem;
+
+    }
+    &:nth-child(even) {
+    background:$bg;
+  }
     .avatar {
       width: 2.5rem;
       img {
@@ -231,6 +237,9 @@ label {
   bottom:0.125rem;
   color:$gry;
   overflow:hidden;
+  &:hover {
+    color:$drk;
+  }
   span input {
   z-index: 999;
   opacity: 0;
@@ -244,13 +253,20 @@ label {
 }
 
 // incoming image notifications
-.incoming {
-  color: rgba(55, 55, 55, .6);
-  animation-name: 'pulse_animation';
-  animation-duration: 2650ms;
-  animation-iteration-count: infinite;
-  img {
-    opacity: 0.6;
+ol.discussion{
+  li.incoming {
+    opacity: .75;
+    .avatar {
+      img {
+      opacity: 0.6;
+      width: 2rem;
+      }
+    }
+    p{
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 1rem 0 1rem 1rem;
+    }
   }
 }
 
@@ -525,10 +541,7 @@ label {
     border-top: 1px solid #eee;
       a{
         color:#404040;
-        font-size:1.125rem;
-        &:hover{
-          color: #ccc;
-        }
+        font-size:1.125rem; 
       }
     }
 /* existing messages ========================== */
@@ -602,9 +615,6 @@ input.search{
     opacity: 0.75;
     transition: all 0.5s ease;
   }
-  li.existing:nth-child(even) {
-    background:$wht;
-  }
 
   /*scrollbar styles*/
 ::-webkit-scrollbar {
@@ -666,9 +676,18 @@ margin-top: .5rem;
     }
   }
 }
-.notify{
-  border: 1px solid red
-  ;
+.existing{
+  &.notify{
+    border-left-style: inset;
+    border-left: .25rem solid #ed5a5a;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+}
+.messages{
+  &.notify{
+    color: red
+  }
 }
 
 
