@@ -106,17 +106,13 @@ body {
 }
 // discussion base presentation
 ol.discussion {
-  height: 19rem; 
+  height: 16rem; 
   overflow-x:hidden;
   overflow-y:scroll;
   background:$pr;
   li{
     padding: 0.5rem;
     @include flexbox;
-    &:last-child{
-      padding-bottom: 1rem;
-
-    }
     &:nth-child(even) {
     background:$bg;
   }
@@ -691,3 +687,24 @@ margin-top: .5rem;
 }
 
 
+ol.discussion li.incoming {
+  opacity: 0.6;
+  position: absolute;
+  bottom: 2rem;
+  padding:.5rem;
+  width: 100%;
+  }
+
+ol.discussion li.incoming .avatar img {
+  opacity: 0.6;
+  
+}
+ol.discussion li.incoming p{
+  font-size: .65rem;
+  padding:0;
+}
+
+
+ol.discussion {
+  padding-bottom:4.5rem;
+}
