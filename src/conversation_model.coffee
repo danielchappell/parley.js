@@ -23,7 +23,6 @@ class Conversation
         @convo_partners_image_urls.push(user.image_url)
 
   add_message: (message, silent) ->
-    console.log('triggered!!')
     @messages.push message
     if not silent
       $('.parley div.controller-bar a.messages').addClass('notify')

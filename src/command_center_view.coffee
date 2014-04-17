@@ -81,7 +81,7 @@ class CommandCenter
       $(".parley div.controller-view").children().remove()
       for convo in app.conversations
         if convo.messages.length > 0
-          view = new PersistentConversationView(convo)
+          view = new PersistentConversationView(convo, this)
           @persist_view_array.push(view)
           view.render()
           $('.parley div.controller-view').append(view.$element)
@@ -169,8 +169,9 @@ class CommandCenter
       return
 
   sync_new_convo: (e, new_convo, index, location) ->
-    console.log('sync new convo')
-    $('.parley div.controller-bar a.messages').addClass('notify')
+
+    if new_convo.notify
+      $('.parley div.controller-bar a.messages').addClass('notify')
     if @menu is "persistent_convos"
       view = new PersistentConversationView(new_convo, this)
       view.render()

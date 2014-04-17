@@ -200,8 +200,9 @@ class ChatRoom
 
   sendMessage: ->
     message = new Message @convo.convo_partners, app.me, @$element.find('.send').val()
-    @convo.add_message(message)
+    @convo.add_message(message, true)
     @renderDiscussion()
+    console.log('hello')
     app.server.emit 'message', message
     @$element.find('.send').val('')
     @emitTypingNotification()

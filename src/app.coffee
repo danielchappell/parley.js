@@ -85,7 +85,7 @@ class App
 
 
   update_persistent_convos: (message) ->
-
+    console.log('goodbye!')
     ## find if convo exists
     for convo, i in @conversations
       if convo.message_filter is message.convo_id

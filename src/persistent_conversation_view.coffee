@@ -39,7 +39,6 @@ class PersistentConversationView
   constructor: (@convo, @current_view) ->
     @$element = $('<div class="message existing"></div>')
     if @convo.notify
-      console.log('notified!!')
       @$element.addClass('notify')
 
     ##pub/sub bindings for dynamic DOM updating
@@ -91,9 +90,9 @@ class PersistentConversationView
         chat_window = new ChatRoom(@convo)
         app.open_conversations.push(@convo.message_filter)
 
+    @remove_command_center_notification()
+
   sync_convo_new_message: (e, message)->
-    console.log("sync new message")
-    console.log(arguments)
 
     @$element.remove()
     @render()
@@ -105,6 +104,19 @@ class PersistentConversationView
       @current_view.$discussion.prepend(@$element)
     else
       $('.parley div.controller-view').prepend(@$element)
+    @remove_command_center_notification()
+
+  remove_command_center_notification: ->
+    ## removes notification from command center bar if all messages are read
+    if @current_view.constructor.name is "CommandCenter"
+      has_class = true
+      for view in @current_view.persist_view_array
+        if not view.$element.hasClass('notify')
+          has_class = false
+      if not has_class
+        $('.parley div.controller-bar a.messages').removeClass('notify')
+
+
 
 module.exports = PersistentConversationView
 
