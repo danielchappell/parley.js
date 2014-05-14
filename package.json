@@ -9,7 +9,8 @@
   "dependencies": {
     "redis": "~0.10.1",
     "socket.io": "~0.9.16",
-    "socket.io-stream": "~0.5.3"
+    "socket.io-stream": "~0.5.3",
+    "express": "3.x"
   },
   "devDependencies": {
     "gulp": "^3.6.0",
