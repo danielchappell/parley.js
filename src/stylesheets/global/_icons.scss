@@ -1,0 +1,16 @@
+/* temporary icons and base style ========================== */
+@import url(http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,700); 
+@import url(http://weloveiconfonts.com/api/?family=entypo|fontawesome|iconicstroke);
+
+/* entypo */
+[class*="entypo-"]:before {
+    font-family:'entypo', sans-serif;
+}
+/* fontawesome */
+[class*="fontawesome-"]:before {
+    font-family:'FontAwesome', sans-serif;
+}
+/* iconicstroke */
+[class*="iconicstroke-"]:before {
+    font-family:'IconicStroke', sans-serif;
+}

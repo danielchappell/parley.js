@@ -1,0 +1,29 @@
+// Colors
+///////////////////////////////////////////////////////////////////////////////
+$pr: #fff;
+$wht: #fbfbfb;
+$bg: #eee;
+$lght: #ccc;
+$gry: #adadad;
+$md: #999;
+$drk: #404040;
+$grn: #619e95;
+$bl: #3B5998;
+$dgrn: #4d7e77;
+$rd: #d45e60;
+$yllw: #d2aa6d;
+$light-gray: hsla(195, 29%, 97%, 1);
+$white: hsla(0, 100%, 100%, 1);
+$dark-gray: hsla(208, 12%, 25%, 1);
+
+// typography
+///////////////////////////////////////////////////////////////////////////////
+$b-borderColor: $white;
+$b-borderWidth: 1px;
+$b-border: $b-borderWidth solid $b-borderColor;
+$b-fontSize: 4rem;
+$b-fontSize-bp: 6rem;
+$b-lineHeight: 1.5;
+$c-background: $white;
+$c-base: $dark-gray;
+$f-base: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;

@@ -1,0 +1,362 @@
+/* start of controller view ===========================*/
+
+// logged out
+.controller{
+  width: 14rem;
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  max-height: 24rem;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  .controller-view{
+    min-height: 100%;
+    max-height: 18rem;
+    padding-bottom: 2.75rem;
+    overflow-x: hidden;
+    background: #fff;
+    overflow-y: scroll;
+    }
+    .persistent-bar {
+      @include flexbox;
+      @include justify-content( space-between);
+      background: $pr;
+      width: 100%;
+      color: #666;
+      padding: .5rem;
+      z-index:600;
+      img{
+        border-radius: 50%;
+        width: 2.125rem;
+        height: 2.125rem;
+        border: 1px solid $gry;
+      }
+      a {
+        font-size: .75rem;
+        align-self: center;
+        cursor: pointer;
+        flex: 1;
+        padding-left: .5rem;
+        span{
+          margin-left:.25rem;
+        }
+      }
+    }
+  }
+.login-bar {
+  cursor: pointer;
+  @include flexbox;
+  @include flex-direction( row );
+  background: $bg;
+  .btn {
+    @include flexbox;
+    @include flex-direction( column );
+    @include justify-content( center );
+    font-size: 1.125rem;
+    border-right: 1px solid $md;
+    a {
+      align-self: center;
+      color: $drk;
+      padding: 0.25rem;
+    }
+  }
+  .aside {
+    @include flexbox;
+    @include flex-direction( column );
+    @include justify-content( center );
+    flex: 1;
+      a {
+        font: 700 1rem 'Quattrocento Sans', sans-serif;
+        color: $md;
+        align-self: center;
+      }
+  }
+}
+/* logged in ======================== */
+// settings view
+.default-view {
+  @include justify-content( center );
+  min-width: 100%;
+  padding:1rem;
+  background: $bg;
+  figure {
+    margin: 0;
+    @include flexbox;
+    @include flex-direction( column );
+    @include align-content( flex-start );
+    img {
+      align-self: center;
+      max-width: 80%;
+      opacity: 0.75;
+      border-radius: 50%;
+      border: 3px solid $drk;
+    }
+    h2 {
+      margin: 0.2rem;
+      font-size: 1rem;
+      text-align: center;
+      color: $gry;
+    }
+    a {
+      font-size: 0.75rem;
+      text-align: center;
+      color: $md;
+      &:hover {
+        color: $grn;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.horizontal-list{
+    min-width:100%;
+    list-style:none;
+    display:flex;
+    flex-direction:row;
+    padding: 0.25rem;
+    >li{
+      flex:1;
+      display: flex;
+      flex-direction:column;
+      justify-content:center;
+      >a{
+        text-decoration: none;
+        color: $gry;
+        text-align:center;
+        cursor: pointer;
+      }
+    }
+  }
+  .utility-bar{
+    background: #fff;
+    border-top: 1px solid #eee;
+      a{
+        color:#404040;
+        font-size:1.125rem;
+      }
+    }
+/* existing messages ========================== */
+li.messages {
+  @include flexbox;
+  @include flex-direction( row );
+  padding: 0.25rem;
+  border-bottom: 1px solid $lght;
+  position: relative;
+  .avatar{
+    border-radius: 50%;
+    border: 1px solid $drk;
+    img {
+      width: 2.5rem;
+    }
+  }
+}
+.content {
+  @include flexbox;
+  @include flex-direction( column );
+  @include justify-content( flex-start );
+  text-align: left;
+  flex: 1 0 0;
+  margin-left: 0.5rem;
+  &:before {
+    color: $md;
+    position: absolute;
+    right: 0.75rem;
+    top: 1.25rem;
+  }
+  h2 {
+    font-size: 0.75rem;
+    color: $drk;
+    margin: 0;
+  }
+  p {
+    font-size: 0.8rem;
+    color: $md;
+    margin: 0 1.175rem 0 0;
+  }
+  a {
+    font-size: 0.5rem;
+    color: $lght;
+    margin: 0.25rem 0;
+  }
+}
+// .status {
+//   h2:after {
+//     content: '';
+//     border: 0.125rem solid $grn;
+//     display: inline-block;
+//     height: 0.25rem;
+//     width: 0.25rem;
+//     border-radius: 50%;
+//     margin: 0.25rem 0 0 .25rem;
+//   }
+// }
+input.search{
+  width: 12.9rem;
+  background:$pr;
+  padding:.5rem;
+  border:1px solid $gry;
+  font-size:1rem;
+  outline:none;
+  color:$drk;
+  margin: 0 0.5rem 0.65rem 0.5rem;
+}
+
+
+  li.existing:hover {
+    opacity: 0.75;
+    transition: all 0.5s ease;
+  }
+
+  /*scrollbar styles*/
+::-webkit-scrollbar {
+    // width: 0.125rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #404040;
+}
+
+
+/* new mesage animation*/
+/* add user search*/
+
+.discussion input.search {
+width: 14.9rem;
+margin-top: .5rem;
+
+}
+
+/*add user controlls*/
+
+.discussion{
+  .add-user-bar {
+    border-top: 1px solid #ccc;
+    z-index: 500;
+    display: flex;
+    background: #fbfbfb;
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    a {
+      align-content: center;
+      width: 6rem;
+      transition: all 0.15s ease-out 0;
+      background: #bac2c9;
+      border-radius: 0.25rem;
+      color: #fbfbfb;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: 0.5rem;
+      text-align: center;
+      border-bottom: 0.125rem solid #acb5be;
+      cursor: pointer;
+      &.confirm {
+        color: #fbfbfb;
+        background: #3b82b3;
+        border-bottom: 0.125rem solid #326e99;
+      }
+      &.disabled {
+          opacity: 0.75;
+      }
+    }
+  }
+}
+.existing{
+  &.notify{
+    border-left-style: inset;
+    border-left: .25rem solid #ed5a5a;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+}
+.messages{
+  &.notify{
+    color: red
+  }
+}
+
+ol.discussion li.incoming {
+  opacity: 0.6;
+  position: absolute;
+  bottom: 2rem;
+  padding: 0.5rem;
+  width: 100%;
+  background: transparent;
+}
+
+ol.discussion li.incoming .avatar img {
+  opacity: 0.6; }
+
+ol.discussion {
+  padding-bottom: 4.5rem; }
+
+  ol.discussion li.incoming p{
+  font-size: .65rem;
+  padding: 0.65rem 0;
+}
+
+
+.parley > .controller {
+ position: absolute;
+ right: 1rem;
+ bottom: 0;
+}
+
+.parley:nth-of-type(1) {
+  position:absolute;
+  right:0rem;
+  bottom:0;
+}
+.parley:nth-of-type(2) {
+  position:absolute;
+  bottom:0;
+  right:1rem;
+}
+.parley:nth-of-type(3) {
+  position:absolute;
+  bottom:0;
+  right:18rem
+}
+.parley:nth-of-type(4) {
+  position:absolute;
+  bottom:0;
+  right:35rem
+}
+
+.parley:nth-of-type(5) {
+  position:absolute;
+  bottom:0;
+  right:52rem
+}
+
+
+
+/* one img */
+.existing .avatar .img::only-child {
+  width: 2.125rem; }
+
+/* two imgs */
+.existing .avatar img:nth-child(1):nth-last-child(2), .existing .avatar img:nth-child(2):nth-last-child(1) {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  margin: 0 .125rem 0 0;
+}
+
+/* three imgs */
+.existing .avatar img:nth-child(1):nth-last-child(3), .existing .avatar img:nth-child(2):nth-last-child(2), .existing .avatar img:nth-child(3):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .25rem 0 0; }
+
+/* four imgs */
+.existing .avatar img:nth-child(1):nth-last-child(4), .existing .avatar img:nth-child(2):nth-last-child(3), .existing .avatar img:nth-child(3):nth-last-child(2), .existing .avatar img:nth-child(4):nth-last-child(1) {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 .125rem 0 0; }

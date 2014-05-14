@@ -1,0 +1,359 @@
+// chat_room_view
+///////////////////////////////////////////////////////////////////////////////
+.conversation {
+  @include flexbox;
+  @include flex-direction( column );
+  max-height: 25.88rem;
+  position:absolute;
+  bottom: 0;
+  right: 16rem;
+  width:16rem;
+  border: 1px solid $gry;
+}
+
+.top-bar {
+  @include flexbox;
+  @include justify-content( space-between );
+  background: $md;
+  background: #666;
+  padding: 0.5rem;
+  z-index: 999;
+  a {
+    font-size: 1rem;
+    color: $wht;
+    align-self: center;
+  }
+  ul {
+    @include flexbox;
+    color: $gry;
+    cursor: pointer;
+    li{
+      font-size: 1.125rem;
+      padding: 0 0 0 0.75rem;
+    }
+  }
+  &.new-message {
+    background: #3b82b3;
+    border-bottom: 0.125rem solid #326e99;
+  }
+}
+// message alteration list ( minimize / popout / close)
+.message-alt{
+  @include flexbox;
+  color: $wht;
+  cursor: pointer;
+  li{
+    padding:0.3rem;
+  }
+}
+.message-bar {
+  @include flexbox;
+  @include flex-direction( row );
+  background: $bg;
+  list-style: none;
+  padding:0 0.5rem;
+  align-items: center;
+  ul.existing {
+    @include flexbox;
+    flex:1;
+    @include justify-content( flex-end );
+  }
+  li{
+    display:inline;
+    list-style: none;
+    @include align-items( center );
+  }
+  a{
+    font-size:1.25rem;
+    color:$md;
+    cursor: pointer;
+      &:hover {
+      }
+    }
+}
+// discussion base presentation
+ol.discussion {
+  height: 21rem;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  background:$pr;
+  li{
+    padding: 0.5rem;
+    @include flexbox;
+    &:last-child{
+      padding-bottom: 1rem;
+
+    }
+    &:nth-child(even) {
+    background:$bg;
+  }
+    .avatar {
+      width: 2.5rem;
+      img {
+        border-radius:50%;
+        width: 100%;
+        border:1px solid $md;
+      }
+    }
+  }
+}
+.message-area{
+  height: 24rem;
+  width:100%;
+}
+// message layout for base ( other )
+  .message{
+    @include flexbox;
+    @include flex-direction( column );
+    @include justify-content( flex-start );
+    text-align: left;
+    flex: 1 0 0;
+    margin-left: .5rem;
+    h2{
+      font-size: 0.75rem;
+      color: $drk;
+      margin: 0 0 .25rem 0;
+    }
+    p{
+      font-size: 0.8rem;
+      color: $md;
+      margin: 0 0 0.25rem 0;
+      padding-right: 0.5rem;
+      word-wrap: break-word;
+      img{
+        max-width: 12rem;
+        border-radius: 0.25rem;
+        border: 1px solid #adadad;
+      }
+    }
+    a{
+      font-size: 0.6rem;
+      color: $gry;
+      margin: 0;
+    }
+  }
+// message alternate  ( self )
+.self {
+  padding-right: 0;
+  justify-content: flex-end;
+  align-items: flex-end;
+  .messages {
+    @include order( 1 );
+  }
+  .avatar {
+    @include order( 2 );
+  }
+}
+// message enter should grow with input of text
+textarea.send {
+  padding:4%;
+  color:$drk;
+  font-size:.85rem;
+  border-top:1px solid $lght;
+  word-wrap: break-word;
+  resize: none;
+  overflow: hidden;
+  border:none;
+  outline:none;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  border-top: 1px solid $lght;
+  margin: 0;
+}
+
+.mirrordiv{
+  max-height: 8rem;
+  opacity: 0;
+  z-index: -50;
+  padding:4%;
+  color:$drk;
+  font-size:.85rem;
+  border-top:1px solid $lght;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  resize: none;
+  overflow: hidden;
+  min-height: 2.5rem;
+  border:none;
+  outline:none;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+// image upload icon
+input[type=file] {
+  position:absolute;
+  z-index: 999;
+  width: 2rem;
+  font-size:1.75rem;
+  right:0.5rem;
+  bottom:0.35rem;
+  opacity:0;
+  outline:none;
+  }
+.hide{
+  display:none
+}
+
+label {
+  position:absolute;
+  font-size:1.75rem;
+  right:0.5rem;
+  bottom:0.125rem;
+  color:$gry;
+  overflow:hidden;
+  &:hover {
+    color:$drk;
+  }
+  span input {
+  z-index: 999;
+  opacity: 0;
+  filter: alpha(opacity = 0);
+  margin: 0;
+  padding:0;
+  &:hover {
+    color:$drk;
+  }
+  }
+}
+
+// incoming image notifications
+ol.discussion{
+  li.incoming {
+    opacity: .75;
+    .avatar {
+      img {
+      opacity: 0.6;
+      width: 2rem;
+      }
+    }
+    p{
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 1rem 0 1rem 1rem;
+    }
+  }
+}
+
+//  add users
+///////////////////////////////////////////////////////////////////////////////
+.online-users {
+  max-height: 16rem;
+  overflow-y: scroll;
+}
+.user {
+  @include flexbox;
+  @include flex-direction( row );
+  padding: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  &:hover {
+    background:$bg;
+    transition: all 0.5s ease;
+  }
+  &.selected{
+    margin: 0;
+    background: #eee;
+    border-left-style: inset;
+    border-left: .25rem solid #3b82b3;
+    border-bottom: 1px solid $lght;
+    padding-left: 0.25rem;
+  }
+  &.disabled{
+    opacity: .5;
+  }
+  .avatar {
+    @include flexbox;
+    margin: 0;
+    border-radius: 50%;
+    border: 1px solid $md;
+    overflow: hidden;
+    img{
+      width: 2.125rem;
+      height: 2.125rem;
+    }
+  }
+  .content {
+    @include flexbox;
+    @include flex-direction( row );
+    margin: 0 !important;
+    h2 {
+      align-self: center;
+      font-size: 0.75rem;
+      color: $md;
+      color: #404040;
+      margin: 0 .5rem;
+      font-weight: 500;
+    }
+  }
+}
+// confirm or cancel add user to conversation buttons
+.controller {
+  .add-user-bar{
+    border-top:1px solid $lght;
+    z-index: 500;
+    display:flex;
+    background: $wht;
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    a{
+      align-content:center;
+      width: 6rem;
+      transition: all 0.15s ease-out 0;
+      background: #bac2c9;
+      border-radius: 0.25rem;
+      color: $wht;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: .5rem;
+      text-align:center;
+      border-bottom: 0.125rem solid #acb5be;
+      cursor: pointer;
+    }
+    .confirm{
+      color: #fbfbfb;
+      background: #3b82b3;
+      border-bottom: 0.125rem solid #326e99;
+      &.disabled{
+        opacity: .75;
+      }
+    }
+  }
+}
+// existing message view within conversation view
+.existing {
+  display: flex;
+  flex-direction: row;
+  padding:.25rem;
+  position:relative;
+  margin: 0;
+  cursor: pointer;
+  .avatar{
+    img {
+      height: 2.125rem;
+      width: 2.125rem;
+      border-radius: 50%;
+      border: 1px solid #adadad;
+    }
+  }
+  h2{
+    font-size: 1;
+    color: #666;
+    font-weight: 400;
+  }
+  .selected{
+    background: $bg;
+    border-left-style: inset;
+    border-left: .25rem solid #3b82b3;
+  }
+  .disabled{
+    opacity: 5;
+    background: $lght;
+    box-shadow: inset 1 1 1 $md;
+  }
+}
