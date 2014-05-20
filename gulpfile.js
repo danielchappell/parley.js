@@ -13,6 +13,8 @@ uglify = require('gulp-uglify'),
 source = require('vinyl-source-stream'),
 streamify = require('gulp-streamify'),
 sass = require('gulp-sass'),
+prefix = require('gulp-autoprefixer'),
+minifyCSS   = require('gulp-minify-css'),
 coffee = require('gulp-coffee');
 
 // BUILD TASK CREATES BROWSERIFIED MODULIZED CONCATED JS FILE AND MINIFIED VERSION.
@@ -34,6 +36,11 @@ gulp.task('build', function(){
 
   gulp.src('./src/*.scss')
       .pipe(sass({errLogToConsole: true}))
+      .pipe(gulp.dest('.'));
+  gulp.src('main.css')
+      .pipe(prefix('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+      .pipe(rename({suffix: '.min'}))
+      .pipe(minifyCSS())
       .pipe(gulp.dest('.'));
 
   gulp.src('./server.coffee')
