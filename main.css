@@ -1,6 +1,6 @@
-/* temporary icons and base style ========================== */
 @import url(http://fonts.googleapis.com/css?family=Quattrocento+Sans:400,700);
 @import url(http://weloveiconfonts.com/api/?family=entypo|fontawesome|iconicstroke);
+/* temporary icons and base style ========================== */
 /* entypo */
 [class*="entypo-"]:before {
   font-family: 'entypo', sans-serif; }
@@ -713,7 +713,6 @@ li.existing:hover {
   transition: all 0.5s ease; }
 
 /*scrollbar styles*/
-
 ::-webkit-scrollbar-track {
   background-color: transparent; }
 
